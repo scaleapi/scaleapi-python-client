@@ -13,7 +13,7 @@ client = scale.ScaleClient('YOUR_API_KEY_HERE', callback_key='OPTIONAL_CALLBACK_
 
 ### Tasks
 
-Most of these methods will return a `Scale::Resources::Task` object, which will contain information
+Most of these methods will return a `scale.Task` object, which will contain information
 about the json response (task_id, status...).
 
 Any parameter available in the [documentation](https://docs.scaleapi.com) can be passed as an argument
@@ -147,6 +147,5 @@ The api initialization accepts the following options:
 | Name | Description | Default |
 | ---- | ----------- | ------- |
 | `endpoint` | Endpoint used in the http requests. | `'https://api.scaleapi.com/v1/'` |
-| `api_key` | API key used in the http requests. | `nil` |
-| `callback_key` | API key used to validate callback POST requests. | `nil` |
+| `api_key` | API key used in the http requests. | required |
 
