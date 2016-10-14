@@ -8,12 +8,12 @@ pip install scaleapi
 ## Usage
 ```python
 import scale
-client = scale.ScaleClient('YOUR_API_KEY_HERE', callback_key='OPTIONAL_CALLBACK_KEY_HERE')
+client = scale.ScaleClient('YOUR_API_KEY_HERE')
 ```
 
 ### Tasks
 
-Most of these methods will return a `scale.Task` object, which will contain information
+Most of these methods will return a `scaleapi.Task` object, which will contain information
 about the json response (task_id, status...).
 
 Any parameter available in the [documentation](https://docs.scaleapi.com) can be passed as an argument
@@ -121,10 +121,15 @@ task = client.cancel_task('asdfasdfasdfasdfasdfasdf')
 
 Check [this](https://docs.scaleapi.com/#list-all-tasks) for further information.
 
-Retrieve a list of all tasks.
+Retrieve a list of tasks, with optional filter by date/type. Paginated with limit/offset.
 
 ```python
-tasks = client.tasks()
+tasks = client.tasks(
+    start_time='2015-10-13T22:38:42Z',
+    end_time='2016-10-13T22:38:42Z',
+    type='categorization',
+    limit=100,
+    offset=200)
 ```
 
 ## Error handling

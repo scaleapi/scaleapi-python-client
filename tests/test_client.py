@@ -1,5 +1,7 @@
 import pytest
 import scaleapi
+import time
+from datetime import datetime
 import os
 
 try:
@@ -7,6 +9,18 @@ try:
     client = scaleapi.ScaleClient(test_api_key)
 except KeyError:
     raise Exception("Please set the environment variable SCALE_TEST_API_KEY to run tests.")
+
+
+def make_a_task():
+    return client.create_comparison_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Do the objects in these images have the same pattern?',
+        attachment_type='image',
+        attachments=[
+            'http://i.ebayimg.com/00/$T2eC16dHJGwFFZKjy5ZjBRfNyMC4Ig~~_32.JPG',
+            'http://images.wisegeek.com/checkered-tablecloth.jpg'
+        ],
+        choices=['yes', 'no'])
 
 
 def test_categorize_ok():
@@ -105,28 +119,14 @@ def test_annotation_fail():
 
 
 def test_cancel():
-    task = client.create_annotation_task(
-        callback_url='http://www.example.com/callback',
-        instruction='Draw a box around each **baby cow** and **big cow**',
-        attachment_type='image',
-        attachment='http://i.imgur.com/v4cBreD.jpg',
-        objects_to_annotate=['baby cow', 'big cow'],
-        with_labels=True)
-
+    task = make_a_task()
     # raises a scaleexception, because test tasks complete instantly
     with pytest.raises(scaleapi.ScaleException):
         task.cancel()
 
 
 def test_task_retrieval():
-    task = client.create_annotation_task(
-        callback_url='http://www.example.com/callback',
-        instruction='Draw a box around each **baby cow** and **big cow**',
-        attachment_type='image',
-        attachment='http://i.imgur.com/v4cBreD.jpg',
-        objects_to_annotate=['baby cow', 'big cow'],
-        with_labels=True)
-
+    task = make_a_task()
     task2 = client.fetch_task(task.id)
     assert task.status == 'pending'
     assert task2.status == 'completed'
@@ -134,12 +134,20 @@ def test_task_retrieval():
     assert task2.callback_url == task.callback_url
     assert task2.instruction == task.instruction
     assert task2.attachment_type == task.attachment_type
-    assert task2.attachment == task.attachment
-    assert task2.objects_to_annotate == task.objects_to_annotate
-    assert task2.with_labels == task.with_labels
+    assert task2.attachments == task.attachments
+    assert task2.choices == task.choices
     assert task2.metadata == task.metadata
     assert task2.type == task.type
     assert task2.created_at == task.created_at
+
+
+def test_task_retrieval_time():
+    task = make_a_task()
+    start_time = datetime.utcnow().isoformat()
+    time.sleep(1)
+    end_time = datetime.utcnow().isoformat()
+    tasks = client.tasks(start_time=start_time, end_time=end_time)
+    assert tasks == []
 
 
 def test_task_retrieval_fail():
@@ -150,13 +158,7 @@ def test_task_retrieval_fail():
 def test_tasks():
     tasks = []
     for i in range(3):
-        tasks.append(client.create_annotation_task(
-            callback_url='http://www.example.com/callback',
-            instruction='Draw a box around each **baby cow** and **big cow**',
-            attachment_type='image',
-            attachment='http://i.imgur.com/v4cBreD.jpg',
-            objects_to_annotate=['baby cow', 'big cow'],
-            with_labels=True))
+        tasks.append(make_a_task())
     task_ids = {task.id for task in tasks}
     for task in client.tasks(limit=3):
         assert task.id in task_ids
