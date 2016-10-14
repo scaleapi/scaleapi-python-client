@@ -86,9 +86,23 @@ class ScaleClient(object):
         """
         return Task(self._postrequest('task/%s/cancel' % task_id), self)
 
-    def tasks(self):
-        """Returns a list of all your tasks."""
-        return [Task(json, self) for json in self._getrequest('tasks')['docs']]
+    def tasks(self, **kwargs):
+        """Returns a list of your tasks.
+        Returns up to 100 at a time, to get more use the offset param.
+
+        start/end_time are ISO8601 dates, the time range of tasks to fetch.
+        status can be 'completed', 'pending', or 'canceled'.
+        type is the task type.
+        limit is the max number of results to display per page,
+        offset is the number of results to skip (for showing more pages).
+        """
+        allowed_kwargs = {'start_time', 'end_time', 'status', 'type', 'limit', 'offset'}
+        for key in kwargs:
+            if key not in allowed_kwargs:
+                raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
+                                          % key, None)
+        return [Task(json, self) for json in
+                self._getrequest('tasks', payload=kwargs)['docs']]
 
     def create_categorization_task(self, **kwargs):
         validate_payload('categorization', kwargs)
