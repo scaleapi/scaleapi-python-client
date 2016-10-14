@@ -2,7 +2,7 @@
 
 ## Installation
 ```sh
-pip install scale
+pip install scaleapi
 ```
 
 ## Usage
