@@ -11,5 +11,14 @@ class Task(object):
         raise AttributeError("'%s' object has no attribute %s"
                              % (type(self).__name__, name))
 
+    def __str__(self):
+        return 'Task(id=%s)' % self.id
+
+    def __repr__(self):
+        return 'Task(%s)' % self.param_dict
+
+    def refresh(self):
+        self.param_dict = self.client._getrequest('task/%s' % self.id)
+
     def cancel(self):
         self.client.cancel_task(self.id)

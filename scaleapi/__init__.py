@@ -16,7 +16,7 @@ ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categorie
 
 
 def validate_payload(task_type, kwargs):
-    allowed_fields = DEFAULT_FIELDS + ALLOWED_FIELDS[task_type]
+    allowed_fields = DEFAULT_FIELDS | ALLOWED_FIELDS[task_type]
     for k in kwargs:
         if k not in allowed_fields:
             raise ScaleInvalidRequest('Illegal parameter %s for task_type %s'
@@ -88,7 +88,7 @@ class ScaleClient(object):
 
     def tasks(self):
         """Returns a list of all your tasks."""
-        return [Task(json, self) for json in self._getrequest('tasks')]
+        return [Task(json, self) for json in self._getrequest('tasks')['docs']]
 
     def create_categorization_task(self, **kwargs):
         validate_payload('categorization', kwargs)
