@@ -8,8 +8,13 @@ class Task(object):
     def __getattr__(self, name):
         if name in self.param_dict:
             return self.param_dict[name]
+        if name in self.params:
+            return self.params[name]
         raise AttributeError("'%s' object has no attribute %s"
                              % (type(self).__name__, name))
+
+    def __hash__(self):
+        return hash(self.id)
 
     def __str__(self):
         return 'Task(id=%s)' % self.id

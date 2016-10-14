@@ -116,3 +116,52 @@ def test_cancel():
     # raises a scaleexception, because test tasks complete instantly
     with pytest.raises(scaleapi.ScaleException):
         task.cancel()
+
+
+def test_task_retrieval():
+    task = client.create_annotation_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Draw a box around each **baby cow** and **big cow**',
+        attachment_type='image',
+        attachment='http://i.imgur.com/v4cBreD.jpg',
+        objects_to_annotate=['baby cow', 'big cow'],
+        with_labels=True)
+
+    task2 = client.fetch_task(task.id)
+    assert task.status == 'pending'
+    assert task2.status == 'completed'
+    assert task2.id == task.id
+    assert task2.callback_url == task.callback_url
+    assert task2.instruction == task.instruction
+    assert task2.attachment_type == task.attachment_type
+    assert task2.attachment == task.attachment
+    assert task2.objects_to_annotate == task.objects_to_annotate
+    assert task2.with_labels == task.with_labels
+    assert task2.metadata == task.metadata
+    assert task2.type == task.type
+    assert task2.created_at == task.created_at
+
+
+def test_task_retrieval_fail():
+    with pytest.raises(scaleapi.ScaleException):
+        client.fetch_task('fake_id_qwertyuiop')
+
+
+def test_tasks():
+    tasks = []
+    for i in range(3):
+        tasks.append(client.create_annotation_task(
+            callback_url='http://www.example.com/callback',
+            instruction='Draw a box around each **baby cow** and **big cow**',
+            attachment_type='image',
+            attachment='http://i.imgur.com/v4cBreD.jpg',
+            objects_to_annotate=['baby cow', 'big cow'],
+            with_labels=True))
+    task_ids = {task.id for task in tasks}
+    for task in client.tasks(limit=3):
+        assert task.id in task_ids
+
+
+def test_tasks_invalid():
+    with pytest.raises(scaleapi.ScaleException):
+        client.tasks(bogus=0)

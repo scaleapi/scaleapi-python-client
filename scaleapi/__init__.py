@@ -38,7 +38,7 @@ class ScaleClient(object):
         self.api_key = api_key
         self.endpoint = endpoint
 
-    def _getrequest(self, endpoint):
+    def _getrequest(self, endpoint, params={}):
         """Makes a get request to an endpoint.
 
         If an error occurs, assumes that endpoint returns JSON as:
@@ -47,7 +47,7 @@ class ScaleClient(object):
         """
         r = requests.get(self.endpoint + endpoint,
                          headers={"Content-Type": "application/json"},
-                         auth=(self.api_key, ''))
+                         auth=(self.api_key, ''), params=params)
 
         if r.status_code == 200:
             return r.json()
@@ -102,7 +102,7 @@ class ScaleClient(object):
                 raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
                                           % key, None)
         return [Task(json, self) for json in
-                self._getrequest('tasks', payload=kwargs)['docs']]
+                self._getrequest('tasks', params=kwargs)['docs']]
 
     def create_categorization_task(self, **kwargs):
         validate_payload('categorization', kwargs)
