@@ -135,7 +135,7 @@ tasks = client.tasks(
 ## Error handling
 
 If something went wrong while making API calls, then exceptions will be raised automatically
-as a `scale.ScaleError`  or `scale.ValidationError` runtime error. For example:
+as a `scale.ScaleException`  or `scale.ScaleInvalidRequest` runtime error. For example:
 
 ```python
 try
@@ -144,13 +144,3 @@ except scale.ValidationError as e:
   print(e.code)  # 400
   print(e.message)  # missing param X
 ```
-
-## Custom options
-
-The api initialization accepts the following options:
-
-| Name | Description | Default |
-| ---- | ----------- | ------- |
-| `endpoint` | Endpoint used in the http requests. | `'https://api.scaleapi.com/v1/'` |
-| `api_key` | API key used in the http requests. | required |
-
