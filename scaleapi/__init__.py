@@ -13,6 +13,7 @@ ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categorie
                                  'fields', 'choices'},
                   'annotation': {'attachment', 'attachment_type', 'instruction',
                                  'objects_to_annotate', 'with_labels'}}
+SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
 
 
 def validate_payload(task_type, kwargs):
@@ -34,9 +35,8 @@ class ScaleInvalidRequest(ScaleException, ValueError):
 
 
 class ScaleClient(object):
-    def __init__(self, api_key, endpoint='https://api.scaleapi.com/v1/'):
+    def __init__(self, api_key):
         self.api_key = api_key
-        self.endpoint = endpoint
 
     def _getrequest(self, endpoint, params={}):
         """Makes a get request to an endpoint.
@@ -45,7 +45,7 @@ class ScaleClient(object):
             { 'status_code': XXX,
               'error': 'I failed' }
         """
-        r = requests.get(self.endpoint + endpoint,
+        r = requests.get(SCALE_ENDPOINT + endpoint,
                          headers={"Content-Type": "application/json"},
                          auth=(self.api_key, ''), params=params)
 
@@ -61,7 +61,7 @@ class ScaleClient(object):
               'error': 'I failed' }
         """
         payload = payload or {}
-        r = requests.post(self.endpoint + endpoint, json=payload,
+        r = requests.post(SCALE_ENDPOINT + endpoint, json=payload,
                           headers={"Content-Type": "application/json"},
                           auth=(self.api_key, ''))
 
