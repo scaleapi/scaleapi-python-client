@@ -13,8 +13,8 @@ Usage
 =====
 .. code-block:: python
 
-    import scale
-    client = scale.ScaleClient('YOUR_API_KEY_HERE')
+    import scaleapi
+    client = scaleapi.ScaleClient('YOUR_API_KEY_HERE')
 
 Tasks
 =====
@@ -167,13 +167,13 @@ Error handling
 ==============
 
 If something went wrong while making API calls, then exceptions will be raised automatically
-as a ``scale.ScaleException``  or ``scale.ScaleInvalidRequest`` runtime error. For example:
+as a ``scaleapi.ScaleException``  or ``scaleapi.ScaleInvalidRequest`` runtime error. For example:
 
 .. code-block:: python
 
     try
-        scale.create_categorization_task('Some parameters are missing.')
-    except scale.ValidationError as e:
+        scaleapi.create_categorization_task('Some parameters are missing.')
+    except scaleapi.ValidationError as e:
         print(e.code)  # 400
         print(e.message)  # missing param X
 
