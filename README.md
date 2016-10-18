@@ -46,7 +46,7 @@ task = client.create_transcription_task(
   attachment_type='website',
   attachment='http://www.google.com/',
   fields={ 'title': 'Title of Webpage', 'top_result': 'Title of the top result' },
-  row_fields: { 'username': 'Username of submitter', 'comment_count': 'Number of comments' }
+  row_fields={ 'username': 'Username of submitter', 'comment_count': 'Number of comments' }
 )
 ```
 
