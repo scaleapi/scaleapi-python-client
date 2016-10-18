@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
     name = 'scaleapi',
     packages = ['scaleapi'],
-    version = '0.1.1',
+    version = '0.1.2',
     description = 'A client library for interacting with the Scale API',
     author = 'Calvin Huang',
     author_email = 'c@lvin.me',
