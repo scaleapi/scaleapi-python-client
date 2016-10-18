@@ -1,0 +1,179 @@
+===================
+ScaleAPI for Python
+===================
+
+
+Installation
+============
+.. code-block:: bash
+
+    $ pip install scaleapi
+
+Usage
+=====
+.. code-block:: python
+
+    import scale
+    client = scale.ScaleClient('YOUR_API_KEY_HERE')
+
+Tasks
+=====
+
+Most of these methods will return a ``scaleapi.Task`` object, which will contain information
+about the json response (task_id, status...).
+
+Any parameter available in the documentation_ can be passed as an argument option with the corresponding type.
+
+.. _documentation: https://docs.scaleapi.com
+
+The following endpoints for tasks are available:
+
+Create categorization task
+==========================
+
+Check `this`__ for further information.
+
+__ https://docs.scaleapi.com/#create-categorization-task
+
+.. code-block:: python
+
+    task = client.create_categorization_task(
+      callback_url='http://www.example.com/callback',
+      instruction='Is this company public or private?',
+      attachment_type='website',
+      attachment='http://www.google.com/',
+      categories=['public', 'private']
+    )
+
+Create transcription task
+=========================
+
+Check `this`__ for further information.
+
+__ https://docs.scaleapi.com/#create-transcription-task
+
+.. code-block:: python
+
+    task = client.create_transcription_task(
+      callback_url='http://www.example.com/callback',
+      instruction='Transcribe the given fields. Then for each news item on the page, transcribe the information for the row.',
+      attachment_type='website',
+      attachment='http://www.google.com/',
+      fields={ 'title': 'Title of Webpage', 'top_result': 'Title of the top result' },
+      row_fields={ 'username': 'Username of submitter', 'comment_count': 'Number of comments' }
+    )
+
+Create phone call task
+======================
+
+Check `this`__ for further information.
+
+__ https://docs.scaleapi.com/#create-phone-call-task
+
+.. code-block:: python
+
+    client.create_phonecall_task(
+      callback_url='http://www.example.com/callback',
+      instruction="Call this person and tell me his email address. Ask if he's happy too.",
+      phone_number='5055006865',
+      entity_name='Alexandr Wang',
+      fields={ 'email': 'Email Address' },
+      choices=['He is happy', 'He is not happy']
+    )
+
+Create comparison task
+======================
+
+Check `this`__ for further information.
+
+__ https://docs.scaleapi.com/#create-comparison-task
+
+.. code-block:: python
+
+    client.create_comparison_task(
+      callback_url='http://www.example.com/callback',
+      instruction='Do the objects in these images have the same pattern?',
+      attachment_type='image',
+      choices=['yes', 'no'],
+      attachments=[
+        'http://i.ebayimg.com/00/$T2eC16dHJGwFFZKjy5ZjBRfNyMC4Ig~~_32.JPG',
+        'http://images.wisegeek.com/checkered-tablecloth.jpg'
+      ]
+    )
+
+Create annotation task
+======================
+
+Check `this`__ for further information.
+
+__ https://docs.scaleapi.com/#create-annotation-task-bounding-box
+
+.. code-block:: python
+
+    client.create_annotation_task(
+      callback_url='http://www.example.com/callback',
+      instruction='Draw a box around each baby cow and big cow.',
+      attachment_type="image",
+      attachment="http://i.imgur.com/v4cBreD.jpg",
+      objects_to_annotate=["baby cow", "big cow"]
+    )
+
+Retrieve task
+=============
+
+Check `this`__ for further information.
+
+__ https://docs.scaleapi.com/#retrieve-a-task
+
+Retrieve a task given its id.
+
+.. code-block :: python
+
+    task = client.retrieve_task('asdfasdfasdfasdfasdfasdf')
+    task.id == 'asdfasdfasdfasdfasdfasdf' # true
+
+Cancel task
+===========
+
+Check `this`__ for further information.
+
+__ https://docs.scaleapi.com/#cancel-a-task
+
+Cancel a task given its id, only if it's not completed.
+
+.. code-block :: python
+
+    task = client.cancel_task('asdfasdfasdfasdfasdfasdf')
+
+List tasks
+==========
+
+Check `this`__ for further information.
+
+__ https://docs.scaleapi.com/#list-all-tasks
+
+Retrieve a list of tasks, with optional filter by date/type. Paginated with limit/offset.
+
+.. code-block :: python
+
+    tasks = client.tasks(
+        start_time='2015-10-13T22:38:42Z',
+        end_time='2016-10-13T22:38:42Z',
+        type='categorization',
+        limit=100,
+        offset=200)
+
+Error handling
+==============
+
+If something went wrong while making API calls, then exceptions will be raised automatically
+as a ``scale.ScaleException``  or ``scale.ScaleInvalidRequest`` runtime error. For example:
+
+.. code-block:: python
+
+    try
+        scale.create_categorization_task('Some parameters are missing.')
+    except scale.ValidationError as e:
+        print(e.code)  # 400
+        print(e.message)  # missing param X
+
