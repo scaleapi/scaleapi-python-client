@@ -159,11 +159,12 @@ def test_task_retrieval():
 
 def test_task_retrieval_time():
     task = make_a_task()
+    time.sleep(0.5)
     start_time = datetime.utcnow().isoformat()
-    time.sleep(1)
+    time.sleep(0.5)
     end_time = datetime.utcnow().isoformat()
     tasks = client.tasks(start_time=start_time, end_time=end_time)
-    assert tasks == []
+    assert tasks.docs == []
 
 
 def test_task_retrieval_fail():

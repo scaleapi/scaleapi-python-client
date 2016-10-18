@@ -170,6 +170,8 @@ Check `this`__ for further information.
 __ https://docs.scaleapi.com/#list-all-tasks
 
 Retrieve a list of tasks, with optional filter by date/type. Paginated with limit/offset.
+The return value is a ``scaleapi.Tasklist``, which acts as a list, but also has fields
+for the total number of tasks, the limit and offset, and whether or not there's more.
 
 .. code-block :: python
 
@@ -179,6 +181,11 @@ Retrieve a list of tasks, with optional filter by date/type. Paginated with limi
         type='categorization',
         limit=100,
         offset=200)
+
+    print(tasks.total)    # 1000
+    print(tasks.limit)    # 100
+    print(tasks.offset)   # 200
+    print(tasks.has_more) # True
 
 Error handling
 ==============

@@ -1,3 +1,4 @@
+from collections import namedtuple
 import requests
 
 from .tasks import Task
@@ -15,6 +16,8 @@ ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categorie
                                  'objects_to_annotate', 'with_labels'},
                   'datacollection': {'attachment', 'attachment_type', 'fields'}}
 SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
+DEFAULT_LIMIT = 100
+DEFAULT_OFFSET = 0
 
 
 def validate_payload(task_type, kwargs):
@@ -33,6 +36,16 @@ class ScaleException(Exception):
 
 class ScaleInvalidRequest(ScaleException, ValueError):
     pass
+
+
+class Tasklist(list):
+    def __init__(self, docs, total, limit, offset, has_more):
+        super(Tasklist, self).__init__(docs)
+        self.docs = docs
+        self.total = total
+        self.limit = limit
+        self.offset = offset
+        self.has_more = has_more
 
 
 class ScaleClient(object):
@@ -102,8 +115,10 @@ class ScaleClient(object):
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
                                           % key, None)
-        return [Task(json, self) for json in
-                self._getrequest('tasks', params=kwargs)['docs']]
+        response = self._getrequest('tasks', params=kwargs)
+        docs = [Task(json, self) for json in response['docs']]
+        return Tasklist(docs, response['total'], response['limit'],
+                        response['offset'], response['has_more'])
 
     def create_categorization_task(self, **kwargs):
         validate_payload('categorization', kwargs)
