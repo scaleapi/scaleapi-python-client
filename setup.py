@@ -3,7 +3,7 @@ setup(
     name = 'scaleapi',
     packages = ['scaleapi'],
     version = '0.1.2',
-    description = 'A client library for interacting with the Scale API',
+    description = 'The official Python client library for the Scale API, the API for human labor.',
     author = 'Calvin Huang',
     author_email = 'c@lvin.me',
     url = 'https://github.com/scaleapi/scaleapi-python-client',
