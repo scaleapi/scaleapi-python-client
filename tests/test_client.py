@@ -39,7 +39,7 @@ def test_categorize_fail():
             categories=['public', 'private'])
 
 
-def test_transcrption_ok():
+def test_transcription_ok():
     task = client.create_transcription_task(
         callback_url='http://www.example.com/callback',
         instruction='Transcribe the given fields. Then for each news item on the page, transcribe the information for the row.',
@@ -116,6 +116,22 @@ def test_annotation_fail():
             callback_url='http://www.example.com/callback',
             instruction='Draw a box around each **baby cow** and **big cow**',
             attachment_type='image')
+
+
+def test_datacollection_ok():
+    task = client.create_datacollection_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Find the URL for the hiring page for the company with attached website.',
+        attachment_type='website',
+        attachment='http://www.google.com/',
+        fields={ 'hiring_page': 'Hiring Page URL' })
+
+
+def test_datacollection_fail():
+    with pytest.raises(scaleapi.ScaleInvalidRequest):
+        client.create_datacollection_task(
+            callback_url='http://www.example.com/callback',
+            attachment_type='website')
 
 
 def test_cancel():

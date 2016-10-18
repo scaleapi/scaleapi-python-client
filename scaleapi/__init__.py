@@ -12,7 +12,8 @@ ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categorie
                   'comparison': {'attachments', 'attachment_type',
                                  'fields', 'choices'},
                   'annotation': {'attachment', 'attachment_type', 'instruction',
-                                 'objects_to_annotate', 'with_labels'}}
+                                 'objects_to_annotate', 'with_labels'},
+                  'datacollection': {'attachment', 'attachment_type', 'fields'}}
 SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
 
 
@@ -127,4 +128,9 @@ class ScaleClient(object):
     def create_annotation_task(self, **kwargs):
         validate_payload('annotation', kwargs)
         taskdata = self._postrequest('task/annotation', payload=kwargs)
+        return Task(taskdata, self)
+
+    def create_datacollection_task(self, **kwargs):
+        validate_payload('datacollection', kwargs)
+        taskdata = self._postrequest('task/datacollection', payload=kwargs)
         return Task(taskdata, self)

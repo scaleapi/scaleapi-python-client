@@ -118,6 +118,23 @@ __ https://docs.scaleapi.com/#create-annotation-task-bounding-box
       objects_to_annotate=["baby cow", "big cow"]
     )
 
+Create datacollection task
+=========================
+
+Check `this`__ for further information.
+
+__ https://docs.scaleapi.com/#create-data-collection-task
+
+.. code-block:: python
+
+    task = client.create_datacollection_task(
+      callback_url='http://www.example.com/callback',
+      instruction='Find the URL for the hiring page for the company with attached website.',
+      attachment_type='website',
+      attachment='http://www.google.com/',
+      fields={ 'hiring_page': 'Hiring Page URL' },
+    )
+
 Retrieve task
 =============
 
