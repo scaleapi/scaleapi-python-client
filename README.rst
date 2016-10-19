@@ -196,7 +196,7 @@ as a ``scaleapi.ScaleException``  or ``scaleapi.ScaleInvalidRequest`` runtime er
 .. code-block:: python
 
     try
-        scaleapi.create_categorization_task('Some parameters are missing.')
+        client.create_categorization_task('Some parameters are missing.')
     except scaleapi.ValidationError as e:
         print(e.code)  # 400
         print(e.message)  # missing param X
