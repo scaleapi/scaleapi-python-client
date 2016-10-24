@@ -146,7 +146,7 @@ Retrieve a task given its id.
 
 .. code-block :: python
 
-    task = client.retrieve_task('asdfasdfasdfasdfasdfasdf')
+    task = client.fetch_task('asdfasdfasdfasdfasdfasdf')
     task.id == 'asdfasdfasdfasdfasdfasdf' # true
 
 Cancel task
