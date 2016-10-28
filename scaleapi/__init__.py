@@ -13,7 +13,7 @@ ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categorie
                   'comparison': {'attachments', 'attachment_type',
                                  'fields', 'choices'},
                   'annotation': {'attachment', 'attachment_type', 'instruction',
-                                 'objects_to_annotate', 'with_labels'},
+                                 'objects_to_annotate', 'with_labels', 'examples'},
                   'datacollection': {'attachment', 'attachment_type', 'fields'}}
 SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
 DEFAULT_LIMIT = 100
