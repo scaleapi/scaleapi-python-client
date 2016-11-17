@@ -135,6 +135,22 @@ __ https://docs.scaleapi.com/#create-data-collection-task
       fields={ 'hiring_page': 'Hiring Page URL' },
     )
 
+Create audiotranscription task
+==============================
+
+Check `this`__ for further information.
+
+__ https://docs.scaleapi.com/#create-audio-transcription-task
+
+.. code-block:: python
+
+    task = client.create_audiotranscription_task(
+        callback_url='http://www.example.com/callback',
+        attachment_type='audio',
+        attachment='https://storage.googleapis.com/deepmind-media/pixie/knowing-what-to-say/second-list/speaker-3.wav',
+        verbatim=False
+    )
+
 Retrieve task
 =============
 

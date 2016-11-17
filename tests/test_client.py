@@ -134,6 +134,29 @@ def test_datacollection_fail():
             attachment_type='website')
 
 
+def test_audiotranscription_ok():
+    task = client.create_audiotranscription_task(
+        callback_url='http://www.example.com/callback',
+        attachment_type='audio',
+        attachment='https://storage.googleapis.com/deepmind-media/pixie/knowing-what-to-say/second-list/speaker-3.wav',
+        verbatim=False
+    )
+
+
+def test_audiotranscription_fail():
+    with pytest.raises(scaleapi.ScaleInvalidRequest):
+        client.create_audiotranscription_task(
+            callback_url='http://www.example.com/callback',
+            attachment_type='audio')
+
+
+def test_audiotranscription_fail2():
+    with pytest.raises(scaleapi.ScaleInvalidRequest):
+        client.create_audiotranscription_task(
+            callback_url='http://www.example.com/callback',
+            attachment='some_non_url')
+
+
 def test_cancel():
     task = make_a_task()
     # raises a scaleexception, because test tasks complete instantly

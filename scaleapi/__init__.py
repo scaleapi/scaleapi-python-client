@@ -14,7 +14,8 @@ ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categorie
                                  'fields', 'choices'},
                   'annotation': {'attachment', 'attachment_type', 'instruction',
                                  'objects_to_annotate', 'with_labels', 'examples'},
-                  'datacollection': {'attachment', 'attachment_type', 'fields'}}
+                  'datacollection': {'attachment', 'attachment_type', 'fields'},
+                  'audiotranscription': {'attachment', 'attachment_type', 'verbatim'}}
 SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
 DEFAULT_LIMIT = 100
 DEFAULT_OFFSET = 0
@@ -148,4 +149,9 @@ class ScaleClient(object):
     def create_datacollection_task(self, **kwargs):
         validate_payload('datacollection', kwargs)
         taskdata = self._postrequest('task/datacollection', payload=kwargs)
+        return Task(taskdata, self)
+
+    def create_audiotranscription_task(self, **kwargs):
+        validate_payload('audiotranscription', kwargs)
+        taskdata = self._postrequest('task/audiotranscription', payload=kwargs)
         return Task(taskdata, self)
