@@ -14,6 +14,10 @@ ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categorie
                                  'fields', 'choices'},
                   'annotation': {'attachment', 'attachment_type', 'instruction',
                                  'objects_to_annotate', 'with_labels', 'examples'},
+                  'polygonannotation': {'attachment', 'attachment_type', 'instruction',
+                                 'objects_to_annotate', 'with_labels', 'examples'},
+                  'lineannotation': {'attachment', 'attachment_type', 'instruction',
+                                 'objects_to_annotate', 'with_labels', 'examples'},
                   'datacollection': {'attachment', 'attachment_type', 'fields'},
                   'audiotranscription': {'attachment', 'attachment_type', 'verbatim'}}
 SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
@@ -144,6 +148,16 @@ class ScaleClient(object):
     def create_annotation_task(self, **kwargs):
         validate_payload('annotation', kwargs)
         taskdata = self._postrequest('task/annotation', payload=kwargs)
+        return Task(taskdata, self)
+
+    def create_polygonannotation_task(self, **kwargs):
+        validate_payload('polygonannotation', kwargs)
+        taskdata = self._postrequest('task/polygonannotation', payload=kwargs)
+        return Task(taskdata, self)
+
+    def create_lineannotation_task(self, **kwargs):
+        validate_payload('lineannotation', kwargs)
+        taskdata = self._postrequest('task/lineannotation', payload=kwargs)
         return Task(taskdata, self)
 
     def create_datacollection_task(self, **kwargs):
