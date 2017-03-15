@@ -118,6 +118,42 @@ def test_annotation_fail():
             attachment_type='image')
 
 
+def test_polygonannotation_ok():
+    task = client.create_polygonannotation_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Draw a tight shape around the big cow',
+        attachment_type='image',
+        attachment='http://i.imgur.com/v4cBreD.jpg',
+        objects_to_annotate=['big cow'],
+        with_labels=True)
+
+
+def test_polygonannotation_fail():
+    with pytest.raises(scaleapi.ScaleInvalidRequest):
+        client.create_polygonannotation_task(
+            callback_url='http://www.example.com/callback',
+            instruction='Draw a tight shape around the big cow',
+            attachment_type='image')
+
+
+def test_lineannotation_ok():
+    task = client.create_lineannotation_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Draw a tight shape around the big cow',
+        attachment_type='image',
+        attachment='http://i.imgur.com/v4cBreD.jpg',
+        objects_to_annotate=['big cow'],
+        with_labels=True)
+
+
+def test_lineannotation_fail():
+    with pytest.raises(scaleapi.ScaleInvalidRequest):
+        client.create_lineannotation_task(
+            callback_url='http://www.example.com/callback',
+            instruction='Draw a tight shape around the big cow',
+            attachment_type='image')
+
+
 def test_datacollection_ok():
     task = client.create_datacollection_task(
         callback_url='http://www.example.com/callback',
