@@ -106,8 +106,19 @@ def test_annotation_ok():
         instruction='Draw a box around each **baby cow** and **big cow**',
         attachment_type='image',
         attachment='http://i.imgur.com/v4cBreD.jpg',
+        min_width='30',
+        min_height='30',
         objects_to_annotate=['baby cow', 'big cow'],
         with_labels=True)
+    # min_width and min_height should be optional
+    task2 = client.create_annotation_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Draw a box around each **baby cow** and **big cow**',
+        attachment_type='image',
+        attachment='http://i.imgur.com/v4cBreD.jpg',
+        objects_to_annotate=['baby cow', 'big cow'],
+        with_labels=True)
+
 
 
 def test_annotation_fail():
