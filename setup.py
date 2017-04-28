@@ -9,7 +9,7 @@ setup(
     url = 'https://github.com/scaleapi/scaleapi-python-client',
     download_url = 'https://github.com/scaleapi/scaleapi-python-client/tarball/0.1.2',
     keywords = ['scale', 'scaleapi', 'humans', 'tasks', 'categorization', 'transcription', 'annotation', 'comparison', 'data collection', 'phone call', 'audio transcription'],
-    install_requires = ['requests', 'enum34'],
+    install_requires = ['requests>=2.4.2', 'enum34'],
     classifiers = ['Programming Language :: Python :: 2.7',
                    'Programming Language :: Python :: 3.5',
                    'License :: OSI Approved :: MIT License',
