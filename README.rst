@@ -7,7 +7,9 @@ Installation
 ============
 .. code-block:: bash
 
-    $ pip install scaleapi
+    $ pip install --upgrade scaleapi
+    
+Note: We strongly suggest using `scaleapi` with Python version 2.7.9 or greater due to SSL issues with prior versions.
 
 Usage
 =====
@@ -217,3 +219,7 @@ as a ``scaleapi.ScaleException``  or ``scaleapi.ScaleInvalidRequest`` runtime er
         print(e.code)  # 400
         print(e.message)  # missing param X
 
+Troubleshooting
+===============
+
+If you notice any problems, please email us at support@scaleapi.com.
