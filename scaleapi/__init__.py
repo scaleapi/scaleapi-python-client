@@ -20,7 +20,7 @@ ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categorie
                   'lineannotation': {'attachment', 'attachment_type', 'instruction',
                                  'objects_to_annotate', 'with_labels', 'examples'},
                   'datacollection': {'attachment', 'attachment_type', 'fields'},
-                  'audiotranscription': {'attachment', 'attachment_type', 'verbatim'}}
+                  'audiotranscription': {'attachment', 'attachment_type', 'verbatim', 'phrases'}}
 SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
 DEFAULT_LIMIT = 100
 DEFAULT_OFFSET = 0

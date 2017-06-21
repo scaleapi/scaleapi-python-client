@@ -62,6 +62,7 @@ def test_transcription_fail():
             attachment_type='website')
 
 
+@pytest.mark.skip(reason="Deprecated at the moment")
 def test_phonecall_ok():
     task = client.create_phonecall_task(
         callback_url='http://www.example.com/callback',
@@ -73,6 +74,7 @@ def test_phonecall_ok():
         choices=['He is happy', 'He is not happy'])
 
 
+@pytest.mark.skip(reason="Deprecated at the moment")
 def test_phonecall_fail():
     with pytest.raises(scaleapi.ScaleInvalidRequest):
         client.create_phonecall_task(
@@ -186,7 +188,8 @@ def test_audiotranscription_ok():
         callback_url='http://www.example.com/callback',
         attachment_type='audio',
         attachment='https://storage.googleapis.com/deepmind-media/pixie/knowing-what-to-say/second-list/speaker-3.wav',
-        verbatim=False
+        verbatim=False,
+        phrases=['avocado', 'stone']
     )
 
 
