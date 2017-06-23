@@ -7,7 +7,7 @@ DEFAULT_FIELDS = {'callback_url', 'instruction', 'urgency', 'metadata'}
 ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categories',
                                      'category_ids', 'allow_multiple'},
                   'transcription': {'attachment', 'attachment_type',
-                                    'fields', 'row_fields'},
+                                    'fields', 'repeatable_fields'},
                   'phonecall': {'attachment', 'attachment_type', 'phone_number',
                                 'script', 'entity_name', 'fields', 'choices'},
                   'comparison': {'attachments', 'attachment_type',
