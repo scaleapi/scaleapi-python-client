@@ -137,9 +137,7 @@ class ScaleClient(object):
         return Task(taskdata, self)
 
     def create_phonecall_task(self, **kwargs):
-        validate_payload('phonecall', kwargs)
-        taskdata = self._postrequest('task/phonecall', payload=kwargs)
-        return Task(taskdata, self)
+        raise ScaleException('Phone call tasks have been deprecated and are no longer available.', 400)
 
     def create_comparison_task(self, **kwargs):
         validate_payload('comparison', kwargs)
