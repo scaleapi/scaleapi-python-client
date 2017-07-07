@@ -18,7 +18,7 @@ ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categorie
                   'polygonannotation': {'attachment', 'attachment_type', 'instruction',
                                  'objects_to_annotate', 'with_labels', 'examples'},
                   'lineannotation': {'attachment', 'attachment_type', 'instruction',
-                                 'objects_to_annotate', 'with_labels', 'examples'},
+                                 'objects_to_annotate', 'with_labels', 'examples', 'splines'},
                   'datacollection': {'attachment', 'attachment_type', 'fields'},
                   'audiotranscription': {'attachment', 'attachment_type', 'verbatim', 'phrases'}}
 SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
