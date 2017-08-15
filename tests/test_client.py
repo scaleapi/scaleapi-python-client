@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import pytest
 import scaleapi
 import time
@@ -49,7 +51,7 @@ def test_transcription_ok():
             'title': 'Title of Webpage',
             'top_result': 'Title of the top result'
         },
-        row_fields={
+        repeatable_fields={
             'username': 'Username of submitter',
             'comment_count': 'Number of comments'
         })
@@ -205,6 +207,15 @@ def test_audiotranscription_fail2():
         client.create_audiotranscription_task(
             callback_url='http://www.example.com/callback',
             attachment='some_non_url')
+
+
+def test_unicode_ok():
+    task = client.create_categorization_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Hello, 世界',
+        attachment_type='website',
+        attachment='http://www.google.com/',
+        categories=['public', 'private'])
 
 
 def test_cancel():

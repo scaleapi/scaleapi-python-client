@@ -5,7 +5,7 @@ from .tasks import Task
 
 DEFAULT_FIELDS = {'callback_url', 'instruction', 'urgency', 'metadata'}
 ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categories',
-                                     'category_ids', 'allow_multiple'},
+                                     'category_ids', 'allow_multiple', 'layers'},
                   'transcription': {'attachment', 'attachment_type',
                                     'fields', 'repeatable_fields'},
                   'phonecall': {'attachment', 'attachment_type', 'phone_number',
@@ -14,13 +14,19 @@ ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categorie
                                  'fields', 'choices'},
                   'annotation': {'attachment', 'attachment_type', 'instruction',
                                  'objects_to_annotate', 'with_labels', 'examples',
-                                 'min_width', 'min_height'},
+                                 'min_width', 'min_height', 'layers'},
                   'polygonannotation': {'attachment', 'attachment_type', 'instruction',
-                                 'objects_to_annotate', 'with_labels', 'examples'},
-                  'lineannotation': {'attachment', 'attachment_type', 'instruction',
-                                 'objects_to_annotate', 'with_labels', 'examples'},
+                                 'objects_to_annotate', 'with_labels', 'layers'},
+                  'cuboidannotation': {'attachment', 'attachment_type', 'instruction',
+                                 'objects_to_annotate', 'min_width', 'min_height', 'with_labels', 'layers'},
+                  'audiotranscription': {'attachment', 'attachment_type', 'verbatim', 'phrases'},
+                  'annotation': {'attachment', 'attachment_type', 'instruction', 'objects_to_annotate', 'with_labels', 'examples', 'min_width', 'min_height', 'layers', 'annotation_attributes'},
+                  'polygonannotation': {'attachment', 'attachment_type', 'instruction', 'objects_to_annotate', 'with_labels', 'examples', 'layers', 'annotation_attributes'},
+                  'lineannotation':
+                    {'attachment', 'attachment_type', 'instruction', 'objects_to_annotate', 'with_labels', 'examples', 'splines', 'layers', 'annotation_attributes'},
                   'datacollection': {'attachment', 'attachment_type', 'fields'},
-                  'audiotranscription': {'attachment', 'attachment_type', 'verbatim', 'phrases'}}
+                  'pointannotation': {'attachment_type','attachment', 'objects_to_annotate','with_labels', 'examples', 'layers','annotation_attributes'},
+                  'segmentannotation': {'attachment_type','attachment', 'labels', 'allow_unlabeled'}}
 SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
 DEFAULT_LIMIT = 100
 DEFAULT_OFFSET = 0
@@ -167,4 +173,14 @@ class ScaleClient(object):
     def create_audiotranscription_task(self, **kwargs):
         validate_payload('audiotranscription', kwargs)
         taskdata = self._postrequest('task/audiotranscription', payload=kwargs)
+        return Task(taskdata, self)
+
+    def create_pointannotation_task(self, **kwargs):
+        validate_payload('pointannotation', kwargs)
+        taskdata = self._postrequest('task/pointannotation', payload=kwargs)
+        return Task(taskdata, self)
+
+    def create_segmentannotation_task(self, **kwargs):
+        validate_payload('segmentannotation', kwargs)
+        taskdata = self._postrequest('task/segmentannotation', payload=kwargs)
         return Task(taskdata, self)
