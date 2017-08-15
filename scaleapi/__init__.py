@@ -19,7 +19,7 @@ ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categorie
                                  'objects_to_annotate', 'with_labels', 'layers'},
                   'cuboidannotation': {'attachment', 'attachment_type', 'instruction',
                                  'objects_to_annotate', 'min_width', 'min_height', 'with_labels', 'layers'},
-                  'audiotranscription': {'attachment', 'attachment_type', 'verbatim', 'phrases'}
+                  'audiotranscription': {'attachment', 'attachment_type', 'verbatim', 'phrases'},
                   'annotation': {'attachment', 'attachment_type', 'instruction', 'objects_to_annotate', 'with_labels', 'examples', 'min_width', 'min_height', 'layers', 'annotation_attributes'},
                   'polygonannotation': {'attachment', 'attachment_type', 'instruction', 'objects_to_annotate', 'with_labels', 'examples', 'layers', 'annotation_attributes'},
                   'lineannotation':

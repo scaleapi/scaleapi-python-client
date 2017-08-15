@@ -49,7 +49,7 @@ def test_transcription_ok():
             'title': 'Title of Webpage',
             'top_result': 'Title of the top result'
         },
-        row_fields={
+        repeatable_fields={
             'username': 'Username of submitter',
             'comment_count': 'Number of comments'
         })
