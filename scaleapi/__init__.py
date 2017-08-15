@@ -22,7 +22,15 @@ ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categorie
                   'cuboidannotation': {'attachment', 'attachment_type', 'instruction',
                                  'objects_to_annotate', 'min_width', 'min_height', 'with_labels', 'layers'},
                   'datacollection': {'attachment', 'attachment_type', 'fields'},
-                  'audiotranscription': {'attachment', 'attachment_type', 'verbatim', 'phrases'}}
+                  'audiotranscription': {'attachment', 'attachment_type', 'verbatim', 'phrases'}
+                  'annotation': {'attachment', 'attachment_type', 'instruction', 'objects_to_annotate', 'with_labels', 'examples', 'min_width', 'min_height', 'layers', 'annotation_attributes'},
+                  'polygonannotation': {'attachment', 'attachment_type', 'instruction', 'objects_to_annotate', 'with_labels', 'examples', 'layers', 'annotation_attributes'},
+  'lineannotation':
+    {'attachment', 'attachment_type', 'instruction', 'objects_to_annotate', 'with_labels', 'examples', 'splines', 'layers', 'annotation_attributes'},
+  'datacollection': {'attachment', 'attachment_type', 'fields'},
+  'audiotranscription': {'attachment', 'attachment_type', 'verbatim'},
+  'pointannotation': {'attachment_type','attachment', 'objects_to_annotate','with_labels', 'examples', 'layers','annotation_attributes'},
+  'segmentannotation': {'attachment_type','attachment', 'labels', 'allow_unlabeled'}}
 SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
 DEFAULT_LIMIT = 100
 DEFAULT_OFFSET = 0
@@ -171,4 +179,14 @@ class ScaleClient(object):
     def create_audiotranscription_task(self, **kwargs):
         validate_payload('audiotranscription', kwargs)
         taskdata = self._postrequest('task/audiotranscription', payload=kwargs)
+        return Task(taskdata, self)
+
+    def create_pointannotation_task(self, **kwargs):
+        validate_payload('pointannotation', kwargs)
+        taskdata = self._postrequest('task/pointannotation', payload=kwargs)
+        return Task(taskdata, self)
+
+    def create_segmentannotation_task(self, **kwargs):
+        validate_payload('segmentannotation', kwargs)
+        taskdata = self._postrequest('task/segmentannotation', payload=kwargs)
         return Task(taskdata, self)
