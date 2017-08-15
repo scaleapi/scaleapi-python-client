@@ -65,24 +65,6 @@ __ https://docs.scaleapi.com/#create-transcription-task
       row_fields={ 'username': 'Username of submitter', 'comment_count': 'Number of comments' }
     )
 
-Create phone call task
-======================
-
-Check `this`__ for further information.
-
-__ https://docs.scaleapi.com/#create-phone-call-task
-
-.. code-block:: python
-
-    client.create_phonecall_task(
-      callback_url='http://www.example.com/callback',
-      instruction="Call this person and tell me his email address. Ask if he's happy too.",
-      phone_number='5055006865',
-      entity_name='Alexandr Wang',
-      fields={ 'email': 'Email Address' },
-      choices=['He is happy', 'He is not happy']
-    )
-
 Create comparison task
 ======================
 

@@ -31,7 +31,7 @@ setup(
     author_email = 'c@lvin.me',
     url = 'https://github.com/scaleapi/scaleapi-python-client',
     download_url = 'https://github.com/scaleapi/scaleapi-python-client/tarball/0.1.10',
-    keywords = ['scale', 'scaleapi', 'humans', 'tasks', 'categorization', 'transcription', 'annotation', 'comparison', 'data collection', 'phone call', 'audio transcription'],
+    keywords = ['scale', 'scaleapi', 'humans', 'tasks', 'categorization', 'transcription', 'annotation', 'comparison', 'data collection', 'audio transcription'],
     install_requires = install_requires,
     classifiers = ['Programming Language :: Python :: 2.7',
                    'Programming Language :: Python :: 3.5',
