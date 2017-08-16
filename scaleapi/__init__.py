@@ -111,14 +111,14 @@ class ScaleClient(object):
         docs = [Task(json, self) for json in response['docs']]
         return Tasklist(docs, response['total'], response['limit'],
                         response['offset'], response['has_more'])
-
-
-def _AddTaskTypeCreator(name):
-    endpoint = 'task/' + name
-    def createTask(self, **kwargs):
+    def create_task(self, task_type, **kwargs):
+        endpoint = 'task/' + task_type
         taskdata = self._postrequest(endpoint, payload=kwargs)
         return Task(taskdata, self)
-    setattr(ScaleClient, 'create_' + name + '_task', createTask)
+
+
+def _AddTaskTypeCreator(task_type):
+    setattr(ScaleClient, 'create_' + task_type + '_task', lambda (self, **kwargs): self.create_task(self, task_type, **kwargs))
 
 for taskType in TASK_TYPES:
     _AddTaskTypeCreator(taskType)
