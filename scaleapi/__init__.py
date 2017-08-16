@@ -114,7 +114,7 @@ class ScaleClient(object):
 
 
 def _AddTaskTypeCreator(name):
-    endpoint = 'task/' + ('categorize' if name == 'categorization' else name)
+    endpoint = 'task/' + name
     def createTask(self, **kwargs):
         taskdata = self._postrequest(endpoint, payload=kwargs)
         return Task(taskdata, self)
