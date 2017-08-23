@@ -119,7 +119,7 @@ class ScaleClient(object):
 
 def _AddTaskTypeCreator(task_type):
     def create_task_wrapper(self, **kwargs):
-        self.create_task(task_type, **kwargs)
+        return self.create_task(task_type, **kwargs)
     setattr(ScaleClient, 'create_' + task_type + '_task', create_task_wrapper)
 
 for taskType in TASK_TYPES:
