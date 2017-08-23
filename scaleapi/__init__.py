@@ -3,42 +3,22 @@ import requests
 
 from .tasks import Task
 
-DEFAULT_FIELDS = {'callback_url', 'instruction', 'urgency', 'metadata'}
-ALLOWED_FIELDS = {'categorization': {'attachment', 'attachment_type', 'categories',
-                                     'category_ids', 'allow_multiple', 'layers'},
-                  'transcription': {'attachment', 'attachment_type',
-                                    'fields', 'repeatable_fields'},
-                  'phonecall': {'attachment', 'attachment_type', 'phone_number',
-                                'script', 'entity_name', 'fields', 'choices'},
-                  'comparison': {'attachments', 'attachment_type',
-                                 'fields', 'choices'},
-                  'annotation': {'attachment', 'attachment_type', 'instruction',
-                                 'objects_to_annotate', 'with_labels', 'examples',
-                                 'min_width', 'min_height', 'layers'},
-                  'polygonannotation': {'attachment', 'attachment_type', 'instruction',
-                                 'objects_to_annotate', 'with_labels', 'layers'},
-                  'cuboidannotation': {'attachment', 'attachment_type', 'instruction',
-                                 'objects_to_annotate', 'min_width', 'min_height', 'with_labels', 'layers'},
-                  'audiotranscription': {'attachment', 'attachment_type', 'verbatim', 'phrases'},
-                  'annotation': {'attachment', 'attachment_type', 'instruction', 'objects_to_annotate', 'with_labels', 'examples', 'min_width', 'min_height', 'layers', 'annotation_attributes'},
-                  'polygonannotation': {'attachment', 'attachment_type', 'instruction', 'objects_to_annotate', 'with_labels', 'examples', 'layers', 'annotation_attributes'},
-                  'lineannotation':
-                    {'attachment', 'attachment_type', 'instruction', 'objects_to_annotate', 'with_labels', 'examples', 'splines', 'layers', 'annotation_attributes'},
-                  'datacollection': {'attachment', 'attachment_type', 'fields'},
-                  'pointannotation': {'attachment_type','attachment', 'objects_to_annotate','with_labels', 'examples', 'layers','annotation_attributes'},
-                  'segmentannotation': {'attachment_type','attachment', 'labels', 'allow_unlabeled'}}
+TASK_TYPES = [
+    'categorization',
+    'transcription',
+    'phonecall',
+    'comparison',
+    'annotation',
+    'polygonannotation',
+    'lineannotation',
+    'datacollection',
+    'audiotranscription',
+    'pointannotation',
+    'segmentannotation'
+]
 SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
 DEFAULT_LIMIT = 100
 DEFAULT_OFFSET = 0
-
-
-def validate_payload(task_type, kwargs):
-    allowed_fields = DEFAULT_FIELDS | ALLOWED_FIELDS[task_type]
-    for k in kwargs:
-        if k not in allowed_fields:
-            raise ScaleInvalidRequest('Illegal parameter %s for task_type %s'
-                                      % (k, task_type), None)
-
 
 class ScaleException(Exception):
     def __init__(self, message, errcode):
@@ -131,56 +111,16 @@ class ScaleClient(object):
         docs = [Task(json, self) for json in response['docs']]
         return Tasklist(docs, response['total'], response['limit'],
                         response['offset'], response['has_more'])
-
-    def create_categorization_task(self, **kwargs):
-        validate_payload('categorization', kwargs)
-        taskdata = self._postrequest('task/categorize', payload=kwargs)
+    def create_task(self, task_type, **kwargs):
+        endpoint = 'task/' + task_type
+        taskdata = self._postrequest(endpoint, payload=kwargs)
         return Task(taskdata, self)
 
-    def create_transcription_task(self, **kwargs):
-        validate_payload('transcription', kwargs)
-        taskdata = self._postrequest('task/transcription', payload=kwargs)
-        return Task(taskdata, self)
 
-    def create_phonecall_task(self, **kwargs):
-        raise ScaleException('Phone call tasks have been deprecated and are no longer available.', 400)
+def _AddTaskTypeCreator(task_type):
+    def create_task_wrapper(self, **kwargs):
+        return self.create_task(task_type, **kwargs)
+    setattr(ScaleClient, 'create_' + task_type + '_task', create_task_wrapper)
 
-    def create_comparison_task(self, **kwargs):
-        validate_payload('comparison', kwargs)
-        taskdata = self._postrequest('task/comparison', payload=kwargs)
-        return Task(taskdata, self)
-
-    def create_annotation_task(self, **kwargs):
-        validate_payload('annotation', kwargs)
-        taskdata = self._postrequest('task/annotation', payload=kwargs)
-        return Task(taskdata, self)
-
-    def create_polygonannotation_task(self, **kwargs):
-        validate_payload('polygonannotation', kwargs)
-        taskdata = self._postrequest('task/polygonannotation', payload=kwargs)
-        return Task(taskdata, self)
-
-    def create_lineannotation_task(self, **kwargs):
-        validate_payload('lineannotation', kwargs)
-        taskdata = self._postrequest('task/lineannotation', payload=kwargs)
-        return Task(taskdata, self)
-
-    def create_datacollection_task(self, **kwargs):
-        validate_payload('datacollection', kwargs)
-        taskdata = self._postrequest('task/datacollection', payload=kwargs)
-        return Task(taskdata, self)
-
-    def create_audiotranscription_task(self, **kwargs):
-        validate_payload('audiotranscription', kwargs)
-        taskdata = self._postrequest('task/audiotranscription', payload=kwargs)
-        return Task(taskdata, self)
-
-    def create_pointannotation_task(self, **kwargs):
-        validate_payload('pointannotation', kwargs)
-        taskdata = self._postrequest('task/pointannotation', payload=kwargs)
-        return Task(taskdata, self)
-
-    def create_segmentannotation_task(self, **kwargs):
-        validate_payload('segmentannotation', kwargs)
-        taskdata = self._postrequest('task/segmentannotation', payload=kwargs)
-        return Task(taskdata, self)
+for taskType in TASK_TYPES:
+    _AddTaskTypeCreator(taskType)
