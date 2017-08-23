@@ -4,17 +4,17 @@ import requests
 from .tasks import Task
 
 TASK_TYPES = [
-  'categorization',
-  'transcription',
-  'phonecall',
-  'comparison',
-  'annotation',
-  'polygonannotation',
-  'lineannotation',
-  'datacollection',
-  'audiotranscription',
-  'pointannotation',
-  'segmentannotation'
+    'categorization',
+    'transcription',
+    'phonecall',
+    'comparison',
+    'annotation',
+    'polygonannotation',
+    'lineannotation',
+    'datacollection',
+    'audiotranscription',
+    'pointannotation',
+    'segmentannotation'
 ]
 SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
 DEFAULT_LIMIT = 100
