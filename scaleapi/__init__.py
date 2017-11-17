@@ -62,7 +62,10 @@ class ScaleClient(object):
                 error = r.json()['error']
             except ValueError:
                 error = r.text
-            raise ScaleException(error, r.status_code)
+            if r.status_code == 400:
+                raise ScaleInvalidRequest(error, r.status_code)
+            else:
+                raise ScaleException(error, r.status_code)
 
     def _postrequest(self, endpoint, payload=None):
         """Makes a post request to an endpoint.
@@ -83,7 +86,10 @@ class ScaleClient(object):
                 error = r.json()['error']
             except ValueError:
                 error = r.text
-            raise ScaleException(error, r.status_code)
+            if r.status_code == 400:
+                raise ScaleInvalidRequest(error, r.status_code)
+            else:
+                raise ScaleException(error, r.status_code)
 
     def fetch_task(self, task_id):
         """Fetches a task.
