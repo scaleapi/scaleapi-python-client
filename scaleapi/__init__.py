@@ -22,7 +22,7 @@ DEFAULT_OFFSET = 0
 
 class ScaleException(Exception):
     def __init__(self, message, errcode):
-        super(ScaleException, self).__init__(message)
+        super(ScaleException, self).__init__('<Response [{}]> {}'.format(errcode, message))
         self.code = errcode
 
 
@@ -57,7 +57,15 @@ class ScaleClient(object):
 
         if r.status_code == 200:
             return r.json()
-        raise ScaleException(r.json()['error'], r.status_code)
+        else:
+            try:
+                error = r.json()['error']
+            except ValueError:
+                error = r.text
+            if r.status_code == 400:
+                raise ScaleInvalidRequest(error, r.status_code)
+            else:
+                raise ScaleException(error, r.status_code)
 
     def _postrequest(self, endpoint, payload=None):
         """Makes a post request to an endpoint.
@@ -73,9 +81,15 @@ class ScaleClient(object):
 
         if r.status_code == 200:
             return r.json()
-        if r.status_code == 400:
-            raise ScaleInvalidRequest(r.json()['error'], r.status_code)
-        raise ScaleException(r.json()['error'], r.status_code)
+        else:
+            try:
+                error = r.json()['error']
+            except ValueError:
+                error = r.text
+            if r.status_code == 400:
+                raise ScaleInvalidRequest(error, r.status_code)
+            else:
+                raise ScaleException(error, r.status_code)
 
     def fetch_task(self, task_id):
         """Fetches a task.
