@@ -14,6 +14,7 @@ TASK_TYPES = [
     'datacollection',
     'audiotranscription',
     'pointannotation',
+    'cuboidannotation',
     'segmentannotation'
 ]
 SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
