@@ -17,7 +17,7 @@ TASK_TYPES = [
     'cuboidannotation',
     'segmentannotation'
 ]
-SCALE_ENDPOINT = 'https://api.scaleapi.com/v1/'
+SCALE_ENDPOINT = 'https://api.scale.ai/v1/'
 DEFAULT_LIMIT = 100
 DEFAULT_OFFSET = 0
 

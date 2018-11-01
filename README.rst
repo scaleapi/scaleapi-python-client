@@ -8,7 +8,7 @@ Installation
 .. code-block:: bash
 
     $ pip install --upgrade scaleapi
-    
+
 Note: We strongly suggest using `scaleapi` with Python version 2.7.9 or greater due to SSL issues with prior versions.
 
 Usage
@@ -26,7 +26,7 @@ about the json response (task_id, status...).
 
 Any parameter available in the documentation_ can be passed as an argument option with the corresponding type.
 
-.. _documentation: https://docs.scaleapi.com
+.. _documentation: https://docs.scale.ai
 
 The following endpoints for tasks are available:
 
@@ -35,7 +35,7 @@ Create categorization task
 
 Check `this`__ for further information.
 
-__ https://docs.scaleapi.com/#create-categorization-task
+__ https://docs.scale.ai/#create-categorization-task
 
 .. code-block:: python
 
@@ -52,7 +52,7 @@ Create transcription task
 
 Check `this`__ for further information.
 
-__ https://docs.scaleapi.com/#create-transcription-task
+__ https://docs.scale.ai/#create-transcription-task
 
 .. code-block:: python
 
@@ -70,7 +70,7 @@ Create comparison task
 
 Check `this`__ for further information.
 
-__ https://docs.scaleapi.com/#create-comparison-task
+__ https://docs.scale.ai/#create-comparison-task
 
 .. code-block:: python
 
@@ -90,7 +90,7 @@ Create annotation task
 
 Check `this`__ for further information.
 
-__ https://docs.scaleapi.com/#create-annotation-task-bounding-box
+__ https://docs.scale.ai/#create-annotation-task-bounding-box
 
 .. code-block:: python
 
@@ -107,7 +107,7 @@ Create datacollection task
 
 Check `this`__ for further information.
 
-__ https://docs.scaleapi.com/#create-data-collection-task
+__ https://docs.scale.ai/#create-data-collection-task
 
 .. code-block:: python
 
@@ -124,7 +124,7 @@ Create audiotranscription task
 
 Check `this`__ for further information.
 
-__ https://docs.scaleapi.com/#create-audio-transcription-task
+__ https://docs.scale.ai/#create-audio-transcription-task
 
 .. code-block:: python
 
@@ -140,7 +140,7 @@ Retrieve task
 
 Check `this`__ for further information.
 
-__ https://docs.scaleapi.com/#retrieve-a-task
+__ https://docs.scale.ai/#retrieve-a-task
 
 Retrieve a task given its id.
 
@@ -154,7 +154,7 @@ Cancel task
 
 Check `this`__ for further information.
 
-__ https://docs.scaleapi.com/#cancel-a-task
+__ https://docs.scale.ai/#cancel-a-task
 
 Cancel a task given its id, only if it's not completed.
 
@@ -167,7 +167,7 @@ List tasks
 
 Check `this`__ for further information.
 
-__ https://docs.scaleapi.com/#list-all-tasks
+__ https://docs.scale.ai/#list-all-tasks
 
 Retrieve a list of tasks, with optional filter by date/type. Paginated with limit/offset.
 The return value is a ``scaleapi.Tasklist``, which acts as a list, but also has fields
