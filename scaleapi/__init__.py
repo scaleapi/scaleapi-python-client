@@ -117,7 +117,8 @@ class ScaleClient(object):
         limit is the max number of results to display per page,
         offset is the number of results to skip (for showing more pages).
         """
-        allowed_kwargs = {'start_time', 'end_time', 'status', 'type', 'limit', 'offset'}
+        allowed_kwargs = {'start_time', 'end_time', 'status', 'type', 'project',
+                          'batch', 'limit', 'offset'}
         for key in kwargs:
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
