@@ -118,7 +118,7 @@ class ScaleClient(object):
         offset is the number of results to skip (for showing more pages).
         """
         allowed_kwargs = {'start_time', 'end_time', 'status', 'type', 'project',
-                          'batch', 'limit', 'offset'}
+                          'batch', 'limit', 'offset', 'completed_before', 'completed_after'}
         for key in kwargs:
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
