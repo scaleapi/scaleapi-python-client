@@ -209,6 +209,17 @@ def test_audiotranscription_fail2():
             attachment='some_non_url')
 
 
+def test_namedentityrecognition_ok():
+    return client.create_namedentityrecognition_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Do the objects in these images have the same pattern?',
+        text='Example text to label with NER tool',
+        labels=[{
+            'name': 'Label_A',
+            'description': 'the first label',
+        }])
+
+
 def test_unicode_ok():
     task = client.create_categorization_task(
         callback_url='http://www.example.com/callback',

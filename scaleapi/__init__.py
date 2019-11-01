@@ -15,7 +15,8 @@ TASK_TYPES = [
     'audiotranscription',
     'pointannotation',
     'cuboidannotation',
-    'segmentannotation'
+    'segmentannotation',
+    'namedentityrecognition'
 ]
 SCALE_ENDPOINT = 'https://api.scale.com/v1/'
 DEFAULT_LIMIT = 100
