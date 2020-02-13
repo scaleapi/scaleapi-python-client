@@ -33,14 +33,14 @@ class ScaleInvalidRequest(ScaleException, ValueError):
 
 
 class Tasklist(list):
-    def __init__(self, docs, total, limit, offset, has_more):
+    def __init__(self, docs, total, limit, offset, has_more, next_token=None):
         super(Tasklist, self).__init__(docs)
         self.docs = docs
         self.total = total
         self.limit = limit
         self.offset = offset
         self.has_more = has_more
-
+        self.next_token = next_token
 
 class ScaleClient(object):
     def __init__(self, api_key):
@@ -110,16 +110,20 @@ class ScaleClient(object):
 
     def tasks(self, **kwargs):
         """Returns a list of your tasks.
-        Returns up to 100 at a time, to get more use the offset param.
+        Returns up to 100 at a time, to get more, use the next_token param passed back.
+        
+        Note that offset is deprecated.
 
         start/end_time are ISO8601 dates, the time range of tasks to fetch.
         status can be 'completed', 'pending', or 'canceled'.
         type is the task type.
         limit is the max number of results to display per page,
-        offset is the number of results to skip (for showing more pages).
+        next_token can be use to fetch the next page of tasks.
+        offset (deprecated) is the number of results to skip (for showing more pages).
         """
         allowed_kwargs = {'start_time', 'end_time', 'status', 'type', 'project',
-                          'batch', 'limit', 'offset', 'completed_before', 'completed_after'}
+                          'batch', 'limit', 'offset', 'completed_before', 'completed_after', 
+                          'next_token'}
         for key in kwargs:
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
@@ -127,7 +131,7 @@ class ScaleClient(object):
         response = self._getrequest('tasks', params=kwargs)
         docs = [Task(json, self) for json in response['docs']]
         return Tasklist(docs, response['total'], response['limit'],
-                        response['offset'], response['has_more'])
+                        response['offset'], response['has_more'], response.get('next_token'))
     def create_task(self, task_type, **kwargs):
         endpoint = 'task/' + task_type
         taskdata = self._postrequest(endpoint, payload=kwargs)
