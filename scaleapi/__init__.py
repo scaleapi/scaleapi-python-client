@@ -118,7 +118,8 @@ class ScaleClient(object):
         status can be 'completed', 'pending', or 'canceled'.
         type is the task type.
         limit is the max number of results to display per page,
-        offset is the number of results to skip (for showing more pages).
+        next_token can be use to fetch the next page of tasks.
+        offset (deprecated) is the number of results to skip (for showing more pages).
         """
         allowed_kwargs = {'start_time', 'end_time', 'status', 'type', 'project',
                           'batch', 'limit', 'offset', 'completed_before', 'completed_after', 
