@@ -33,14 +33,14 @@ class ScaleInvalidRequest(ScaleException, ValueError):
 
 
 class Tasklist(list):
-    def __init__(self, docs, total, limit, offset, has_more):
+    def __init__(self, docs, total, limit, offset, has_more, next_token=None):
         super(Tasklist, self).__init__(docs)
         self.docs = docs
         self.total = total
         self.limit = limit
         self.offset = offset
         self.has_more = has_more
-
+        self.next_token = next_token
 
 class ScaleClient(object):
     def __init__(self, api_key):
@@ -110,7 +110,9 @@ class ScaleClient(object):
 
     def tasks(self, **kwargs):
         """Returns a list of your tasks.
-        Returns up to 100 at a time, to get more use the offset param.
+        Returns up to 100 at a time, to get more, use the next_token param passed back.
+        
+        Note that offset is deprecated.
 
         start/end_time are ISO8601 dates, the time range of tasks to fetch.
         status can be 'completed', 'pending', or 'canceled'.
@@ -128,7 +130,7 @@ class ScaleClient(object):
         response = self._getrequest('tasks', params=kwargs)
         docs = [Task(json, self) for json in response['docs']]
         return Tasklist(docs, response['total'], response['limit'],
-                        response['offset'], response['has_more'])
+                        response['offset'], response['has_more'], response.get('next_token'))
     def create_task(self, task_type, **kwargs):
         endpoint = 'task/' + task_type
         taskdata = self._postrequest(endpoint, payload=kwargs)
