@@ -4,19 +4,22 @@ import requests
 from .tasks import Task
 
 TASK_TYPES = [
-    'categorization',
-    'transcription',
-    'phonecall',
-    'comparison',
     'annotation',
-    'polygonannotation',
-    'lineannotation',
-    'datacollection',
     'audiotranscription',
-    'pointannotation',
+    'categorization',
+    'comparison',
     'cuboidannotation',
+    'datacollection',
+    'imageannotation', 
+    'lineannotation',
+    'namedentityrecognition',
+    'pointannotation',
+    'polygonannotation',
     'segmentannotation',
-    'namedentityrecognition'
+    'transcription',
+    'videoannotation', 
+    'videoboxannotation', 
+    'videocuboidannotation'
 ]
 SCALE_ENDPOINT = 'https://api.scale.com/v1/'
 DEFAULT_LIMIT = 100
