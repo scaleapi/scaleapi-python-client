@@ -6,7 +6,10 @@ try:
 except ImportError:
     from distutils.core import setup
 
-install_requires = ['requests>=2.4.2', 'enum34']
+install_requires = ['requests>=2.4.2']
+
+if sys.version_info < (3, 4, 0):
+    install_requires.append('enum34')
 
 if sys.version_info < (2, 7, 9):
     warnings.warn(
