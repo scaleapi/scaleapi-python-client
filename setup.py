@@ -28,7 +28,7 @@ if sys.version_info < (2, 7, 9):
 setup(
     name = 'scaleapi',
     packages = ['scaleapi'],
-    version = '0.3.0',
+    version = '0.3.1',
     description = 'The official Python client library for the Scale API, the API for human intelligence.',
     author = 'Calvin Huang',
     author_email = 'c@lvin.me',
