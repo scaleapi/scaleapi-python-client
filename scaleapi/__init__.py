@@ -2,6 +2,7 @@ from collections import namedtuple
 import requests
 
 from .tasks import Task
+from .batches import Batch
 
 TASK_TYPES = [
     'annotation',
@@ -10,15 +11,15 @@ TASK_TYPES = [
     'comparison',
     'cuboidannotation',
     'datacollection',
-    'imageannotation', 
+    'imageannotation',
     'lineannotation',
     'namedentityrecognition',
     'pointannotation',
     'polygonannotation',
     'segmentannotation',
     'transcription',
-    'videoannotation', 
-    'videoboxannotation', 
+    'videoannotation',
+    'videoboxannotation',
     'videocuboidannotation'
 ]
 SCALE_ENDPOINT = 'https://api.scale.com/v1/'
@@ -35,9 +36,9 @@ class ScaleInvalidRequest(ScaleException, ValueError):
     pass
 
 
-class Tasklist(list):
+class Paginator(list):
     def __init__(self, docs, total, limit, offset, has_more, next_token=None):
-        super(Tasklist, self).__init__(docs)
+        super(Paginator, self).__init__(docs)
         self.docs = docs
         self.total = total
         self.limit = limit
@@ -45,17 +46,27 @@ class Tasklist(list):
         self.has_more = has_more
         self.next_token = next_token
 
+
+class Tasklist(Paginator):
+    pass
+
+
+class Batchlist(Paginator):
+    pass
+
+
 class ScaleClient(object):
     def __init__(self, api_key):
         self.api_key = api_key
 
-    def _getrequest(self, endpoint, params={}):
+    def _getrequest(self, endpoint, params=None):
         """Makes a get request to an endpoint.
 
         If an error occurs, assumes that endpoint returns JSON as:
             { 'status_code': XXX,
               'error': 'I failed' }
         """
+        params = params or {}
         r = requests.get(SCALE_ENDPOINT + endpoint,
                          headers={"Content-Type": "application/json"},
                          auth=(self.api_key, ''), params=params)
@@ -114,7 +125,7 @@ class ScaleClient(object):
     def tasks(self, **kwargs):
         """Returns a list of your tasks.
         Returns up to 100 at a time, to get more, use the next_token param passed back.
-        
+
         Note that offset is deprecated.
 
         start/end_time are ISO8601 dates, the time range of tasks to fetch.
@@ -125,7 +136,7 @@ class ScaleClient(object):
         offset (deprecated) is the number of results to skip (for showing more pages).
         """
         allowed_kwargs = {'start_time', 'end_time', 'status', 'type', 'project',
-                          'batch', 'limit', 'offset', 'completed_before', 'completed_after', 
+                          'batch', 'limit', 'offset', 'completed_before', 'completed_after',
                           'next_token'}
         for key in kwargs:
             if key not in allowed_kwargs:
@@ -139,6 +150,29 @@ class ScaleClient(object):
         endpoint = 'task/' + task_type
         taskdata = self._postrequest(endpoint, payload=kwargs)
         return Task(taskdata, self)
+
+    def create_batch(self, project, batch_name, callback):
+        payload = dict(project=project, name=batch_name, callback=callback)
+        batchdata = self._postrequest('batches', payload)
+        return Batch(batchdata, self)
+
+    def get_batch(self, batch_name: str):
+        batchdata = self._getrequest('batches/%s' % batch_name)
+        return Batch(batchdata, self)
+
+    def list_batches(self, **kwargs):
+        allowed_kwargs = { 'start_time', 'end_time', 'status', 'project',
+                           'batch', 'limit', 'offset', }
+        for key in kwargs:
+            if key not in allowed_kwargs:
+                raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
+                                          % key, None)
+        response = self._getrequest('tasks', params=kwargs)
+        docs = [Batch(doc, self) for doc in response['docs']]
+        return Batchlist(
+            docs, response['total'], response['limit'], response['offset'],
+            response['has_more'], response.get('next_token'),
+        )
 
 
 def _AddTaskTypeCreator(task_type):
