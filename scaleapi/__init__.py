@@ -3,6 +3,7 @@ import requests
 
 from .tasks import Task
 from .batches import Batch
+from .projects import Project
 
 TASK_TYPES = [
     'annotation',
@@ -52,6 +53,10 @@ class Tasklist(Paginator):
 
 
 class Batchlist(Paginator):
+    pass
+
+
+class Projectlist(Paginator):
     pass
 
 
@@ -167,12 +172,26 @@ class ScaleClient(object):
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
                                           % key, None)
-        response = self._getrequest('tasks', params=kwargs)
+        response = self._getrequest('batches', params=kwargs)
         docs = [Batch(doc, self) for doc in response['docs']]
         return Batchlist(
             docs, response['total'], response['limit'], response['offset'],
             response['has_more'], response.get('next_token'),
         )
+
+    def create_project(self, annotation_type, project_name, params):
+        payload = dict(type=annotation_type, name=project_name, params=params)
+        data = self._postrequest('projects', payload)
+        return Project(data, self)
+
+    def get_project(self, project_name):
+        data = self._getrequest('projects/%s' % project_name)
+        return Project(data, self)
+
+    def list_projects(self):
+        responses = self._getrequest('projects')
+        projects = [Project(response, self) for response in responses]
+        return projects
 
 
 def _AddTaskTypeCreator(task_type):
