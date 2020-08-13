@@ -156,7 +156,7 @@ class ScaleClient(object):
         batchdata = self._postrequest('batches', payload)
         return Batch(batchdata, self)
 
-    def get_batch(self, batch_name: str):
+    def get_batch(self, batch_name):
         batchdata = self._getrequest('batches/%s' % batch_name)
         return Batch(batchdata, self)
 
