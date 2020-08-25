@@ -133,11 +133,12 @@ class ScaleClient(object):
         type is the task type.
         limit is the max number of results to display per page,
         next_token can be use to fetch the next page of tasks.
+        customer_review_status can be 'pending', 'fixed', 'accepted' or 'rejected'.
         offset (deprecated) is the number of results to skip (for showing more pages).
         """
         allowed_kwargs = {'start_time', 'end_time', 'status', 'type', 'project',
                           'batch', 'limit', 'offset', 'completed_before', 'completed_after',
-                          'next_token'}
+                          'next_token', 'customer_review_status'}
         for key in kwargs:
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
