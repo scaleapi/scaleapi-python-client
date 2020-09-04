@@ -17,7 +17,7 @@ if sys.version_info < (2, 7, 9):
         'versions of Python older than 2.7.9. If at all possible, you should '
         'upgrade your version of Python. '
         'If you have any questions, please file an issue on Github or '
-        'contact us at support@scaleapi.com.',
+        'contact us at support@scale.com.',
         DeprecationWarning)
     install_requires.append('pyOpenSSL')
     install_requires.append('ndg-httpsclient')
@@ -26,18 +26,28 @@ if sys.version_info < (2, 7, 9):
     install_requires.append('requests[security]')
 
 setup(
-    name = 'scaleapi',
-    packages = ['scaleapi'],
-    version = '0.3.1',
-    description = 'The official Python client library for the Scale API, the API for human intelligence.',
-    author = 'Calvin Huang',
-    author_email = 'c@lvin.me',
-    url = 'https://github.com/scaleapi/scaleapi-python-client',
-    keywords = ['scale', 'scaleapi', 'humans', 'tasks', 'categorization', 'transcription', 'annotation', 'comparison', 'data collection', 'audio transcription'],
-    install_requires = install_requires,
-    classifiers = ['Programming Language :: Python :: 2.7',
-                   'Programming Language :: Python :: 3.5',
-                   'License :: OSI Approved :: MIT License',
-                   'Intended Audience :: Developers',
-                   'Topic :: Software Development :: Libraries']
+    name='scaleapi',
+    packages=['scaleapi'],
+    version='0.4.0',
+    description='The official Python client library for Scale AI, the Data Platform for AI',
+    author='Scale AI',
+    author_email='support@scale.com',
+    url='https://github.com/scaleapi/scaleapi-python-client',
+    keywords=[
+        'scale',
+        'scaleapi',
+        'humans',
+        'tasks',
+        'categorization',
+        'transcription',
+        'annotation',
+        'data collection',
+        'audio transcription'
+    ],
+    install_requires=install_requires,
+    classifiers=['Programming Language :: Python :: 2.7',
+                 'Programming Language :: Python :: 3.5',
+                 'License :: OSI Approved :: MIT License',
+                 'Intended Audience :: Developers',
+                 'Topic :: Software Development :: Libraries']
 )
