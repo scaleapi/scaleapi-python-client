@@ -30,7 +30,7 @@ Any parameter available in the documentation_ can be passed as an argument optio
 
 The following endpoints for tasks are available:
 
-Create categorization task
+Create Categorization Task
 ==========================
 
 Check `this`__ for further information.
@@ -47,45 +47,7 @@ __ https://scale.com/docs/#create-categorization-task
       categories=['public', 'private']
     )
 
-Create transcription task
-=========================
-
-Check `this`__ for further information.
-
-__ https://scale.com/docs/#create-ocr-transcription-task
-
-.. code-block:: python
-
-    task = client.create_transcription_task(
-      callback_url='http://www.example.com/callback',
-      instruction='Transcribe the given fields. Then for each news item on the page, transcribe the information for the row.',
-      attachment_type='website',
-      attachment='http://www.google.com/',
-      fields={ 'title': 'Title of Webpage', 'top_result': 'Title of the top result' },
-      row_fields={ 'username': 'Username of submitter', 'comment_count': 'Number of comments' }
-    )
-
-Create comparison task
-======================
-
-Check `this`__ for further information.
-
-__ https://scale.com/docs/#create-comparison-task
-
-.. code-block:: python
-
-    client.create_comparison_task(
-      callback_url='http://www.example.com/callback',
-      instruction='Do the objects in these images have the same pattern?',
-      attachment_type='image',
-      choices=['yes', 'no'],
-      attachments=[
-        'http://i.ebayimg.com/00/$T2eC16dHJGwFFZKjy5ZjBRfNyMC4Ig~~_32.JPG',
-        'http://images.wisegeek.com/checkered-tablecloth.jpg'
-      ]
-    )
-
-Create annotation task
+Create Annotation Task
 ======================
 
 Check `this`__ for further information.
@@ -102,45 +64,12 @@ __ https://scale.com/docs/#2d-box-annotation
       objects_to_annotate=["baby cow", "big cow"]
     )
 
-Create datacollection task
-=========================
-
-Check `this`__ for further information.
-
-__ https://scale.com/docs/#create-data-collection-task
-
-.. code-block:: python
-
-    task = client.create_datacollection_task(
-      callback_url='http://www.example.com/callback',
-      instruction='Find the URL for the hiring page for the company with attached website.',
-      attachment_type='website',
-      attachment='http://www.google.com/',
-      fields={ 'hiring_page': 'Hiring Page URL' },
-    )
-
-Create audiotranscription task
-==============================
-
-Check `this`__ for further information.
-
-__ https://scale.com/docs/#create-audio-transcription-task
-
-.. code-block:: python
-
-    task = client.create_audiotranscription_task(
-        callback_url='http://www.example.com/callback',
-        attachment_type='audio',
-        attachment='https://storage.googleapis.com/deepmind-media/pixie/knowing-what-to-say/second-list/speaker-3.wav',
-        verbatim=False
-    )
-
 Retrieve task
 =============
 
 Check `this`__ for further information.
 
-__ https://scale.com/docs/#retrieve-a-task
+__ https://docs.scale.com/reference#retrieve-tasks
 
 Retrieve a task given its id.
 
@@ -154,7 +83,7 @@ Cancel task
 
 Check `this`__ for further information.
 
-__ https://scale.com/docs/#cancel-a-task
+__ https://docs.scale.com/reference#cancel-task
 
 Cancel a task given its id, only if it's not completed.
 
@@ -167,7 +96,7 @@ List tasks
 
 Check `this`__ for further information.
 
-__ https://scale.com/docs/#list-all-tasks
+__ https://docs.scale.com/reference#list-multiple-tasks
 
 Retrieve a list of tasks, with optional filter by date/type. Paginated with limit/offset.
 The return value is a ``scaleapi.Tasklist``, which acts as a list, but also has fields
@@ -175,17 +104,24 @@ for the total number of tasks, the limit and offset, and whether or not there's 
 
 .. code-block :: python
 
-    tasks = client.tasks(
-        start_time='2015-10-13T22:38:42Z',
-        end_time='2016-10-13T22:38:42Z',
-        type='categorization',
-        limit=100,
-        offset=200)
-
-    print(tasks.total)    # 1000
-    print(tasks.limit)    # 100
-    print(tasks.offset)   # 200
-    print(tasks.has_more) # True
+    next_token = None;
+    counter = 0
+    all_tasks =[]
+    while True:
+        tasks = client.tasks(
+            start_time = "2020-09-08",
+            end_time = "2021-01-01",
+            customer_review_status = "accepted",
+            next_token = next_token,
+        )
+        for task in tasks:
+            counter += 1
+            print(f'Downloading Task {counter} | {task.task_id}')
+            all_tasks.append(task.__dict__['param_dict'])
+        next_token = tasks.next_token
+        if next_token is None:
+            break
+    print(all_tasks)
 
 Error handling
 ==============
@@ -204,4 +140,4 @@ as a ``scaleapi.ScaleException``  or ``scaleapi.ScaleInvalidRequest`` runtime er
 Troubleshooting
 ===============
 
-If you notice any problems, please email us at support@scaleapi.com.
+If you notice any problems, please email us at support@scale.com.
