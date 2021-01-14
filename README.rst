@@ -40,11 +40,11 @@ __ https://scale.com/docs/#create-categorization-task
 .. code-block:: python
 
     task = client.create_categorization_task(
-      callback_url='http://www.example.com/callback',
-      instruction='Is this company public or private?',
-      attachment_type='website',
-      attachment='http://www.google.com/',
-      categories=['public', 'private']
+      callback_url = 'http://www.example.com/callback',
+      instruction = 'Is this company public or private?',
+      attachment_type = 'website',
+      attachment = 'http://www.google.com/',
+      categories = ['public', 'private']
     )
 
 Create Image Annotation Task
@@ -61,7 +61,7 @@ __ https://docs.scale.com/reference#general-image-annotation
       instruction= 'Draw a box around each baby cow and big cow.',
       attachment_type = "image",
       attachment = "http://i.imgur.com/v4cBreD.jpg",
-      geometries= {
+      geometries = {
         "box": {
           "objects_to_annotate: ["Baby Cow", "Big Cow"],
           "min_height": 10,
