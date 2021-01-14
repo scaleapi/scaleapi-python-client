@@ -1,5 +1,5 @@
 ===================
-ScaleAPI for Python
+Scale AI | Python SDK
 ===================
 
 
