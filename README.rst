@@ -47,21 +47,27 @@ __ https://scale.com/docs/#create-categorization-task
       categories=['public', 'private']
     )
 
-Create Annotation Task
+Create Image Annotation Task
 ======================
 
 Check `this`__ for further information.
 
-__ https://scale.com/docs/#2d-box-annotation
+__ https://docs.scale.com/reference#general-image-annotation
 
 .. code-block:: python
 
-    client.create_annotation_task(
-      callback_url='http://www.example.com/callback',
-      instruction='Draw a box around each baby cow and big cow.',
-      attachment_type="image",
-      attachment="http://i.imgur.com/v4cBreD.jpg",
-      objects_to_annotate=["baby cow", "big cow"]
+    client.create_imageannotation_task(
+      callback_url = 'http://www.example.com/callback',
+      instruction= 'Draw a box around each baby cow and big cow.',
+      attachment_type = "image",
+      attachment = "http://i.imgur.com/v4cBreD.jpg",
+      geometries= {
+        "box": {
+          "objects_to_annotate: ["Baby Cow", "Big Cow"],
+          "min_height": 10,
+          "min_width": 10
+        }
+      }
     )
 
 Retrieve task
