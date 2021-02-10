@@ -174,7 +174,6 @@ class ScaleClient(object):
                 raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
                                           % key, None)
         response = self._getrequest('batches', params=kwargs)
-        print(response['docs'])
         docs = [Batch(doc, self) for doc in response['docs']]
         return Batchlist(
             docs, response['totalDocs'], response['limit'],response['has_more'], response.get('next_token'),
