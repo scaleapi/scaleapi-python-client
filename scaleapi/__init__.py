@@ -5,16 +5,24 @@ from .batches import Batch
 from .projects import Project
 
 TASK_TYPES = [
+    'annotation',	
+    'audiotranscription',
     'categorization',
+    'comparison',
+    'cuboidannotation',
+    'datacollection',
     'imageannotation',
+    'lineannotation',
     'namedentityrecognition',
+    'pointannotation',
+    'polygonannotation',
     'segmentannotation',
+    'transcription',
     'documenttranscription',
     'videoannotation',
+    'videoboxannotation',
     'videoplaybackannotation',
-    'namedentityrecognition',
-    'textcollection',
-    'documentmodel'
+    'videocuboidannotation'
 ]
 SCALE_ENDPOINT = 'https://api.scale.com/v1/'
 DEFAULT_LIMIT = 100
@@ -166,12 +174,12 @@ class ScaleClient(object):
         batchdata = self._getrequest('batches/%s' % batch_name)
         return Batch(batchdata, self)
 
-    def batches(self, **kwargs):
+    def list_batches(self, **kwargs):
         allowed_kwargs = {'start_time', 'end_time', 'status', 'project',
                           'limit', 'offset', }
         for key in kwargs:
             if key not in allowed_kwargs:
-                raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
+                raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.list_batches()'
                                           % key, None)
         response = self._getrequest('batches', params=kwargs)
         docs = [Batch(doc, self) for doc in response['docs']]

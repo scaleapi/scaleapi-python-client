@@ -30,14 +30,14 @@ The following endpoints for tasks are available:
 
 ## Create Task
 
-Check `this`\_\_ for further information.
+This method can be used for any Scale supported task type using the following format:
+`client.create_{{Task Type}}_task(...)` and passing the applicable values into the function definition. The applicable fields and further information for each task type can be found in scales API docs `here`\_\_ for further information.
 
-\_\_ https://docs.scale.com/reference#general-image-annotation
+\_\_ hhttps://docs.scale.com/reference#general-image-annotation
 
 .. code-block:: python
 
-    client.create_task(
-        task_type = 'imageannotation',
+    client.create_imageannotation_task(
         project = 'test_project',
         callback_url = "http://www.example.com/callback",
         instruction= "Draw a box around each baby cow and big cow.",
@@ -123,7 +123,7 @@ Check `this`\_\_ for further information.
         name = 'batch_name_01_07_2021'
     )
 
-## Finalize Batch
+## Finalize Batceh
 
 Check `this`\_\_ for further information.
 
@@ -153,7 +153,7 @@ Check `this`\_\_ for further information.
 
     client.get_batch( batch_name = "batch_name_01_07_2021" )
 
-## List Batchs
+## List Batches
 
 Check `this`\_\_ for further information.
 
@@ -167,7 +167,7 @@ Retrieve a list of batches
     counter = 0
     all_batchs =[]
     while True:
-        batches = client.batches(
+        batches = client.list_batches(
             status = "completed"
         )
         for batch in batches:
@@ -207,6 +207,7 @@ Check `this`\_\_ for further information.
 
 ## List Projects
 
+This function does not take any arguments. It will return information for every project.
 Check `this`\_\_ for further information.
 
 \_\_ https://docs.scale.com/reference#batch-list

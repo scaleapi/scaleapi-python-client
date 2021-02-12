@@ -13,8 +13,7 @@ except KeyError:
     raise Exception("Please set the environment variable SCALE_TEST_API_KEY to run tests.")
 
 def make_a_task():
-    return client.create_task(
-        task_type = 'imageannotation',
+    return client.create_imageannotation_task(
         callback_url = "http://www.example.com/callback",
         instruction = "Draw a box around each baby cow and big cow.",
         attachment_type = "image",
@@ -29,8 +28,7 @@ def make_a_task():
     )
 
 def test_categorize_ok():
-    task = client.create_task(
-        task_type = 'categorization',
+    task = client.create_categorization_task(
         callback_url='http://www.example.com/callback',
         instruction='Is this company public or private?',
         attachment_type='website',
@@ -39,14 +37,12 @@ def test_categorize_ok():
 
 def test_categorize_fail():
     with pytest.raises(scaleapi.ScaleInvalidRequest):
-        client.create_task(
-            task_type = 'categorization',
+        client.create_categorization_task(
             callback_url='http://www.example.com/callback',
             categories=['public', 'private'])
 
 def test_transcription_ok():
-    task = client.create_task(
-        task_type = 'categorization',
+    task = client.create_transcription_task(
         callback_url='http://www.example.com/callback',
         instruction='Transcribe the given fields. Then for each news item on the page, transcribe the information for the row.',
         attachment_type='website',
@@ -62,14 +58,12 @@ def test_transcription_ok():
 
 def test_transcription_fail():
     with pytest.raises(scaleapi.ScaleInvalidRequest):
-        client.create_task(
-            task_type='transcription',
+        client.create_transcription_task(
             callback_url='http://www.example.com/callback',
             attachment_type='website')
 
 def test_imageannotation_ok():
-    client.create_task(
-        task_type = 'imageannotation',
+    client.create_imageannotation_task(
         callback_url = "http://www.example.com/callback",
         instruction = "Draw a box around each baby cow and big cow.",
         attachment_type = "image",
@@ -82,29 +76,123 @@ def test_imageannotation_ok():
             }
         }
     )
-    # min_width and min_height should be optional
-    task2 = client.create_task(
-        task_type = 'imageannotation',
-        callback_url='http://www.example.com/callback',
-        instruction='Draw a box around each **baby cow** and **big cow**',
-        attachment_type='image',
-        attachment='http://i.imgur.com/v4cBreD.jpg',
-        geometries = {
-            "box": {
-              "objects_to_annotate": ["Baby Cow", "Big Cow"],
-              "min_height": 10,
-              "min_width": 10
-            }
-        })
 
 def test_imageannotation_fail():
     with pytest.raises(scaleapi.ScaleInvalidRequest):
-        client.create_task(
-            task_type = 'imageannotation',
+        client.create_imageannotation_task(
             callback_url='http://www.example.com/callback',
             instruction='Draw a box around each **baby cow** and **big cow**',
             attachment_type='image')
 
+def test_documenttranscription_ok():
+    client.create_documenttranscription_task(
+        callback_url= 'http://www.example.com/callback',
+        instruction= 'Please transcribe this receipt.',
+        attachment= 'http://document.scale.com/receipt-20200519.jpg',
+        features= [
+            {
+                'type': "block",
+                'label': "barcode",
+            }
+        ]
+    )
+
+def test_documenttranscription_fail():
+    with pytest.raises(scaleapi.ScaleInvalidRequest):
+        client.create_imageannotation_task(
+            callback_url='http://www.example.com/callback',
+            instruction='Please transcribe this receipt.',
+            )
+
+def test_annotation_ok():
+    task = client.create_annotation_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Draw a box around each **baby cow** and **big cow**',
+        attachment_type='image',
+        attachment='http://i.imgur.com/v4cBreD.jpg',
+        min_width='30',
+        min_height='30',
+        objects_to_annotate=['baby cow', 'big cow'],
+        with_labels=True)
+
+def test_annotation_fail():
+    with pytest.raises(scaleapi.ScaleInvalidRequest):
+        client.create_annotation_task(
+            callback_url='http://www.example.com/callback',
+            instruction='Draw a box around each **baby cow** and **big cow**',
+            attachment_type='image')
+
+def test_polygonannotation_ok():
+    task = client.create_polygonannotation_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Draw a tight shape around the big cow',
+        attachment_type='image',
+        attachment='http://i.imgur.com/v4cBreD.jpg',
+        objects_to_annotate=['big cow'],
+        with_labels=True)
+
+def test_polygonannotation_fail():
+    with pytest.raises(scaleapi.ScaleInvalidRequest):
+        client.create_polygonannotation_task(
+            callback_url='http://www.example.com/callback',
+            instruction='Draw a tight shape around the big cow',
+            attachment_type='image')
+
+def test_lineannotation_ok():
+    task = client.create_lineannotation_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Draw a tight shape around the big cow',
+        attachment_type='image',
+        attachment='http://i.imgur.com/v4cBreD.jpg',
+        objects_to_annotate=['big cow'],
+        with_labels=True)
+
+def test_lineannotation_fail():
+    with pytest.raises(scaleapi.ScaleInvalidRequest):
+        client.create_lineannotation_task(
+            callback_url='http://www.example.com/callback',
+            instruction='Draw a tight shape around the big cow',
+            attachment_type='image')
+
+def test_datacollection_ok():
+    task = client.create_datacollection_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Find the URL for the hiring page for the company with attached website.',
+        attachment_type='website',
+        attachment='http://www.google.com/',
+        fields={ 'hiring_page': 'Hiring Page URL' })
+
+def test_datacollection_fail():
+    with pytest.raises(scaleapi.ScaleInvalidRequest):
+        client.create_datacollection_task(
+            callback_url='http://www.example.com/callback',
+            attachment_type='website')
+
+def test_audiotranscription_ok():
+    task = client.create_audiotranscription_task(
+        callback_url='http://www.example.com/callback',
+        attachment_type='audio',
+        attachment='https://storage.googleapis.com/deepmind-media/pixie/knowing-what-to-say/second-list/speaker-3.wav',
+        verbatim=False,
+        phrases=['avocado', 'stone']
+    )
+
+def test_audiotranscription_fail():
+    with pytest.raises(scaleapi.ScaleInvalidRequest):
+        client.create_audiotranscription_task(
+            callback_url='http://www.example.com/callback',
+            attachment_type='audio')
+
+def test_namedentityrecognition_ok():
+    return client.create_namedentityrecognition_task(
+        callback_url='http://www.example.com/callback',
+        instruction='Do the objects in these images have the same pattern?',
+        text='Example text to label with NER tool',
+        labels=[{
+            'name': 'Label_A',
+            'description': 'the first label',
+        }])
+        
 def test_cancel():
     task = make_a_task()
     # raises a scaleexception, because test tasks complete instantly
@@ -169,5 +257,3 @@ def get_batch_status():
 def get_batch():
     batch = create_a_batch()
     client.get_batch(batch.name)
-
-def 
