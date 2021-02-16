@@ -1,8 +1,9 @@
-===================
+=====================
 Scale AI | Python SDK
-===================
+=====================
 
-# Installation
+Installation
+____________
 
 .. code-block:: bash
 
@@ -10,14 +11,16 @@ Scale AI | Python SDK
 
 Note: We strongly suggest using `scaleapi` with Python version 2.7.9 or greater due to SSL issues with prior versions.
 
-# Usage
+Usage
+_____
 
 .. code-block:: python
 
     import scaleapi
     client = scaleapi.ScaleClient('YOUR_API_KEY_HERE')
 
-# Tasks
+Tasks
+_____
 
 Most of these methods will return a `scaleapi.Task` object, which will contain information
 about the json response (task_id, status...).
@@ -28,7 +31,8 @@ Any parameter available in the documentation\_ can be passed as an argument opti
 
 The following endpoints for tasks are available:
 
-## Create Task
+Create Task
+^^^^^^^^^^^
 
 This method can be used for any Scale supported task type using the following format:
 `client.create_{{Task Type}}_task(...)` and passing the applicable values into the function definition. The applicable fields and further information for each task type can be found in scales API docs `here`\_\_ for further information.
@@ -52,7 +56,8 @@ This method can be used for any Scale supported task type using the following fo
         }
     )
 
-## Retrieve task
+Retrieve task
+^^^^^^^^^^^^^
 
 Check `this`\_\_ for further information.
 
@@ -66,7 +71,8 @@ Retrieve a task given its id.
     print(task.status)  // Task status ('pending', 'completed', 'error', 'canceled')
     print(task.response) // If task is complete
 
-## List Tasks
+List Tasks
+^^^^^^^^^^
 
 Check `this`\_\_ for further information.
 
@@ -95,7 +101,8 @@ Retrieve a list of tasks, with optional filter by stand and end date/type. Pagin
             break
     print(all_tasks)
 
-## Cancel Task
+Cancel Task
+^^^^^^^^^^^
 
 Check `this`\_\_ for further information.
 
@@ -107,9 +114,11 @@ Cancel a task given its id if work has not stared on the task (task status is "q
 
     task = client.cancel_task('asdfasdfasdfasdfasdfasdf')
 
-# Batches
+Batches
+_______
 
-## Create Batch
+Create Batch
+^^^^^^^^^^^^
 
 Check `this`\_\_ for further information.
 
@@ -123,7 +132,8 @@ Check `this`\_\_ for further information.
         name = 'batch_name_01_07_2021'
     )
 
-## Finalize Batceh
+Finalize Batceh
+^^^^^^^^^^^^^^^
 
 Check `this`\_\_ for further information.
 
@@ -133,7 +143,8 @@ Check `this`\_\_ for further information.
 
     client.create_batch(batch_name = 'batch_name_01_07_2021')
 
-## Check Batch Status
+Check Batch Status
+^^^^^^^^^^^^^^^^^^
 
 Check `this`\_\_ for further information.
 
@@ -143,7 +154,8 @@ Check `this`\_\_ for further information.
 
     client.batch_status(batch_name = 'batch_name_01_07_2021')
 
-## Retrieve Batch
+Retrieve Batch
+^^^^^^^^^^^^^^
 
 Check `this`\_\_ for further information.
 
@@ -153,7 +165,8 @@ Check `this`\_\_ for further information.
 
     client.get_batch( batch_name = "batch_name_01_07_2021" )
 
-## List Batches
+List Batches
+^^^^^^^^^^^^
 
 Check `this`\_\_ for further information.
 
@@ -179,9 +192,11 @@ Retrieve a list of batches
             break
     print(all_batchs)
 
-# Projects
+Projects
+________
 
-## Create Project
+Create Project
+^^^^^^^^^^^^^^
 
 Check `this`\_\_ for further information.
 
@@ -195,7 +210,8 @@ Check `this`\_\_ for further information.
         params = {'instruction':'Please label the kittens'}
     )
 
-## Retrieve Project
+Retrieve Project
+^^^^^^^^^^^^^^^^
 
 Check `this`\_\_ for further information.
 
@@ -205,7 +221,8 @@ Check `this`\_\_ for further information.
 
     client.get_projet(project_name = 'test_project')
 
-## List Projects
+List Projects
+^^^^^^^^^^^^^
 
 This function does not take any arguments. It will return information for every project.
 Check `this`\_\_ for further information.
@@ -222,7 +239,8 @@ Retrieve a list of batches
         counter += 1
         print('Downloading project %s | %s | %s' % (counter, project['name'], project['type']))
 
-## Update Project
+Update Project
+^^^^^^^^^^^^^^
 
 Check `this`\_\_ for further information.
 
@@ -239,7 +257,8 @@ Retrieve a list of batches
 
 )
 
-# Error handling
+Error handling
+______________
 
 If something went wrong while making API calls, then exceptions will be raised automatically
 as a `scaleapi.ScaleException` or `scaleapi.ScaleInvalidRequest` runtime error. For example:
@@ -252,6 +271,7 @@ as a `scaleapi.ScaleException` or `scaleapi.ScaleInvalidRequest` runtime error. 
         print(e.code)  # 400
         print(e.message)  # missing param X
 
-# Troubleshooting
+Troubleshooting
+_______________
 
 If you notice any problems, please email us at support@scale.com.
