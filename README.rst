@@ -23,7 +23,7 @@ Tasks
 _____
 
 Most of these methods will return a `scaleapi.Task` object, which will contain information
-about the json response (task_id, status...).
+about the json response (task_id, status, etc.).
 
 Any parameter available in `Scale's API documentation`__ can be passed as an argument option with the corresponding type.
 
@@ -35,7 +35,12 @@ Create Task
 ^^^^^^^^^^^
 
 This method can be used for any Scale supported task type using the following format:
-`client.create_{{Task Type}}_task(...)` and passing the applicable values into the function definition. The applicable fields and further information for each task type can be found in `Scale's API documentation`__.
+
+.. code-block:: python
+
+    client.create_{{Task Type}}_task(...)
+
+Passing in the applicable values into the function definition. The applicable fields and further information for each task type can be found in `Scale's API documentation`__.
 
 __ https://docs.scale.com/reference#general-image-annotation
 
@@ -254,8 +259,7 @@ Retrieve a list of batches
         project_name='test_project',
         pathc = false,
         instruction='update: Please label all the stuff',
-
-)
+    )
 
 Error handling
 ______________
