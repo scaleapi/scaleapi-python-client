@@ -25,9 +25,9 @@ _____
 Most of these methods will return a `scaleapi.Task` object, which will contain information
 about the json response (task_id, status...).
 
-Any parameter available in the documentation\_ can be passed as an argument option with the corresponding type.
+Any parameter available in scales API documentation_ can be passed as an argument option with the corresponding type.
 
-.. \_documentation: https://docs.scale.com/reference#task-object
+.. _documentation: https://docs.scale.com/reference#task-object
 
 The following endpoints for tasks are available:
 
@@ -35,9 +35,9 @@ Create Task
 ^^^^^^^^^^^
 
 This method can be used for any Scale supported task type using the following format:
-`client.create_{{Task Type}}_task(...)` and passing the applicable values into the function definition. The applicable fields and further information for each task type can be found in scales API docs `here`\_\_ for further information.
+`client.create_{{Task Type}}_task(...)` and passing the applicable values into the function definition. The applicable fields and further information for each task type can be found in scales API docs `here`__ for further information.
 
-\_\_ hhttps://docs.scale.com/reference#general-image-annotation
+.. __: https://docs.scale.com/reference#general-image-annotation
 
 .. code-block:: python
 
@@ -59,9 +59,9 @@ This method can be used for any Scale supported task type using the following fo
 Retrieve task
 ^^^^^^^^^^^^^
 
-Check `this`\_\_ for further information.
+Check API documentation `here`__ for further information.
 
-\_\_ https://docs.scale.com/reference#retrieve-tasks
+.. __: https://docs.scale.com/reference#retrieve-tasks
 
 Retrieve a task given its id.
 
@@ -74,9 +74,9 @@ Retrieve a task given its id.
 List Tasks
 ^^^^^^^^^^
 
-Check `this`\_\_ for further information.
+Check API documentation `here`__ for further information.
 
-\_\_ https://docs.scale.com/reference#list-multiple-tasks
+__ https://docs.scale.com/reference#list-multiple-tasks
 
 Retrieve a list of tasks, with optional filter by stand and end date/type. Paginated with `next_token`. The return value is a `scaleapi.Tasklist`, which acts as a list, but also has fields for the total number of tasks, the limit and offset, and whether or not there's more.
 
@@ -104,9 +104,9 @@ Retrieve a list of tasks, with optional filter by stand and end date/type. Pagin
 Cancel Task
 ^^^^^^^^^^^
 
-Check `this`\_\_ for further information.
+Check API documentation `here`__ for further information.
 
-\_\_ https://docs.scale.com/reference#cancel-task
+__ https://docs.scale.com/reference#cancel-task
 
 Cancel a task given its id if work has not stared on the task (task status is "que).
 
@@ -120,9 +120,9 @@ _______
 Create Batch
 ^^^^^^^^^^^^
 
-Check `this`\_\_ for further information.
+Check API documentation `here`__ for further information.
 
-\_\_ https://docs.scale.com/reference#batch-creation
+__ https://docs.scale.com/reference#batch-creation
 
 .. code-block:: python
 
@@ -135,9 +135,9 @@ Check `this`\_\_ for further information.
 Finalize Batceh
 ^^^^^^^^^^^^^^^
 
-Check `this`\_\_ for further information.
+Check API documentation `here`__ for further information.
 
-\_\_ https://docs.scale.com/reference#batch-finalization
+__ https://docs.scale.com/reference#batch-finalization
 
 .. code-block:: python
 
@@ -146,9 +146,9 @@ Check `this`\_\_ for further information.
 Check Batch Status
 ^^^^^^^^^^^^^^^^^^
 
-Check `this`\_\_ for further information.
+Check API documentation `here`__ for further information.
 
-\_\_ https://docs.scale.com/reference#batch-status
+__ https://docs.scale.com/reference#batch-status
 
 .. code-block:: python
 
@@ -157,9 +157,9 @@ Check `this`\_\_ for further information.
 Retrieve Batch
 ^^^^^^^^^^^^^^
 
-Check `this`\_\_ for further information.
+Check API documentation `here`__ for further information.
 
-\_\_ https://docs.scale.com/reference#batch-retrieval
+__ https://docs.scale.com/reference#batch-retrieval
 
 .. code-block:: python
 
@@ -168,9 +168,9 @@ Check `this`\_\_ for further information.
 List Batches
 ^^^^^^^^^^^^
 
-Check `this`\_\_ for further information.
+Check API documentation `here`__ for further information.
 
-\_\_ https://docs.scale.com/reference#batch-list
+__ https://docs.scale.com/reference#batch-list
 
 Retrieve a list of batches
 
@@ -198,9 +198,9 @@ ________
 Create Project
 ^^^^^^^^^^^^^^
 
-Check `this`\_\_ for further information.
+Check API documentation `here`__ for further information.
 
-\_\_ https://docs.scale.com/reference#project-creation
+__ https://docs.scale.com/reference#project-creation
 
 .. code-block:: python
 
@@ -213,9 +213,9 @@ Check `this`\_\_ for further information.
 Retrieve Project
 ^^^^^^^^^^^^^^^^
 
-Check `this`\_\_ for further information.
+Check API documentation `here`__ for further information.
 
-\_\_ https://docs.scale.com/reference#project-retrieval
+__ https://docs.scale.com/reference#project-retrieval
 
 .. code-block:: python
 
@@ -225,9 +225,9 @@ List Projects
 ^^^^^^^^^^^^^
 
 This function does not take any arguments. It will return information for every project.
-Check `this`\_\_ for further information.
+Check API documentation `here`__ for further information.
 
-\_\_ https://docs.scale.com/reference#batch-list
+__ https://docs.scale.com/reference#batch-list
 
 Retrieve a list of batches
 
@@ -242,9 +242,9 @@ Retrieve a list of batches
 Update Project
 ^^^^^^^^^^^^^^
 
-Check `this`\_\_ for further information.
+Check API documentation `here`__ for further information.
 
-\_\_ https://docs.scale.com/reference#project-update-parameters
+__ https://docs.scale.com/reference#project-update-parameters
 
 Retrieve a list of batches
 
