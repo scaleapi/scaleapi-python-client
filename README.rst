@@ -59,7 +59,7 @@ __ https://docs.scale.com/reference#general-image-annotation
 Retrieve task
 ^^^^^^^^^^^^^
 
-`Check API documentation`__ for more information.
+`Check out Scale's API documentation for more information.`__
 
 __ https://docs.scale.com/reference#retrieve-tasks
 
@@ -74,7 +74,7 @@ Retrieve a task given its id.
 List Tasks
 ^^^^^^^^^^
 
-`Check API documentation`__ for more information.
+`Check out Scale's API documentation for more information.`__
 
 __ https://docs.scale.com/reference#list-multiple-tasks
 
@@ -104,7 +104,7 @@ Retrieve a list of tasks, with optional filter by stand and end date/type. Pagin
 Cancel Task
 ^^^^^^^^^^^
 
-`Check API documentation`__ for more information.
+`Check out Scale's API documentation for more information.`__
 
 __ https://docs.scale.com/reference#cancel-task
 
@@ -120,7 +120,7 @@ _______
 Create Batch
 ^^^^^^^^^^^^
 
-`Check API documentation`__ for more information.
+`Check out Scale's API documentation for more information.`__
 
 __ https://docs.scale.com/reference#batch-creation
 
@@ -135,7 +135,7 @@ __ https://docs.scale.com/reference#batch-creation
 Finalize Batceh
 ^^^^^^^^^^^^^^^
 
-`Check API documentation`__ for more information.
+`Check out Scale's API documentation for more information.`__
 
 __ https://docs.scale.com/reference#batch-finalization
 
@@ -146,7 +146,7 @@ __ https://docs.scale.com/reference#batch-finalization
 Check Batch Status
 ^^^^^^^^^^^^^^^^^^
 
-`Check API documentation`__ for more information.
+`Check out Scale's API documentation for more information.`__
 
 __ https://docs.scale.com/reference#batch-status
 
@@ -157,7 +157,7 @@ __ https://docs.scale.com/reference#batch-status
 Retrieve Batch
 ^^^^^^^^^^^^^^
 
-`Check API documentation`__ for more information.
+`Check out Scale's API documentation for more information.`__
 
 __ https://docs.scale.com/reference#batch-retrieval
 
@@ -168,7 +168,7 @@ __ https://docs.scale.com/reference#batch-retrieval
 List Batches
 ^^^^^^^^^^^^
 
-`Check API documentation`__ for more information.
+`Check out Scale's API documentation for more information.`__
 
 __ https://docs.scale.com/reference#batch-list
 
@@ -198,7 +198,7 @@ ________
 Create Project
 ^^^^^^^^^^^^^^
 
-`Check API documentation`__ for more information.
+`Check out Scale's API documentation for more information.`__
 
 __ https://docs.scale.com/reference#project-creation
 
@@ -213,7 +213,7 @@ __ https://docs.scale.com/reference#project-creation
 Retrieve Project
 ^^^^^^^^^^^^^^^^
 
-`Check API documentation`__ for more information.
+`Check out Scale's API documentation for more information.`__
 
 __ https://docs.scale.com/reference#project-retrieval
 
@@ -225,7 +225,7 @@ List Projects
 ^^^^^^^^^^^^^
 
 This function does not take any arguments. It will return information for every project.
-`Check API documentation`__ for more information.
+`Check out Scale's API documentation for more information.`__
 
 __ https://docs.scale.com/reference#batch-list
 
@@ -242,7 +242,7 @@ Retrieve a list of batches
 Update Project
 ^^^^^^^^^^^^^^
 
-`Check API documentation`__ for more information.
+`Check out Scale's API documentation for more information.`__
 
 __ https://docs.scale.com/reference#project-update-parameters
 
