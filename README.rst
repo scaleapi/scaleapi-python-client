@@ -140,7 +140,7 @@ __ https://docs.scale.com/reference#batch-finalization
 
 .. code-block:: python
 
-    client.create_batch(batch_name = 'batch_name_01_07_2021')
+    client.finalize_batch(batch_name = 'batch_name_01_07_2021')
 
 Check Batch Status
 ^^^^^^^^^^^^^^^^^^
