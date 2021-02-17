@@ -35,7 +35,7 @@ Create Task
 ^^^^^^^^^^^
 
 This method can be used for any Scale supported task type using the following format:
-`client.create_{{Task Type}}_task(...)` and passing the applicable values into the function definition. The applicable fields and further information for each task type can be found in `Scale's API docs`__ for further information.
+`client.create_{{Task Type}}_task(...)` and passing the applicable values into the function definition. The applicable fields and further information for each task type can be found in `Scale's API documentation`__.
 
 __ https://docs.scale.com/reference#general-image-annotation
 
@@ -59,7 +59,7 @@ __ https://docs.scale.com/reference#general-image-annotation
 Retrieve task
 ^^^^^^^^^^^^^
 
-`Check out Scale's API documentation for more information.`__
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#retrieve-tasks
 
@@ -74,7 +74,7 @@ Retrieve a task given its id.
 List Tasks
 ^^^^^^^^^^
 
-`Check out Scale's API documentation for more information.`__
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#list-multiple-tasks
 
@@ -104,7 +104,7 @@ Retrieve a list of tasks, with optional filter by stand and end date/type. Pagin
 Cancel Task
 ^^^^^^^^^^^
 
-`Check out Scale's API documentation for more information.`__
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#cancel-task
 
@@ -120,7 +120,7 @@ _______
 Create Batch
 ^^^^^^^^^^^^
 
-`Check out Scale's API documentation for more information.`__
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-creation
 
@@ -135,7 +135,7 @@ __ https://docs.scale.com/reference#batch-creation
 Finalize Batceh
 ^^^^^^^^^^^^^^^
 
-`Check out Scale's API documentation for more information.`__
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-finalization
 
@@ -146,7 +146,7 @@ __ https://docs.scale.com/reference#batch-finalization
 Check Batch Status
 ^^^^^^^^^^^^^^^^^^
 
-`Check out Scale's API documentation for more information.`__
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-status
 
@@ -157,7 +157,7 @@ __ https://docs.scale.com/reference#batch-status
 Retrieve Batch
 ^^^^^^^^^^^^^^
 
-`Check out Scale's API documentation for more information.`__
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-retrieval
 
@@ -168,7 +168,7 @@ __ https://docs.scale.com/reference#batch-retrieval
 List Batches
 ^^^^^^^^^^^^
 
-`Check out Scale's API documentation for more information.`__
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-list
 
@@ -198,7 +198,7 @@ ________
 Create Project
 ^^^^^^^^^^^^^^
 
-`Check out Scale's API documentation for more information.`__
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#project-creation
 
@@ -213,7 +213,7 @@ __ https://docs.scale.com/reference#project-creation
 Retrieve Project
 ^^^^^^^^^^^^^^^^
 
-`Check out Scale's API documentation for more information.`__
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#project-retrieval
 
@@ -225,7 +225,7 @@ List Projects
 ^^^^^^^^^^^^^
 
 This function does not take any arguments. It will return information for every project.
-`Check out Scale's API documentation for more information.`__
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-list
 
@@ -242,7 +242,7 @@ Retrieve a list of batches
 Update Project
 ^^^^^^^^^^^^^^
 
-`Check out Scale's API documentation for more information.`__
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#project-update-parameters
 
