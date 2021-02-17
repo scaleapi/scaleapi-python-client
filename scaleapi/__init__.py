@@ -2,9 +2,10 @@ import requests
 
 from .tasks import Task
 from .batches import Batch
+from .projects import Project
 
 TASK_TYPES = [
-    'annotation',
+    'annotation',	
     'audiotranscription',
     'categorization',
     'comparison',
@@ -17,8 +18,10 @@ TASK_TYPES = [
     'polygonannotation',
     'segmentannotation',
     'transcription',
+    'documenttranscription',
     'videoannotation',
     'videoboxannotation',
+    'videoplaybackannotation',
     'videocuboidannotation'
 ]
 SCALE_ENDPOINT = 'https://api.scale.com/v1/'
@@ -158,24 +161,56 @@ class ScaleClient(object):
         payload = dict(project=project, name=batch_name, callback=callback)
         batchdata = self._postrequest('batches', payload)
         return Batch(batchdata, self)
+    
+    def finalize_batch(self, batch_name):
+        batchdata = self._postrequest('batches/%s/finalize' % batch_name)
+        return Batch(batchdata, self)
 
-    def get_batch(self, batch_name: str):
+    def batch_status(self, batch_name):
+        batchdata = self._getrequest('batches/%s/status' % batch_name)
+        return Batch.get_status(self)
+
+    def get_batch(self, batch_name):
         batchdata = self._getrequest('batches/%s' % batch_name)
         return Batch(batchdata, self)
 
     def list_batches(self, **kwargs):
         allowed_kwargs = {'start_time', 'end_time', 'status', 'project',
-                          'batch', 'limit', 'offset', }
+                          'limit', 'offset', }
         for key in kwargs:
             if key not in allowed_kwargs:
-                raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
+                raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.list_batches()'
                                           % key, None)
-        response = self._getrequest('tasks', params=kwargs)
+        response = self._getrequest('batches', params=kwargs)
         docs = [Batch(doc, self) for doc in response['docs']]
         return Batchlist(
-            docs, response['total'], response['limit'], response['offset'],
-            response['has_more'], response.get('next_token'),
+            docs, response['totalDocs'], response['limit'],response['has_more'], response.get('next_token'),
         )
+
+    def create_project(self, project_name, type, params):
+        payload = dict(type=type, name=project_name, params=params)
+        projectdata = self._postrequest('projects', payload)
+        return Project(projectdata, self)
+
+    def get_projet(self, project_name):
+        projectdata = self._getrequest('projects/%s' % project_name)
+        return Project(projectdata, self)
+    
+    def projects(self):
+        response = self._getrequest('projects')
+        return response
+
+    def update_project(self,project_name,**kwargs):
+        allowed_kwargs = {'patch', 'instruction'}
+        for key in kwargs:
+            if key not in allowed_kwargs:
+                raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.update_project()'
+                                          % key, None)
+        projectdata = self._postrequest('projects/%s/setParams' % project_name)
+        return projectdata
+
+
+        
 
 
 def _AddTaskTypeCreator(task_type):
