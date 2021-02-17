@@ -64,11 +64,9 @@ __ https://docs.scale.com/reference#general-image-annotation
 Retrieve task
 ^^^^^^^^^^^^^
 
-Check out `Scale's API documentation`__ for more information.
+Retrieve a task given its id. Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#retrieve-tasks
-
-Retrieve a task given its id.
 
 .. code-block :: python
 
@@ -79,11 +77,9 @@ Retrieve a task given its id.
 List Tasks
 ^^^^^^^^^^
 
-Check out `Scale's API documentation`__ for more information.
+Retrieve a list of tasks, with optional filter by start and end date/time. Paginated with `next_token`. The return value is a `scaleapi.Tasklist`, which acts as a list, but also has fields for the total number of tasks, the limit and offset, and whether or not there's more. Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#list-multiple-tasks
-
-Retrieve a list of tasks, with optional filter by stand and end date/type. Paginated with `next_token`. The return value is a `scaleapi.Tasklist`, which acts as a list, but also has fields for the total number of tasks, the limit and offset, and whether or not there's more.
 
 .. code-block :: python
 
@@ -109,11 +105,9 @@ Retrieve a list of tasks, with optional filter by stand and end date/type. Pagin
 Cancel Task
 ^^^^^^^^^^^
 
-Check out `Scale's API documentation`__ for more information.
+Cancel a task given its id if work has not stared on the task (task status is `queued` in the UI). Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#cancel-task
-
-Cancel a task given its id if work has not stared on the task (task status is "que).
 
 .. code-block :: python
 
@@ -125,7 +119,7 @@ _______
 Create Batch
 ^^^^^^^^^^^^
 
-Check out `Scale's API documentation`__ for more information.
+Create a new Batch. Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-creation
 
@@ -140,7 +134,7 @@ __ https://docs.scale.com/reference#batch-creation
 Finalize Batceh
 ^^^^^^^^^^^^^^^
 
-Check out `Scale's API documentation`__ for more information.
+Finalize a Batch. Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-finalization
 
@@ -151,7 +145,7 @@ __ https://docs.scale.com/reference#batch-finalization
 Check Batch Status
 ^^^^^^^^^^^^^^^^^^
 
-Check out `Scale's API documentation`__ for more information.
+Get the status of a Batch. Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-status
 
@@ -162,7 +156,7 @@ __ https://docs.scale.com/reference#batch-status
 Retrieve Batch
 ^^^^^^^^^^^^^^
 
-Check out `Scale's API documentation`__ for more information.
+Retrieve a single Batch. Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-retrieval
 
@@ -173,11 +167,9 @@ __ https://docs.scale.com/reference#batch-retrieval
 List Batches
 ^^^^^^^^^^^^
 
-Check out `Scale's API documentation`__ for more information.
+Retrieve a list of Batches. Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-list
-
-Retrieve a list of batches
 
 .. code-block :: python
 
@@ -203,7 +195,7 @@ ________
 Create Project
 ^^^^^^^^^^^^^^
 
-Check out `Scale's API documentation`__ for more information.
+Create a new Project. Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#project-creation
 
@@ -218,7 +210,7 @@ __ https://docs.scale.com/reference#project-creation
 Retrieve Project
 ^^^^^^^^^^^^^^^^
 
-Check out `Scale's API documentation`__ for more information.
+Retrieve a single Project. Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#project-retrieval
 
@@ -229,12 +221,10 @@ __ https://docs.scale.com/reference#project-retrieval
 List Projects
 ^^^^^^^^^^^^^
 
-This function does not take any arguments. It will return information for every project.
+This function does not take any arguments. Retrieve a list of every Project. 
 Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-list
-
-Retrieve a list of batches
 
 .. code-block :: python
 
@@ -247,11 +237,9 @@ Retrieve a list of batches
 Update Project
 ^^^^^^^^^^^^^^
 
-Check out `Scale's API documentation`__ for more information.
+Creates a new version of the Project. Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#project-update-parameters
-
-Retrieve a list of batches
 
 .. code-block :: python
 
