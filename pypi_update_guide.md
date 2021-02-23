@@ -16,7 +16,7 @@ We use [semantic versioning](https://packaging.python.org/guides/distributing-pa
 
 **Step 1: Remove Previous Versions**
 
-Clear out any previously packaged files in the `dist` folder
+Clear out any previously packages and files in the `dist` and `build/lib` folders
 
 **Step 2: Create a Source Distribution**
 
