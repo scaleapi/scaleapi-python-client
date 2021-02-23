@@ -5,7 +5,7 @@ from .batches import Batch
 from .projects import Project
 
 TASK_TYPES = [
-    'annotation',	
+    'annotation',
     'audiotranscription',
     'categorization',
     'comparison',
@@ -18,6 +18,7 @@ TASK_TYPES = [
     'polygonannotation',
     'segmentannotation',
     'transcription',
+    'textcollection',
     'documenttranscription',
     'videoannotation',
     'videoboxannotation',
@@ -161,7 +162,7 @@ class ScaleClient(object):
         payload = dict(project=project, name=batch_name, callback=callback)
         batchdata = self._postrequest('batches', payload)
         return Batch(batchdata, self)
-    
+
     def finalize_batch(self, batch_name):
         batchdata = self._postrequest('batches/%s/finalize' % batch_name)
         return Batch(batchdata, self)
@@ -184,7 +185,8 @@ class ScaleClient(object):
         response = self._getrequest('batches', params=kwargs)
         docs = [Batch(doc, self) for doc in response['docs']]
         return Batchlist(
-            docs, response['totalDocs'], response['limit'],response['has_more'], response.get('next_token'),
+            docs, response['totalDocs'], response['limit'], response['has_more'], response.get(
+                'next_token'),
         )
 
     def create_project(self, project_name, type, params):
@@ -195,12 +197,12 @@ class ScaleClient(object):
     def get_projet(self, project_name):
         projectdata = self._getrequest('projects/%s' % project_name)
         return Project(projectdata, self)
-    
+
     def projects(self):
         response = self._getrequest('projects')
         return response
 
-    def update_project(self,project_name,**kwargs):
+    def update_project(self, project_name, **kwargs):
         allowed_kwargs = {'patch', 'instruction'}
         for key in kwargs:
             if key not in allowed_kwargs:
@@ -208,9 +210,6 @@ class ScaleClient(object):
                                           % key, None)
         projectdata = self._postrequest('projects/%s/setParams' % project_name)
         return projectdata
-
-
-        
 
 
 def _AddTaskTypeCreator(task_type):

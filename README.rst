@@ -131,7 +131,7 @@ __ https://docs.scale.com/reference#batch-creation
         name = 'batch_name_01_07_2021'
     )
 
-Finalize Batceh
+Finalize Batch
 ^^^^^^^^^^^^^^^
 
 Finalize a Batch. Check out `Scale's API documentation`__ for more information.
