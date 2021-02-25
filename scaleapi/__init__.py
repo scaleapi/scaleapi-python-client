@@ -195,7 +195,7 @@ class ScaleClient(object):
         projectdata = self._postrequest('projects', payload)
         return Project(projectdata, self)
 
-    def get_projet(self, project_name):
+    def get_project(self, project_name):
         projectdata = self._getrequest('projects/%s' % project_name)
         return Project(projectdata, self)
 
@@ -209,7 +209,7 @@ class ScaleClient(object):
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.update_project()'
                                           % key, None)
-        projectdata = self._postrequest('projects/%s/setParams' % project_name)
+        projectdata = self._postrequest('projects/%s/setParams' % project_name, payload=kwargs)
         return projectdata
 
 
