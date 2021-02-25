@@ -4,3 +4,4 @@
 .tox
 .cache
 /.vscode/
+.DS_Store

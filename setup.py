@@ -28,7 +28,7 @@ if sys.version_info < (2, 7, 9):
 setup(
     name='scaleapi',
     packages=['scaleapi'],
-    version='1.0.1',
+    version='1.0.2',
     description='The official Python client library for Scale AI, the Data Platform for AI',
     author='Scale AI',
     author_email='support@scale.com',

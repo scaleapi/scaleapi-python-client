@@ -143,7 +143,8 @@ class ScaleClient(object):
         """
         allowed_kwargs = {'start_time', 'end_time', 'status', 'type', 'project',
                           'batch', 'limit', 'offset', 'completed_before', 'completed_after',
-                          'next_token', 'customer_review_status', 'updated_before', 'updated_after'}
+                          'next_token', 'customer_review_status', 'updated_before', 'updated_after',
+                          'tags', 'unique_id'}
         for key in kwargs:
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
