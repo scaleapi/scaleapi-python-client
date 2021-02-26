@@ -1,8 +1,10 @@
 import requests
+import platform
 
 from .tasks import Task
 from .batches import Batch
 from .projects import Project
+from ._version import __version__
 
 TASK_TYPES = [
     'annotation',
@@ -63,6 +65,10 @@ class Batchlist(Paginator):
 class ScaleClient(object):
     def __init__(self, api_key):
         self.api_key = api_key
+        self._headers = {
+            "Content-Type": "application/json",
+            "User-Agent": _generate_useragent()
+        }
 
     def _getrequest(self, endpoint, params=None):
         """Makes a get request to an endpoint.
@@ -73,7 +79,7 @@ class ScaleClient(object):
         """
         params = params or {}
         r = requests.get(SCALE_ENDPOINT + endpoint,
-                         headers={"Content-Type": "application/json"},
+                         headers=self._headers,
                          auth=(self.api_key, ''), params=params)
 
         if r.status_code == 200:
@@ -97,7 +103,7 @@ class ScaleClient(object):
         """
         payload = payload or {}
         r = requests.post(SCALE_ENDPOINT + endpoint, json=payload,
-                          headers={"Content-Type": "application/json"},
+                          headers=self._headers,
                           auth=(self.api_key, ''))
 
         if r.status_code == 200:
@@ -195,7 +201,7 @@ class ScaleClient(object):
         projectdata = self._postrequest('projects', payload)
         return Project(projectdata, self)
 
-    def get_projet(self, project_name):
+    def get_project(self, project_name):
         projectdata = self._getrequest('projects/%s' % project_name)
         return Project(projectdata, self)
 
@@ -209,9 +215,18 @@ class ScaleClient(object):
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.update_project()'
                                           % key, None)
-        projectdata = self._postrequest('projects/%s/setParams' % project_name)
+        projectdata = self._postrequest('projects/%s/setParams' % project_name, payload=kwargs)
         return projectdata
 
+def _generate_useragent():
+    try:
+        python_version = platform.python_version()
+        os_platform = platform.platform()
+
+        user_agent = '%s/%s Python/%s OS/%s' % (__name__, __version__, python_version, os_platform)
+        return user_agent
+    except:
+        return "scaleapi-python-client"
 
 def _AddTaskTypeCreator(task_type):
     def create_task_wrapper(self, **kwargs):

@@ -1,5 +1,6 @@
 import sys
 import warnings
+import os.path
 
 try:
     from setuptools import setup
@@ -25,10 +26,22 @@ if sys.version_info < (2, 7, 9):
     install_requires.append('idna')
     install_requires.append('requests[security]')
 
+def read(rel_path):
+    here = os.path.abspath(os.path.dirname(__file__))
+    with open(os.path.join(here, rel_path), 'r') as fp:
+        return fp.read()
+
+def get_version(rel_path):
+    for line in read(rel_path).splitlines():
+        if line.startswith('__version__'):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    raise RuntimeError("Unable to find a valid __version__ string in %s." % rel_path)
+
 setup(
     name='scaleapi',
     packages=['scaleapi'],
-    version='1.0.2',
+    version=get_version("scaleapi/_version.py"),
     description='The official Python client library for Scale AI, the Data Platform for AI',
     author='Scale AI',
     author_email='support@scale.com',

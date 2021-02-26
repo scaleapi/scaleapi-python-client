@@ -216,7 +216,7 @@ __ https://docs.scale.com/reference#project-retrieval
 
 .. code-block:: python
 
-    client.get_projet(project_name = 'test_project')
+    client.get_project(project_name = 'test_project')
 
 List Projects
 ^^^^^^^^^^^^^

@@ -10,7 +10,7 @@ _Creating and deploying a new package version is easy_
 
 **Step 0: Critical - Bump Project Version**
 
-In `setup.py`, you need to specify a new project version.
+In `_version.py`, you need to specify a new project version.
 
 We use [semantic versioning](https://packaging.python.org/guides/distributing-packages-using-setuptools/#semantic-versioning-preferred). If you are adding a meaningful feature, bump the minor version. If you are fixing a bug, bump the incremental version.
 
