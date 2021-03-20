@@ -4,11 +4,12 @@ import pytest
 import scaleapi
 import time
 from datetime import datetime
+from random import randint
 import os
 
 try:
     test_api_key = os.environ['SCALE_TEST_API_KEY']
-    client = scaleapi.ScaleClient(test_api_key)
+    client = scaleapi.ScaleClient(test_api_key, 'pytest')
 except KeyError:
     raise Exception("Please set the environment variable SCALE_TEST_API_KEY to run tests.")
 
@@ -32,6 +33,7 @@ def test_categorize_ok():
         callback_url='http://www.example.com/callback',
         instruction='Is this company public or private?',
         attachment_type='website',
+        force=True,
         attachment='http://www.google.com/',
         categories=['public', 'private'])
 
@@ -172,6 +174,7 @@ def test_audiotranscription_ok():
     task = client.create_audiotranscription_task(
         callback_url='http://www.example.com/callback',
         attachment_type='audio',
+        instruction='Listen the audio file and transcript.',
         attachment='https://storage.googleapis.com/deepmind-media/pixie/knowing-what-to-say/second-list/speaker-3.wav',
         verbatim=False,
         phrases=['avocado', 'stone']
@@ -202,14 +205,13 @@ def test_cancel():
 def test_task_retrieval():
     task = make_a_task()
     task2 = client.fetch_task(task.id)
-    assert task.status == 'pending'
     assert task2.status == 'completed'
     assert task2.id == task.id
     assert task2.callback_url == task.callback_url
     assert task2.instruction == task.instruction
     assert task2.attachment_type == task.attachment_type
-    assert task2.attachments == task.attachments
-    assert task2.choices == task.choices
+    assert task2.attachment == task.attachment
+    assert task2.geometries == task.geometries
     assert task2.metadata == task.metadata
     assert task2.type == task.type
     assert task2.created_at == task.created_at
@@ -242,18 +244,30 @@ def test_tasks_invalid():
 def create_a_batch():
     return client.create_batch(
         callback = "http://www.example.com/callback",
-        batch_name = "kitten_labeling_2020-07",
-        project = "kitten_labeling"
+        batch_name = "scaleapi-python-sdk-" + str(randint(0, 99999)),
+        project = "scaleapi-python-sdk"
     )
 
 def test_finalize_batch():
     batch = create_a_batch()
-    client.finalize_batch(batch.name)
+    batch = client.finalize_batch(batch.name)
+    assert batch.status == 'in_progress'
 
-def get_batch_status():
+    batch2 = create_a_batch()
+    batch2.finalize()
+    assert batch2.status == 'in_progress'
+
+def test_get_batch_status():
     batch = create_a_batch()
     client.batch_status(batch.name)
+    assert batch.status == 'staging'
 
-def get_batch():
+    batch.finalize()
+    batch.get_status()  # Test status update
+    assert batch.status == 'in_progress'
+
+def test_get_batch():
     batch = create_a_batch()
-    client.get_batch(batch.name)
+    batch2 = client.get_batch(batch.name)
+    assert batch.name == batch2.name
+    assert batch2.status == 'staging'
