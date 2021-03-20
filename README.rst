@@ -105,13 +105,13 @@ __ https://docs.scale.com/reference#list-multiple-tasks
 Cancel Task
 ^^^^^^^^^^^
 
-Cancel a task given its id if work has not stared on the task (task status is `queued` in the UI). Check out `Scale's API documentation`__ for more information.
+Cancel a task given its id if work has not started on the task (task status is `Queued` in the UI). Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#cancel-task
 
 .. code-block :: python
 
-    task = client.cancel_task('asdfasdfasdfasdfasdfasdf')
+    task = client.cancel_task('30553edd0b6a93f8f05f0fee')
 
 Batches
 _______
@@ -162,7 +162,7 @@ __ https://docs.scale.com/reference#batch-retrieval
 
 .. code-block:: python
 
-    client.get_batch( batch_name = "batch_name_01_07_2021" )
+    client.get_batch(batch_name = 'batch_name_01_07_2021')
 
 List Batches
 ^^^^^^^^^^^^
