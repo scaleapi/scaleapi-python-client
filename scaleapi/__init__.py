@@ -1,5 +1,6 @@
 import requests
 import platform
+import urllib.parse
 
 from .tasks import Task
 from .batches import Batch
@@ -63,11 +64,11 @@ class Batchlist(Paginator):
 
 
 class ScaleClient(object):
-    def __init__(self, api_key):
+    def __init__(self, api_key, user_agent_extension=None):
         self.api_key = api_key
         self._headers = {
             "Content-Type": "application/json",
-            "User-Agent": _generate_useragent()
+            "User-Agent": _generate_useragent(user_agent_extension)
         }
 
     def _getrequest(self, endpoint, params=None):
@@ -171,15 +172,15 @@ class ScaleClient(object):
         return Batch(batchdata, self)
 
     def finalize_batch(self, batch_name):
-        batchdata = self._postrequest('batches/%s/finalize' % batch_name)
+        batchdata = self._postrequest('batches/%s/finalize' % quote_string(batch_name))
         return Batch(batchdata, self)
 
     def batch_status(self, batch_name):
-        batchdata = self._getrequest('batches/%s/status' % batch_name)
-        return Batch.get_status(self)
+        status_data = self._getrequest('batches/%s/status' % quote_string(batch_name))
+        return status_data
 
     def get_batch(self, batch_name):
-        batchdata = self._getrequest('batches/%s' % batch_name)
+        batchdata = self._getrequest('batches/%s' % quote_string(batch_name))
         return Batch(batchdata, self)
 
     def list_batches(self, **kwargs):
@@ -202,7 +203,7 @@ class ScaleClient(object):
         return Project(projectdata, self)
 
     def get_project(self, project_name):
-        projectdata = self._getrequest('projects/%s' % project_name)
+        projectdata = self._getrequest('projects/%s' % quote_string(project_name))
         return Project(projectdata, self)
 
     def projects(self):
@@ -215,18 +216,37 @@ class ScaleClient(object):
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.update_project()'
                                           % key, None)
-        projectdata = self._postrequest('projects/%s/setParams' % project_name, payload=kwargs)
+        projectdata = self._postrequest('projects/%s/setParams' % quote_string(project_name), payload=kwargs)
         return projectdata
 
-def _generate_useragent():
+def _generate_useragent(extension=None):
     try:
         python_version = platform.python_version()
         os_platform = platform.platform()
 
-        user_agent = '%s/%s Python/%s OS/%s' % (__name__, __version__, python_version, os_platform)
+        user_agent = " ".join(
+            filter(
+                None,
+                [
+                    "{}/{}".format(__name__, __version__),
+                    "Python/{}".format(python_version),
+                    "OS/{}".format(os_platform),
+                    extension,
+                ],
+            )
+        )
         return user_agent
-    except:
+
+    except Exception:
         return "scaleapi-python-client"
+
+def quote_string(text):
+    """`quote_string('a bc/def')` -> `a%20bc%2Fdef`
+    Project and Batch names can be a part of URL, which causes an error
+    in case of a special character used. Quotation assures
+    the right object to be retrieved from API.
+    """
+    return urllib.parse.quote(text, safe="")
 
 def _AddTaskTypeCreator(task_type):
     def create_task_wrapper(self, **kwargs):

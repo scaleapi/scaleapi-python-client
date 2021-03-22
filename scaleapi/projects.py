@@ -2,7 +2,7 @@ class Project(object):
     def __init__(self, param_dict, client):
         self.param_dict = param_dict
         self.name = param_dict['name']
-        self.client = client 
+        self.client = client
 
     def __hash__(self):
         return hash(self.name)
