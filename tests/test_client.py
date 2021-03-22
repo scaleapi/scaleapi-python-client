@@ -174,7 +174,7 @@ def test_audiotranscription_ok():
     task = client.create_audiotranscription_task(
         callback_url='http://www.example.com/callback',
         attachment_type='audio',
-        instruction='Listen the audio file and transcript.',
+        instruction='Listen to the audio file and transcript.',
         attachment='https://storage.googleapis.com/deepmind-media/pixie/knowing-what-to-say/second-list/speaker-3.wav',
         verbatim=False,
         phrases=['avocado', 'stone']
