@@ -1,51 +1,26 @@
-import requests
-import platform
-import urllib.parse
+from typing import Dict, Generic, List, TypeVar, Union
 
-from .tasks import Task
-from .batches import Batch
-from .projects import Project
-from ._version import __version__
+from scaleapi.batches import Batch, BatchStatus
+from scaleapi.exceptions import ScaleInvalidRequest
+from scaleapi.projects import Project
 
-TASK_TYPES = [
-    'annotation',
-    'audiotranscription',
-    'categorization',
-    'comparison',
-    'cuboidannotation',
-    'datacollection',
-    'imageannotation',
-    'lineannotation',
-    'namedentityrecognition',
-    'pointannotation',
-    'polygonannotation',
-    'segmentannotation',
-    'transcription',
-    'textcollection',
-    'documenttranscription',
-    'videoannotation',
-    'videoboxannotation',
-    'videoplaybackannotation',
-    'videocuboidannotation'
-]
-SCALE_ENDPOINT = 'https://api.scale.com/v1/'
-DEFAULT_LIMIT = 100
-DEFAULT_OFFSET = 0
+from .api import Api
+from .tasks import Task, TaskReviewStatus, TaskStatus, TaskType
+from ._version import __version__  # noqa: F401
+
+T = TypeVar("T")
 
 
-class ScaleException(Exception):
-    def __init__(self, message, errcode):
-        super(ScaleException, self).__init__(
-            '<Response [{}]> {}'.format(errcode, message))
-        self.code = errcode
-
-
-class ScaleInvalidRequest(ScaleException, ValueError):
-    pass
-
-
-class Paginator(list):
-    def __init__(self, docs, total, limit, offset, has_more, next_token=None):
+class Paginator(list, Generic[T]):
+    def __init__(
+        self,
+        docs: List[T],
+        total: int,
+        limit: int,
+        offset: int,
+        has_more: bool,
+        next_token=None,
+    ):
         super(Paginator, self).__init__(docs)
         self.docs = docs
         self.total = total
@@ -55,204 +30,238 @@ class Paginator(list):
         self.next_token = next_token
 
 
-class Tasklist(Paginator):
+class Tasklist(Paginator[Task]):
     pass
 
 
-class Batchlist(Paginator):
+class Batchlist(Paginator[Batch]):
     pass
 
 
 class ScaleClient(object):
-    def __init__(self, api_key, user_agent_extension=None):
-        self.api_key = api_key
-        self._headers = {
-            "Content-Type": "application/json",
-            "User-Agent": _generate_useragent(user_agent_extension)
-        }
+    def __init__(self, api_key, source=None):
+        self.api = Api(api_key, source)
 
-    def _getrequest(self, endpoint, params=None):
-        """Makes a get request to an endpoint.
-
-        If an error occurs, assumes that endpoint returns JSON as:
-            { 'status_code': XXX,
-              'error': 'I failed' }
-        """
-        params = params or {}
-        r = requests.get(SCALE_ENDPOINT + endpoint,
-                         headers=self._headers,
-                         auth=(self.api_key, ''), params=params)
-
-        if r.status_code == 200:
-            return r.json()
-        else:
-            try:
-                error = r.json()['error']
-            except ValueError:
-                error = r.text
-            if r.status_code == 400:
-                raise ScaleInvalidRequest(error, r.status_code)
-            else:
-                raise ScaleException(error, r.status_code)
-
-    def _postrequest(self, endpoint, payload=None):
-        """Makes a post request to an endpoint.
-
-        If an error occurs, assumes that endpoint returns JSON as:
-            { 'status_code': XXX,
-              'error': 'I failed' }
-        """
-        payload = payload or {}
-        r = requests.post(SCALE_ENDPOINT + endpoint, json=payload,
-                          headers=self._headers,
-                          auth=(self.api_key, ''))
-
-        if r.status_code == 200:
-            return r.json()
-        else:
-            try:
-                error = r.json()['error']
-            except ValueError:
-                error = r.text
-            if r.status_code == 400:
-                raise ScaleInvalidRequest(error, r.status_code)
-            else:
-                raise ScaleException(error, r.status_code)
-
-    def fetch_task(self, task_id):
+    def fetch_task(self, task_id: str) -> Task:
         """Fetches a task.
-
         Returns the associated task.
         """
-        return Task(self._getrequest('task/%s' % task_id), self)
+        endpoint = f"task/{task_id}"
+        return Task(self.api._get_request(endpoint), self)
 
-    def cancel_task(self, task_id):
+    def cancel_task(self, task_id: str) -> Task:
         """Cancels a task.
-
         Returns the associated task.
         Raises a ScaleException if it has already been canceled.
         """
-        return Task(self._postrequest('task/%s/cancel' % task_id), self)
+        endpoint = f"task/{task_id}/cancel"
+        return Task(self.api._post_request(endpoint), self)
 
-    def tasks(self, **kwargs):
+    def tasks(self, **kwargs) -> Tasklist:
         """Returns a list of your tasks.
         Returns up to 100 at a time, to get more, use the next_token param passed back.
-
-        Note that offset is deprecated.
-
         start/end_time are ISO8601 dates, the time range of tasks to fetch.
         status can be 'completed', 'pending', or 'canceled'.
         type is the task type.
         limit is the max number of results to display per page,
         next_token can be use to fetch the next page of tasks.
         customer_review_status can be 'pending', 'fixed', 'accepted' or 'rejected'.
-        offset (deprecated) is the number of results to skip (for showing more pages).
         """
-        allowed_kwargs = {'start_time', 'end_time', 'status', 'type', 'project',
-                          'batch', 'limit', 'offset', 'completed_before', 'completed_after',
-                          'next_token', 'customer_review_status', 'updated_before', 'updated_after',
-                          'tags', 'unique_id'}
+        allowed_kwargs = {
+            "start_time",
+            "end_time",
+            "status",
+            "type",
+            "project",
+            "batch",
+            "limit",
+            "completed_before",
+            "completed_after",
+            "next_token",
+            "customer_review_status",
+            "tags",
+            "updated_before",
+            "updated_after",
+            "unique_id",
+        }
+
         for key in kwargs:
             if key not in allowed_kwargs:
-                raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.tasks()'
-                                          % key, None)
-        response = self._getrequest('tasks', params=kwargs)
-        docs = [Task(json, self) for json in response['docs']]
-        return Tasklist(docs, response['total'], response['limit'],
-                        response['offset'], response['has_more'], response.get('next_token'))
+                raise ScaleInvalidRequest(
+                    f"Illegal parameter {key} for ScaleClient.tasks()", None
+                )
 
-    def create_task(self, task_type, **kwargs):
-        endpoint = 'task/' + task_type
-        taskdata = self._postrequest(endpoint, payload=kwargs)
+        response = self.api._get_request("tasks", params=kwargs)
+
+        docs = [Task(json, self) for json in response["docs"]]
+        return Tasklist(
+            docs,
+            response["total"],
+            response["limit"],
+            response["offset"],
+            response["has_more"],
+            response.get("next_token"),
+        )
+
+    def tasks_all(
+        self,
+        project_name: str,
+        batch_name: str = None,
+        type: TaskType = None,
+        status: TaskStatus = None,
+        review_status: Union[List[TaskReviewStatus], TaskReviewStatus] = None,
+        unique_id: Union[List[str], str] = None,
+        completed_after: str = None,
+        completed_before: str = None,
+        updated_after: str = None,
+        updated_before: str = None,
+        created_after: str = None,
+        created_before: str = None,
+        tags: Union[List[str], str] = None,
+    ) -> List[Task]:
+
+        tasks_list: List[Task] = []
+        next_token = None
+        has_more = True
+
+        while has_more:
+            tasks_args = {
+                "next_token": next_token,
+                "start_time": created_after,
+                "end_time": created_before,
+                "project": project_name,
+                "batch": batch_name,
+                "completed_before": completed_before,
+                "completed_after": completed_after,
+                "tags": tags,
+                "updated_before": updated_before,
+                "updated_after": updated_after,
+                "unique_id": unique_id,
+            }
+
+            if status:
+                tasks_args["status"] = status.value
+            if type:
+                tasks_args["type"] = type.value
+            if review_status:
+                tasks_args["customer_review_status"] = review_status.value
+
+            tasks = self.tasks(**tasks_args)
+            next_token = tasks.next_token
+            has_more = tasks.has_more
+            tasks_list.extend(tasks.docs)
+
+        return tasks_list
+
+    def create_task(self, task_type: TaskType, **kwargs) -> Task:
+        endpoint = f"task/{task_type.value}"
+        taskdata = self.api._post_request(endpoint, body=kwargs)
         return Task(taskdata, self)
 
-    def create_batch(self, project, batch_name, callback):
+    def create_batch(self, project: str, batch_name: str, callback: str = "") -> Batch:
+        endpoint = "batches"
         payload = dict(project=project, name=batch_name, callback=callback)
-        batchdata = self._postrequest('batches', payload)
+        batchdata = self.api._post_request(endpoint, body=payload)
         return Batch(batchdata, self)
 
-    def finalize_batch(self, batch_name):
-        batchdata = self._postrequest('batches/%s/finalize' % quote_string(batch_name))
+    def finalize_batch(self, batch_name: str) -> Batch:
+        endpoint = f"batches/{Api.quote_string(batch_name)}/finalize"
+        batchdata = self.api._post_request(endpoint)
         return Batch(batchdata, self)
 
-    def batch_status(self, batch_name):
-        status_data = self._getrequest('batches/%s/status' % quote_string(batch_name))
+    def batch_status(self, batch_name: str) -> Dict:
+        endpoint = f"batches/{Api.quote_string(batch_name)}/status"
+        status_data = self.api._get_request(endpoint)
         return status_data
 
     def get_batch(self, batch_name):
-        batchdata = self._getrequest('batches/%s' % quote_string(batch_name))
+        endpoint = f"batches/{Api.quote_string(batch_name)}"
+        batchdata = self.api._get_request(endpoint)
         return Batch(batchdata, self)
 
-    def list_batches(self, **kwargs):
-        allowed_kwargs = {'start_time', 'end_time', 'status', 'project',
-                          'limit', 'offset', }
+    def list_batches(self, **kwargs) -> Batchlist:
+        allowed_kwargs = {
+            "start_time",
+            "end_time",
+            "status",
+            "project",
+            "limit",
+            "offset",
+        }
+
         for key in kwargs:
             if key not in allowed_kwargs:
-                raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.list_batches()'
-                                          % key, None)
-        response = self._getrequest('batches', params=kwargs)
-        docs = [Batch(doc, self) for doc in response['docs']]
+                raise ScaleInvalidRequest(
+                    f"Illegal parameter {key} for ScaleClient.list_batches()"
+                )
+        endpoint = "batches"
+        response = self.api._get_request(endpoint, params=kwargs)
+        docs = [Batch(doc, self) for doc in response["docs"]]
+
         return Batchlist(
-            docs, response['totalDocs'], response['limit'], response['has_more'], response.get(
-                'next_token'),
+            docs,
+            response["totalDocs"],
+            response["limit"],
+            response["offset"],
+            response["has_more"],
         )
 
-    def create_project(self, project_name, type, params):
-        payload = dict(type=type, name=project_name, params=params)
-        projectdata = self._postrequest('projects', payload)
+    def list_batches_all(
+        self,
+        project_name: str,
+        batch_status: BatchStatus = None,
+        created_after: str = None,
+        created_before: str = None,
+        limit: int = 100,
+    ) -> List[Batch]:
+
+        batches_list: List[Batch] = []
+        has_more = True
+        offset = 0
+
+        while has_more:
+            batches_args = {
+                "start_time": created_after,
+                "end_time": created_before,
+                "project": project_name,
+                "offset": offset,
+                "limit": limit,
+            }
+
+            if batch_status:
+                batches_args["status"] = batch_status.value
+
+            batches = self.list_batches(**batches_args)
+            offset += batches.limit
+            has_more = batches.has_more
+            batches_list.extend(batches.docs)
+
+        return batches_list
+
+    def create_project(self, project_name: str, type: TaskType, params) -> Project:
+        endpoint = "projects"
+        payload = dict(type=type.value, name=project_name, params=params)
+        projectdata = self.api._post_request(endpoint, body=payload)
         return Project(projectdata, self)
 
-    def get_project(self, project_name):
-        projectdata = self._getrequest('projects/%s' % quote_string(project_name))
+    def get_project(self, project_name: str) -> Project:
+        endpoint = f"projects/{Api.quote_string(project_name)}"
+        projectdata = self.api._get_request(endpoint)
         return Project(projectdata, self)
 
-    def projects(self):
-        response = self._getrequest('projects')
-        return response
+    def projects(self) -> List[Project]:
+        endpoint = "projects"
+        project_list = self.api._get_request(endpoint)
+        return [Project(project, self) for project in project_list]
 
-    def update_project(self, project_name, **kwargs):
-        allowed_kwargs = {'patch', 'instruction'}
+    def update_project(self, project_name: str, **kwargs) -> Project:
+        allowed_kwargs = {"patch", "instruction"}
         for key in kwargs:
             if key not in allowed_kwargs:
-                raise ScaleInvalidRequest('Illegal parameter %s for ScaleClient.update_project()'
-                                          % key, None)
-        projectdata = self._postrequest('projects/%s/setParams' % quote_string(project_name), payload=kwargs)
-        return projectdata
+                raise ScaleInvalidRequest(
+                    f"Illegal parameter {key} for" "ScaleClient.update_project()", None,
+                )
 
-def _generate_useragent(extension=None):
-    try:
-        python_version = platform.python_version()
-        os_platform = platform.platform()
-
-        user_agent = " ".join(
-            filter(
-                None,
-                [
-                    "{}/{}".format(__name__, __version__),
-                    "Python/{}".format(python_version),
-                    "OS/{}".format(os_platform),
-                    extension,
-                ],
-            )
-        )
-        return user_agent
-
-    except Exception:
-        return "scaleapi-python-client"
-
-def quote_string(text):
-    """`quote_string('a bc/def')` -> `a%20bc%2Fdef`
-    Project and Batch names can be a part of URL, which causes an error
-    in case of a special character used. Quotation assures
-    the right object to be retrieved from API.
-    """
-    return urllib.parse.quote(text, safe="")
-
-def _AddTaskTypeCreator(task_type):
-    def create_task_wrapper(self, **kwargs):
-        return self.create_task(task_type, **kwargs)
-    setattr(ScaleClient, 'create_' + task_type + '_task', create_task_wrapper)
-
-
-for taskType in TASK_TYPES:
-    _AddTaskTypeCreator(taskType)
+        endpoint = f"projects/{Api.quote_string(project_name)}/setParams"
+        projectdata = self.api._post_request(endpoint, body=kwargs)
+        return Project(projectdata, self)
