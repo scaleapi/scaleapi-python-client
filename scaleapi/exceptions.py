@@ -1,6 +1,7 @@
 class ScaleException(Exception):
     def __init__(self, message, errcode=None):
         self.code = errcode
+        self.message = message
         if errcode:
             super(ScaleException, self).__init__(f"<Response [{errcode}]> {message}")
         else:

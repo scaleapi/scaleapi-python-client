@@ -6,8 +6,10 @@ class Project(object):
         self._client = client
 
         if len(json["param_history"]):
-            self.version = json["param_history"][-1]["version"]
-            self.instruction = json["param_history"][-1]["instruction"]
+            last_params = json["param_history"][-1]
+            self.version = last_params["version"]
+            if "instruction" in last_params:
+                self.instruction = last_params["instruction"]
 
     def __hash__(self):
         return hash(self.name)

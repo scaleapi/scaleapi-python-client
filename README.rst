@@ -2,14 +2,59 @@
 Scale AI | Python SDK
 =====================
 
+If you use earlier versions of the SDK, please refer to `v1.0.4 documentation <https://github.com/scaleapi/scaleapi-python-client/blob/release-1.0.4/README.rst>`_.
+
+
+Migration Guide to v2.x
+________________________
+
+If you are migrating from v0.x or v1.x,  this guide explains how to update your application for compatibility with v2.x. We recommend migrating as soon as possible to ensure that your application is unaffected.
+
+Creating New Tasks
+^^^^^^^^^^^^^^^^^^
+Methods with task types such as `create_imageannotation_task, create_textcollection_task` etc. are deprecated.
+
+Creating a new task is now unified under the `create_task(TaskType, ...)` method. Please review `Create Task`_ section for more details.
+
+Retrieving Tasks
+^^^^^^^^^^^^^^^^
+A new generator method is introduced to retrieve a list of tasks with all available parameters. The new method handles pagination and tokens: `tasks_all(...)`. You can have a simpler code by replacing `tasks()` loops with pagination. 
+
+Please refer to `List Tasks`_ for more details.
+
+Accessing Attributes (Task, Batch, Project)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The old `param_dict` attribute is now replaced with a method `as_dict()` to return an object's attributes as a dictionary.
+
+First-level attributes of Task can also be accessed with `.` annotation as `task.as_dict()["status"]` is equal to `task.status`. 
+Other examples are `task.type, task.params, task.response["annotations"]`.
+
+Task Count Summary of Batches
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Attributes of Batch `pending, completed, error, canceled` are replaced with `tasks_pending, tasks_completed, tasks_error, tasks_canceled` respectively.
+
+Deprecated Methods
+^^^^^^^^^^^^^^^^^^
+- `fetch_task()` replaced with `get_task()`
+- `list_batches()`  replaced with `batches()`
+
+Enabled Auto-Retry
+^^^^^^^^^^^^^^^^^^
+SDK now enables auto-retry in case of a TimeOut (504) or TooManyRequests (429) occurs.
+
+New Exceptions
+^^^^^^^^^^^^^^
+New error types are introduces if you want to handle specific exception cases.
+`ScaleInvalidRequest, ScaleUnauthorized, ScaleNotEnabled, ScaleResourceNotFound, ScaleDuplicateTask, ScaleTooManyRequests, ScaleInternalError` and `ScaleTimeoutError`.
+All new error types are child of the existing `ScaleException` which can be used to handle all cases.
+
+
 Installation
 ____________
 
 .. code-block:: bash
 
     $ pip install --upgrade scaleapi
-
-Note: We strongly suggest using `scaleapi` with Python version 2.7.9 or greater due to SSL issues with prior versions.
 
 Usage
 _____
@@ -23,11 +68,11 @@ Tasks
 _____
 
 Most of these methods will return a `scaleapi.Task` object, which will contain information
-about the json response (task_id, status, etc.).
+about the json response (task_id, status, params, response etc.).
 
 Any parameter available in `Scale's API documentation`__ can be passed as an argument option with the corresponding type.
 
-__ https://docs.scale.com/reference#task-object
+__ https://docs.scale.com/reference#tasks-object-overview
 
 The following endpoints for tasks are available:
 
@@ -38,15 +83,18 @@ This method can be used for any Scale supported task type using the following fo
 
 .. code-block:: python
 
-    client.create_{{Task Type}}_task(...)
+    client.create_task(TaskType, ...task parameters...)
 
 Passing in the applicable values into the function definition. The applicable fields and further information for each task type can be found in `Scale's API documentation`__.
 
-__ https://docs.scale.com/reference#general-image-annotation
+__ https://docs.scale.com/reference
 
 .. code-block:: python
 
-    client.create_imageannotation_task(
+    from scaleapi.tasks import TaskType
+    
+    client.create_task(
+        TaskType.ImageAnnotation,
         project = 'test_project',
         callback_url = "http://www.example.com/callback",
         instruction= "Draw a box around each baby cow and big cow.",
@@ -60,9 +108,9 @@ __ https://docs.scale.com/reference#general-image-annotation
             }
         }
     )
-
-Retrieve task
-^^^^^^^^^^^^^
+    
+Retrieve a task
+^^^^^^^^^^^^^^^
 
 Retrieve a task given its id. Check out `Scale's API documentation`__ for more information.
 
@@ -70,37 +118,40 @@ __ https://docs.scale.com/reference#retrieve-tasks
 
 .. code-block :: python
 
-    task = client.fetch_task('asdfasdfasdfasdfasdfasdf')
-    print(task.status)  // Task status ('pending', 'completed', 'error', 'canceled')
-    print(task.response) // If task is complete
+    task = client.get_task('30553edd0b6a93f8f05f0fee')
+    print(task.status)  # Task status ('pending', 'completed', 'error', 'canceled')
+    print(task.response) # If task is complete
 
 List Tasks
 ^^^^^^^^^^
 
-Retrieve a list of tasks, with optional filter by start and end date/time. Paginated with `next_token`. The return value is a `scaleapi.Tasklist`, which acts as a list, but also has fields for the total number of tasks, the limit and offset, and whether or not there's more. Check out `Scale's API documentation`__ for more information.
+Retrieve a list of `Task` objects, with optional filters for: `project_name, batch_name, type, status, review_status, unique_id, completed_after, completed_before, updated_after, updated_before, created_after, created_before` and `tags`. 
+
+This method is a generator and yields tasks. It can be wrapped in a `list` statement if a Task list is needed.
+
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#list-multiple-tasks
 
 .. code-block :: python
+    
+    from scaleapi.tasks import TaskReviewStatus, TaskStatus
 
-    next_token = None;
-    counter = 0
-    all_tasks =[]
-    while True:
-        tasks = client.tasks(
-            start_time = "2020-09-08",
-            end_time = "2021-01-01",
-            customer_review_status = "accepted",
-            next_token = next_token,
-        )
-        for task in tasks:
-            counter += 1
-            print('Downloading Task %s | %s' % (counter, task.task_id))
-            all_tasks.append(task.__dict__['param_dict'])
-        next_token = tasks.next_token
-        if next_token is None:
-            break
-    print(all_tasks)
+    tasks = client.tasks_all(
+        project_name = "My Project",
+        created_after = "2020-09-08",
+        completed_before = "2021-04-01",
+        status = TaskStatus.Completed,
+        review_status = TaskReviewStatus.Accepted
+    )
+    
+    for task in tasks:
+        # Download task or do something!
+        print(task.task_id)
+    
+    # Alternative for accessing as a Task list
+    task_list = list(tasks) 
+    print(f"{len(task_list))} tasks retrieved")
 
 Cancel Task
 ^^^^^^^^^^^
@@ -153,6 +204,11 @@ __ https://docs.scale.com/reference#batch-status
 
     client.batch_status(batch_name = 'batch_name_01_07_2021')
 
+    # Alternative via Batch.get_status()
+    batch = client.get_batch('batch_name_01_07_2021')
+    batch.get_status() # Refreshes tasks_{status} attributes of Batch
+    print(batch.tasks_pending, batch.tasks_completed)
+
 Retrieve Batch
 ^^^^^^^^^^^^^^
 
@@ -167,27 +223,29 @@ __ https://docs.scale.com/reference#batch-retrieval
 List Batches
 ^^^^^^^^^^^^
 
-Retrieve a list of Batches. Check out `Scale's API documentation`__ for more information.
+Retrieve a list of Batches. Optional parameters are `project_name, batch_status, created_after, created_before`. 
+
+Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-list
 
 .. code-block :: python
 
-    next_token = None;
+    from scaleapi.batches import BatchStatus
+    
+    batches = client.batches_all(
+        batch_status=BatchStatus.Completed,
+        created_after = "2020-09-08"
+    )    
+    
     counter = 0
-    all_batchs =[]
-    while True:
-        batches = client.list_batches(
-            status = "completed"
-        )
-        for batch in batches:
-            counter += 1
-            print('Downloading Batch %s | %s | %s' % (counter, batch.name, batch.param_dict['status']))
-            all_batchs.append(batch.__dict__['param_dict'])
-        next_token = batches.next_token
-        if next_token is None:
-            break
-    print(all_batchs)
+    for batch in batches:
+        counter += 1
+        print(f'Downloading batch {counter} | {batch.name} | {batch.project}')
+
+    # Alternative for accessing as a Batch list
+    batch_list = list(batches) 
+    print(f"{len(batch_list))} batches retrieved")    
 
 Projects
 ________
@@ -232,7 +290,7 @@ __ https://docs.scale.com/reference#batch-list
     projects = client.projects()
     for project in projects:
         counter += 1
-        print('Downloading project %s | %s | %s' % (counter, project['name'], project['type']))
+        print(f'Downloading project {counter} | {project.name} | { project.type}')
 
 Update Project
 ^^^^^^^^^^^^^^
@@ -253,16 +311,18 @@ Error handling
 ______________
 
 If something went wrong while making API calls, then exceptions will be raised automatically
-as a `scaleapi.ScaleException` or `scaleapi.ScaleInvalidRequest` runtime error. For example:
+as a `scaleapi.ScaleException` parent type and child exceptions like: `ScaleInvalidRequest, ScaleUnauthorized, ScaleNotEnabled, ScaleResourceNotFound, ScaleDuplicateTask, ScaleTooManyRequests, ScaleInternalError` and `ScaleTimeoutError`.
+
+For example:
 
 .. code-block:: python
 
-    try
-        client.create_categorization_task('Some parameters are missing.')
-    except scaleapi.ValidationError as e:
-        print(e.code)  # 400
-        print(e.message)  # missing param X
-
+    try:
+        client.create_task(TaskType.TextCollection, attachment='Some parameters are missing.')
+    except ScaleException as err:
+        print(err.code)  # 400
+        print(err.message)  # Parameters is invalid, reason: "attachments" is required
+    
 Troubleshooting
 _______________
 
