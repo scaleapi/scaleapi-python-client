@@ -469,7 +469,7 @@ class ScaleClient(object):
 
     def batches_all(
         self,
-        project_name: str,
+        project_name: str = None,
         batch_status: BatchStatus = None,
         created_after: str = None,
         created_before: str = None,

@@ -60,6 +60,7 @@ class ScaleInternalError(ScaleException):
 
 
 class ScaleTimeoutError(ScaleException):
-    default = """504 - Server Timeout Error -- Try again later."""
+    """504 - Server Timeout Error -- Try again later.
+    """
 
     pass
