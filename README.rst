@@ -12,7 +12,7 @@ If you are migrating from v0.x or v1.x,  this guide explains how to update your 
 
 Creating New Tasks
 ^^^^^^^^^^^^^^^^^^
-Methods with task types such as ``create_imageannotation_task, create_textcollection_task`` etc. are deprecated.
+Methods with task types such as ``create_imageannotation_task``, ``create_textcollection_task`` etc. are deprecated.
 
 Creating a new task is now unified under the ``create_task(TaskType, ...)`` method. Please review `Create Task`_ section for more details.
 
@@ -37,35 +37,45 @@ Creating a new task is now unified under the ``create_task(TaskType, ...)`` meth
 
 Retrieving Tasks
 ^^^^^^^^^^^^^^^^
-A new generator method is introduced to retrieve a list of tasks with all available parameters. The new method handles pagination and tokens: `tasks_all(...)`. You can have a simpler code by replacing `tasks()` loops with pagination. 
+A new generator method is introduced to retrieve a list of tasks with all available parameters. The new method handles pagination and tokens: ``tasks_all(...)``. 
+You can have a simpler code by replacing ``tasks()`` loops with pagination and tokens. 
 
 Please refer to `List Tasks`_ for more details.
 
 Accessing Attributes (Task, Batch, Project)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The old `param_dict` attribute is now replaced with a method `as_dict()` to return an object's attributes as a dictionary.
+The old ``param_dict`` attribute is now replaced with a method ``as_dict()`` to return an object's attributes as a dictionary.
 
-First-level attributes of Task can also be accessed with `.` annotation as `task.as_dict()["status"]` is equal to `task.status`. 
-Other examples are `task.type, task.params, task.response["annotations"]`.
+First-level attributes of Task can also be accessed with `.` annotation as the following: 
+
+.. code-block:: python
+
+    task.as_dict()["status"]
+    # is same as
+    task.status
+
+Other examples are ``task.type``, ``task.params``, ``task.response["annotations"]`` etc.
+
 
 Task Count Summary of Batches
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Attributes of Batch `pending, completed, error, canceled` are replaced with `tasks_pending, tasks_completed, tasks_error, tasks_canceled` respectively.
+Attributes of Batch ``pending``, ``completed``, ``error``, ``canceled`` are replaced with ``tasks_pending``, ``tasks_completed``, ``tasks_error``, ``tasks_canceled`` respectively.
 
 Deprecated Methods
 ^^^^^^^^^^^^^^^^^^
-- `fetch_task()` replaced with `get_task()`
-- `list_batches()`  replaced with `batches()`
+- ``fetch_task()`` replaced with ``get_task()``
+- ``list_batches()``  replaced with ``batches()``
 
 Enabled Auto-Retry
 ^^^^^^^^^^^^^^^^^^
-SDK now enables auto-retry in case of a TimeOut (504) or TooManyRequests (429) occurs.
+SDK now enabled auto-retry in case of a TimeOut (504) or TooManyRequests (429) occurs.
 
 New Exceptions
 ^^^^^^^^^^^^^^
 New error types are introduces if you want to handle specific exception cases.
-`ScaleInvalidRequest, ScaleUnauthorized, ScaleNotEnabled, ScaleResourceNotFound, ScaleDuplicateTask, ScaleTooManyRequests, ScaleInternalError` and `ScaleTimeoutError`.
-All new error types are child of the existing `ScaleException` which can be used to handle all cases.
+``ScaleInvalidRequest``, ``ScaleUnauthorized``, ``ScaleNotEnabled``, ``ScaleResourceNotFound``, ``ScaleDuplicateTask``, ``ScaleTooManyRequests``, ``ScaleInternalError`` and ``ScaleTimeoutError``.
+
+All new error types are child of the existing ``ScaleException`` which can be used to handle all cases.
 
 
 Installation
@@ -330,11 +340,24 @@ Error handling
 ______________
 
 If something went wrong while making API calls, then exceptions will be raised automatically
-as a `scaleapi.ScaleException` parent type and child exceptions like: `ScaleInvalidRequest, ScaleUnauthorized, ScaleNotEnabled, ScaleResourceNotFound, ScaleDuplicateTask, ScaleTooManyRequests, ScaleInternalError` and `ScaleTimeoutError`.
+as a `ScaleException` parent type and child exceptions: 
+
+- ``ScaleInvalidRequest``: 400 - Bad Request -- The request was unacceptable, often due to missing a required parameter.
+- ``ScaleUnauthorized``: 401 - Unauthorized -- No valid API key provided.
+- ``ScaleNotEnabled``: 402 - Not enabled -- Please contact sales@scaleapi.com before creating this type of task.
+- ``ScaleResourceNotFound``: 404 - Not Found -- The requested resource doesn't exist.
+- ``ScaleDuplicateTask``: 409 - Conflict -- The provided idempotency key or unique_id is already in use for a different request.
+- ``ScaleTooManyRequests``: 429 - Too Many Requests -- Too many requests hit the API too quickly.
+- ``ScaleInternalError``: 500 - Internal Server Error -- We had a problem with our server. Try again later
+- ``ScaleTimeoutError``: 504 - Server Timeout Error -- Try again later.
+
+Check out `Scale's API documentation <https://docs.scale.com/reference#errors>`_ for more details.
 
 For example:
 
 .. code-block:: python
+
+    from scaleapi.exceptions import ScaleException
 
     try:
         client.create_task(TaskType.TextCollection, attachment='Some parameters are missing.')
