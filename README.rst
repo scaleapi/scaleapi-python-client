@@ -12,9 +12,28 @@ If you are migrating from v0.x or v1.x,  this guide explains how to update your 
 
 Creating New Tasks
 ^^^^^^^^^^^^^^^^^^
-Methods with task types such as `create_imageannotation_task, create_textcollection_task` etc. are deprecated.
+Methods with task types such as ``create_imageannotation_task, create_textcollection_task`` etc. are deprecated.
 
-Creating a new task is now unified under the `create_task(TaskType, ...)` method. Please review `Create Task`_ section for more details.
+Creating a new task is now unified under the ``create_task(TaskType, ...)`` method. Please review `Create Task`_ section for more details.
+
+
+.. code-block:: python
+
+    # Deprecated
+    client.create_imageannotation_task(
+        project = 'test_project',
+        instruction= "Draw a box around each baby cow and big cow.",
+        ...
+    )
+
+    # New Method
+    from scaleapi.tasks import TaskType
+    client.create_task(
+        TaskType.ImageAnnotation,
+        project = 'test_project',
+        instruction= "Draw a box around each baby cow and big cow.",
+        ...
+    )
 
 Retrieving Tasks
 ^^^^^^^^^^^^^^^^
