@@ -25,7 +25,7 @@ except KeyError:
 def test_invalidkey_fail():
     client_fail = scaleapi.ScaleClient("dummy_api_key", "pytest")
     with pytest.raises(ScaleUnauthorized):
-        client_fail.list_batches(limit=1)
+        client_fail.batches(limit=1)
 
 
 def make_a_task(unique_id: str = None):
@@ -256,7 +256,7 @@ def test_cancel():
 
 def test_task_retrieval():
     task = make_a_task()
-    task2 = client.fetch_task(task.id)
+    task2 = client.get_task(task.id)
     assert task2.status == "completed"
     assert task2.id == task.id
     assert task2.callback_url == task.callback_url
@@ -281,7 +281,7 @@ def test_task_retrieval_time():
 
 def test_task_retrieval_fail():
     with pytest.raises(ScaleResourceNotFound):
-        client.fetch_task("fake_id_qwertyuiop")
+        client.get_task("fake_id_qwertyuiop")
 
 
 def test_tasks():
@@ -337,15 +337,15 @@ def test_list_batch():
         batches.append(create_a_batch())
     batch_names = {batch.name for batch in batches}
 
-    for batch in client.list_batches(limit=3):
+    for batch in client.batches(limit=3):
         assert batch.name in batch_names
 
 
 def test_list_batch_all():
     # Get count of all batches
-    batchlist = client.list_batches(project=TEST_PROJECT_NAME, limit=1)
+    batchlist = client.batches(project=TEST_PROJECT_NAME, limit=1)
     total_batches = batchlist.total
 
     # Download all batches to check total count
-    all_batches = client.list_batches_all(project_name=TEST_PROJECT_NAME, limit=10)
+    all_batches = list(client.batches_all(project_name=TEST_PROJECT_NAME))
     assert total_batches == len(all_batches)

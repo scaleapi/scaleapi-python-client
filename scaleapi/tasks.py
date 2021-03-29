@@ -64,10 +64,21 @@ class Task(object):
         return f"Task({self._json})"
 
     def as_dict(self):
+        """Returns object details as a dictionary
+
+        `Task.as_dict()['params']`
+
+        Returns:
+            Dict with object content
+        """
         return self._json
 
     def refresh(self):
+        """Refreshes the task details.
+        """
         self._json = self._client.fetch_task(self.id).as_dict()
 
     def cancel(self):
+        """Cancels the task
+        """
         self._client.cancel_task(self.id)

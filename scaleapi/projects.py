@@ -5,6 +5,10 @@ class Project(object):
         self.type = json["type"]
         self._client = client
 
+        if len(json["param_history"]):
+            self.version = json["param_history"][-1]["version"]
+            self.instruction = json["param_history"][-1]["instruction"]
+
     def __hash__(self):
         return hash(self.name)
 

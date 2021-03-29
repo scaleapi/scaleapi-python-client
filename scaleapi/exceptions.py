@@ -9,7 +9,8 @@ class ScaleException(Exception):
 
 class ScaleInvalidRequest(ScaleException):
     """400 - Bad Request -- The request was unacceptable,
-    often due to missing a required parameter."""
+    often due to missing a required parameter.
+    """
 
     pass
 
@@ -21,8 +22,9 @@ class ScaleUnauthorized(ScaleException):
 
 
 class ScaleNotEnabled(ScaleException):
-    """402 - Not enabled -- Please contact sales@scaleapi.com before creating
-    this type of task."""
+    """402 - Not enabled -- Please contact sales@scaleapi.com before
+    creating this type of task.
+    """
 
     pass
 
@@ -34,20 +36,30 @@ class ScaleResourceNotFound(ScaleException):
 
 
 class ScaleDuplicateTask(ScaleException):
-    """409 - Conflict -- The provided idempotency key or unique_id is already
-    in use for a different request."""
+    """409 - Conflict -- The provided idempotency key or unique_id is
+    already in use for a different request.
+    """
 
     pass
 
 
 class ScaleTooManyRequests(ScaleException):
-    """429 - Too Many Requests -- Too many requests hit the API too quickly."""
+    """429 - Too Many Requests -- Too many requests hit the API
+    too quickly.
+    """
 
     pass
 
 
 class ScaleInternalError(ScaleException):
     """500 - Internal Server Error -- We had a problem with our server.
-    Try again later."""
+    Try again later.
+    """
+
+    pass
+
+
+class ScaleTimeoutError(ScaleException):
+    default = """504 - Server Timeout Error -- Try again later."""
 
     pass

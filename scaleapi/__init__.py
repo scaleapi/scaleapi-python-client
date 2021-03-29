@@ -1,12 +1,13 @@
-from typing import Dict, Generic, List, TypeVar, Union
+import warnings
+from typing import Dict, Generator, Generic, List, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
 from scaleapi.exceptions import ScaleInvalidRequest
 from scaleapi.projects import Project
 
+from ._version import __version__  # noqa: F401
 from .api import Api
 from .tasks import Task, TaskReviewStatus, TaskStatus, TaskType
-from ._version import __version__  # noqa: F401
 
 T = TypeVar("T")
 
@@ -41,31 +42,111 @@ class Batchlist(Paginator[Batch]):
 class ScaleClient(object):
     def __init__(self, api_key, source=None):
         self.api = Api(api_key, source)
+        warnings.simplefilter("always", DeprecationWarning)
 
-    def fetch_task(self, task_id: str) -> Task:
+    def get_task(self, task_id: str) -> Task:
         """Fetches a task.
         Returns the associated task.
+
+        Args:
+            task_id (str):
+                Task identifier
+        Returns:
+            Task:
         """
         endpoint = f"task/{task_id}"
         return Task(self.api._get_request(endpoint), self)
 
+    def fetch_task(self, task_id: str) -> Task:
+        warnings.warn(
+            "fetch_task() will be deprecated, please use get_task() method "
+            "as the alternative.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.get_task(task_id)
+
     def cancel_task(self, task_id: str) -> Task:
-        """Cancels a task.
-        Returns the associated task.
+        """Cancels a task and returns the associated task.
         Raises a ScaleException if it has already been canceled.
+
+        Args:
+            task_id (str):
+                Task id
+
+        Returns:
+            Task
         """
         endpoint = f"task/{task_id}/cancel"
         return Task(self.api._post_request(endpoint), self)
 
     def tasks(self, **kwargs) -> Tasklist:
         """Returns a list of your tasks.
-        Returns up to 100 at a time, to get more, use the next_token param passed back.
-        start/end_time are ISO8601 dates, the time range of tasks to fetch.
-        status can be 'completed', 'pending', or 'canceled'.
-        type is the task type.
-        limit is the max number of results to display per page,
-        next_token can be use to fetch the next page of tasks.
-        customer_review_status can be 'pending', 'fixed', 'accepted' or 'rejected'.
+        Returns up to 100 at a time, to get more, use the
+        next_token param passed back.
+
+        Valid Args:
+            start_time (str):
+                The minimum value of `created_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            end_time (str):
+                The maximum value of `created_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            status (str):
+                Status to filter tasks, can be 'completed', 'pending',
+                or 'canceled'
+
+            type (str):
+                Task type to filter. i.e. 'imageannotation'
+
+            project (str):
+                Project name to filter tasks by
+
+            batch (str):
+                Batch name to filter tasks by
+
+            customer_review_status (str):
+                Audit status of task, can be 'pending', 'fixed',
+                'accepted' or 'rejected'.
+
+            unique_id (List[str] | str):
+                The unique_id of a task.
+
+            completed_after (str):
+                The minimum value of `completed_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            completed_before (str):
+                The maximum value of `completed_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            updated_after (str):
+                The minimum value of `updated_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            updated_before (str):
+                The maximum value of `updated_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            created_after (str):
+                The minimum value of `created_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            created_before (str):
+                The maximum value of `created_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            tags (List[str] | str):
+                The tags of a task; multiple tags can be
+                specified as a list.
+
+            limit (int):
+                Determines the page size (1-100)
+
+            next_token (str):
+                Can be use to fetch the next page of tasks
         """
         allowed_kwargs = {
             "start_time",
@@ -118,9 +199,70 @@ class ScaleClient(object):
         created_after: str = None,
         created_before: str = None,
         tags: Union[List[str], str] = None,
-    ) -> List[Task]:
+    ) -> Generator[Task, None, None]:
+        """Retrieve all tasks as a generator function, with the
+        given parameters. This methods handles pagination of
+        tasks() method.
 
-        tasks_list: List[Task] = []
+        In order to retrieve results as a list, please use:
+        `tasks = list(tasks_all(...))`
+
+        Args:
+            project_name (str):
+                Project Name
+
+            batch_name (str, optional):
+                Batch Name
+
+            type (TaskType, optional):
+                Task type to filter i.e. `TaskType.TextCollection`
+
+            status (TaskStatus, optional):
+                Task status i.e. `TaskStatus.Completed`
+
+            review_status (List[TaskReviewStatus] | TaskReviewStatus):
+                The status of the audit result of the task.
+                Input can be a single element or a list of
+                TaskReviewStatus. i.e. `TaskReviewStatus.Accepted` to
+                filter the tasks that you accepted after audit.
+
+            unique_id (List[str] | str, optional):
+                The unique_id of a task. Multiple unique IDs can be
+                specified at the same time as a list.
+
+            completed_after (str, optional):
+                The minimum value of `completed_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            completed_before (str, optional):
+                The maximum value of `completed_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            updated_after (str, optional):
+                The minimum value of `updated_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            updated_before (str, optional):
+                The maximum value of `updated_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            created_after (str, optional):
+                The minimum value of `created_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            created_before (str, optional):
+                The maximum value of `created_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            tags (List[str] | str, optional):
+                The tags of a task; multiple tags can be
+                specified as a list.
+
+        Yields:
+            Generator[Task]:
+                Yields Task objects, can be iterated.
+        """
+
         next_token = None
         has_more = True
 
@@ -144,42 +286,161 @@ class ScaleClient(object):
             if type:
                 tasks_args["type"] = type.value
             if review_status:
-                tasks_args["customer_review_status"] = review_status.value
+                if isinstance(review_status, List):
+                    value = ",".join(map(lambda x: x.value, review_status))
+                else:
+                    value = review_status.value
+
+                tasks_args["customer_review_status"] = value
 
             tasks = self.tasks(**tasks_args)
+            for task in tasks.docs:
+                yield task
+
             next_token = tasks.next_token
             has_more = tasks.has_more
-            tasks_list.extend(tasks.docs)
-
-        return tasks_list
 
     def create_task(self, task_type: TaskType, **kwargs) -> Task:
+        """This method can be used for any Scale supported task type.
+        Parameters may differ based on the given task_type.
+        https://github.com/scaleapi/scaleapi-python-client#create-task
+
+        Args:
+            task_type (TaskType):
+                Task type to be created
+                i.e. `TaskType.ImageAnnotation`
+            **kwargs:
+                Passing in the applicable values into thefunction
+                definition. The applicable fields and further
+                information for each task type can be found in
+                Scale's API documentation.
+                https://docs.scale.com/reference
+
+        Returns:
+            Task:
+                Returns created task.
+        """
         endpoint = f"task/{task_type.value}"
         taskdata = self.api._post_request(endpoint, body=kwargs)
         return Task(taskdata, self)
 
     def create_batch(self, project: str, batch_name: str, callback: str = "") -> Batch:
+        """Create a new Batch within a project.
+        https://docs.scale.com/reference#batch-creation
+
+        Args:
+            project (str):
+                Project name to create batch in
+            batch_name (str):
+                Batch name
+            callback (str, optional):
+                Email to notify, or URL to POST to
+                when a batch is complete.
+
+        Returns:
+            Batch: Created batch object
+        """
         endpoint = "batches"
         payload = dict(project=project, name=batch_name, callback=callback)
         batchdata = self.api._post_request(endpoint, body=payload)
         return Batch(batchdata, self)
 
     def finalize_batch(self, batch_name: str) -> Batch:
+        """Finalizes a batch so its tasks can be worked on.
+        https://docs.scale.com/reference#batch-finalization
+
+        Args:
+            batch_name (str):
+                Batch name
+
+        Returns:
+            Batch
+        """
         endpoint = f"batches/{Api.quote_string(batch_name)}/finalize"
         batchdata = self.api._post_request(endpoint)
         return Batch(batchdata, self)
 
     def batch_status(self, batch_name: str) -> Dict:
+        """Returns the status of a batch with the counts of
+        its tasks grouped by task status.
+        https://docs.scale.com/reference#batch-status
+
+        Args:
+            batch_name (str):
+                Batch name
+
+        Returns:
+            Dict {
+                status: Batch status
+                pending (optional): # of tasks in pending stage
+                error (optional): # of tasks in error stage
+                completed (optional): # of tasks in completed stage
+                canceled (optional): # of tasks in canceled stage
+            }
+
+        """
         endpoint = f"batches/{Api.quote_string(batch_name)}/status"
         status_data = self.api._get_request(endpoint)
         return status_data
 
-    def get_batch(self, batch_name):
+    def get_batch(self, batch_name: str) -> Batch:
+        """Returns the details of a batch with the given name.
+        https://docs.scale.com/reference#batch-retrieval
+
+        Args:
+            batch_name (str):
+                Batch name
+
+        Returns:
+            Batch
+        """
         endpoint = f"batches/{Api.quote_string(batch_name)}"
         batchdata = self.api._get_request(endpoint)
         return Batch(batchdata, self)
 
     def list_batches(self, **kwargs) -> Batchlist:
+        warnings.warn(
+            "list_batches() will be deprecated, please use batches() method "
+            "as the alternative.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.batches(**kwargs)
+
+    def batches(self, **kwargs) -> Batchlist:
+        """This is a paged endpoint for all of your batches.
+        Pagination is based off limit and offset parameters,
+        which determine the page size and how many results to skip.
+        Returns up to 100 batches at a time (limit).
+        https://docs.scale.com/reference#batch-list
+
+        Valid Args:
+            start_time (str):
+                The minimum value of `created_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            end_time (str):
+                The maximum value of `created_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            status (str):
+                Status to filter batches by
+
+            project (str):
+                Project name to filter batches by
+
+            limit (int):
+                Determines the page size (1-100)
+
+            offset (int):
+                How many results to skip
+
+        Returns:
+            Batchlist:
+                Paginated result. Batchlist.docs provides access
+                to batches list. Batchlist.limit and Batchlist.offset
+                are helpers for pagination.
+        """
         allowed_kwargs = {
             "start_time",
             "end_time",
@@ -192,7 +453,7 @@ class ScaleClient(object):
         for key in kwargs:
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest(
-                    f"Illegal parameter {key} for ScaleClient.list_batches()"
+                    f"Illegal parameter {key} for ScaleClient.batches()"
                 )
         endpoint = "batches"
         response = self.api._get_request(endpoint, params=kwargs)
@@ -206,16 +467,39 @@ class ScaleClient(object):
             response["has_more"],
         )
 
-    def list_batches_all(
+    def batches_all(
         self,
         project_name: str,
         batch_status: BatchStatus = None,
         created_after: str = None,
         created_before: str = None,
-        limit: int = 100,
-    ) -> List[Batch]:
+    ) -> Generator[Batch, None, None]:
+        """Generator method to yield all batches with the given
+        parameters.
 
-        batches_list: List[Batch] = []
+        In order to retrieve results as a list, please use:
+        `batches = list(batches_all(...))`
+
+        Args:
+            project_name (str):
+                Project Name to filter batches
+
+            batch_status (BatchStatus, optional):
+                i.e. `BatchStatus.Completed`
+
+            created_after (str, optional):
+                The minimum value of `created_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            created_before (str, optional):
+                The maximum value of `created_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+        Yields:
+            Generator[Batch]:
+                Yields Batch, can be iterated.
+        """
+
         has_more = True
         offset = 0
 
@@ -225,36 +509,83 @@ class ScaleClient(object):
                 "end_time": created_before,
                 "project": project_name,
                 "offset": offset,
-                "limit": limit,
             }
 
             if batch_status:
                 batches_args["status"] = batch_status.value
 
-            batches = self.list_batches(**batches_args)
+            batches = self.batches(**batches_args)
+            for batch in batches.docs:
+                yield batch
             offset += batches.limit
             has_more = batches.has_more
-            batches_list.extend(batches.docs)
 
-        return batches_list
+    def create_project(
+        self, project_name: str, type: TaskType, params: Dict
+    ) -> Project:
+        """Creates a new project.
+        https://docs.scale.com/reference#project-creation
 
-    def create_project(self, project_name: str, type: TaskType, params) -> Project:
+        Args:
+            project_name (str):
+                Project name
+
+            type (TaskType):
+                Task Type i.e. `TaskType.ImageAnnotation`
+
+            params (Dict):
+                Project parameters to be specificed.
+                i.e. `{'instruction':'Please label the kittens'}`
+
+        Returns:
+            Project: [description]
+        """
         endpoint = "projects"
         payload = dict(type=type.value, name=project_name, params=params)
         projectdata = self.api._post_request(endpoint, body=payload)
         return Project(projectdata, self)
 
     def get_project(self, project_name: str) -> Project:
+        """Retrieves a single project with the given name.
+        https://docs.scale.com/reference#project-retrieval
+
+        Args:
+            project_name (str):
+                Project name
+
+        Returns:
+            Project
+        """
         endpoint = f"projects/{Api.quote_string(project_name)}"
         projectdata = self.api._get_request(endpoint)
         return Project(projectdata, self)
 
     def projects(self) -> List[Project]:
+        """Returns all projects.
+        Refer to Projects API Reference:
+        https://docs.scale.com/reference#list-all-projects
+
+        Returns:
+            List[Project]
+        """
         endpoint = "projects"
         project_list = self.api._get_request(endpoint)
         return [Project(project, self) for project in project_list]
 
     def update_project(self, project_name: str, **kwargs) -> Project:
+        """You can set parameters on a project. Project-level-parameters
+        will be set on future tasks created under this project if they
+        are not set in the task request. Any parameters specified in
+        the task request will override any project parameter.
+        https://docs.scale.com/reference#project-update-parameters
+
+        Args:
+            project_name (str):
+                Project's name
+
+        Returns:
+            Project
+        """
         allowed_kwargs = {"patch", "instruction"}
         for key in kwargs:
             if key not in allowed_kwargs:

@@ -19,7 +19,7 @@ def get_version(rel_path):
         if line.startswith("__version__"):
             delim = '"' if '"' in line else "'"
             return line.split(delim)[1]
-    raise RuntimeError("Unable to find a valid __version__ string in %s." % rel_path)
+    raise RuntimeError(f"Unable to find a valid __version__ string in {rel_path}.")
 
 
 setup(
