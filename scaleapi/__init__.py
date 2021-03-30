@@ -13,6 +13,7 @@ T = TypeVar("T")
 
 
 class Paginator(list, Generic[T]):
+    """Paginator for list endpoints"""
     def __init__(
         self,
         docs: List[T],
@@ -22,7 +23,7 @@ class Paginator(list, Generic[T]):
         has_more: bool,
         next_token=None,
     ):
-        super(Paginator, self).__init__(docs)
+        super().__init__(docs)
         self.docs = docs
         self.total = total
         self.limit = limit
@@ -32,14 +33,16 @@ class Paginator(list, Generic[T]):
 
 
 class Tasklist(Paginator[Task]):
-    pass
+    """Tasks Paginator"""
 
 
 class Batchlist(Paginator[Batch]):
-    pass
+    """Batches Paginator"""
 
 
-class ScaleClient(object):
+class ScaleClient():
+    """Main class serves as an interface for Scale API
+    """
     def __init__(self, api_key, source=None):
         self.api = Api(api_key, source)
         warnings.simplefilter("always", DeprecationWarning)
@@ -55,9 +58,11 @@ class ScaleClient(object):
             Task:
         """
         endpoint = f"task/{task_id}"
-        return Task(self.api._get_request(endpoint), self)
+        return Task(self.api.get_request(endpoint), self)
 
     def fetch_task(self, task_id: str) -> Task:
+        """fetch_task() will be deprecated, please use get_task() method
+        """
         warnings.warn(
             "fetch_task() will be deprecated, please use get_task() method "
             "as the alternative.",
@@ -78,7 +83,7 @@ class ScaleClient(object):
             Task
         """
         endpoint = f"task/{task_id}/cancel"
-        return Task(self.api._post_request(endpoint), self)
+        return Task(self.api.post_request(endpoint), self)
 
     def tasks(self, **kwargs) -> Tasklist:
         """Returns a list of your tasks.
@@ -169,10 +174,10 @@ class ScaleClient(object):
         for key in kwargs:
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest(
-                    f"Illegal parameter {key} for ScaleClient.tasks()", None
+                    f"Illegal parameter {key} for ScaleClient.tasks()"
                 )
 
-        response = self.api._get_request("tasks", params=kwargs)
+        response = self.api.get_request("tasks", params=kwargs)
 
         docs = [Task(json, self) for json in response["docs"]]
         return Tasklist(
@@ -188,7 +193,7 @@ class ScaleClient(object):
         self,
         project_name: str,
         batch_name: str = None,
-        type: TaskType = None,
+        task_type: TaskType = None,
         status: TaskStatus = None,
         review_status: Union[List[TaskReviewStatus], TaskReviewStatus] = None,
         unique_id: Union[List[str], str] = None,
@@ -214,7 +219,7 @@ class ScaleClient(object):
             batch_name (str, optional):
                 Batch Name
 
-            type (TaskType, optional):
+            task_type (TaskType, optional):
                 Task type to filter i.e. `TaskType.TextCollection`
 
             status (TaskStatus, optional):
@@ -283,8 +288,8 @@ class ScaleClient(object):
 
             if status:
                 tasks_args["status"] = status.value
-            if type:
-                tasks_args["type"] = type.value
+            if task_type:
+                tasks_args["type"] = task_type.value
             if review_status:
                 if isinstance(review_status, List):
                     value = ",".join(map(lambda x: x.value, review_status))
@@ -321,7 +326,7 @@ class ScaleClient(object):
                 Returns created task.
         """
         endpoint = f"task/{task_type.value}"
-        taskdata = self.api._post_request(endpoint, body=kwargs)
+        taskdata = self.api.post_request(endpoint, body=kwargs)
         return Task(taskdata, self)
 
     def create_batch(self, project: str, batch_name: str, callback: str = "") -> Batch:
@@ -336,13 +341,13 @@ class ScaleClient(object):
             callback (str, optional):
                 Email to notify, or URL to POST to
                 when a batch is complete.
-
+clea
         Returns:
             Batch: Created batch object
         """
         endpoint = "batches"
         payload = dict(project=project, name=batch_name, callback=callback)
-        batchdata = self.api._post_request(endpoint, body=payload)
+        batchdata = self.api.post_request(endpoint, body=payload)
         return Batch(batchdata, self)
 
     def finalize_batch(self, batch_name: str) -> Batch:
@@ -357,7 +362,7 @@ class ScaleClient(object):
             Batch
         """
         endpoint = f"batches/{Api.quote_string(batch_name)}/finalize"
-        batchdata = self.api._post_request(endpoint)
+        batchdata = self.api.post_request(endpoint)
         return Batch(batchdata, self)
 
     def batch_status(self, batch_name: str) -> Dict:
@@ -380,7 +385,7 @@ class ScaleClient(object):
 
         """
         endpoint = f"batches/{Api.quote_string(batch_name)}/status"
-        status_data = self.api._get_request(endpoint)
+        status_data = self.api.get_request(endpoint)
         return status_data
 
     def get_batch(self, batch_name: str) -> Batch:
@@ -395,10 +400,12 @@ class ScaleClient(object):
             Batch
         """
         endpoint = f"batches/{Api.quote_string(batch_name)}"
-        batchdata = self.api._get_request(endpoint)
+        batchdata = self.api.get_request(endpoint)
         return Batch(batchdata, self)
 
     def list_batches(self, **kwargs) -> Batchlist:
+        """list_batches() will be deprecated, please use batches() method
+        """
         warnings.warn(
             "list_batches() will be deprecated, please use batches() method "
             "as the alternative.",
@@ -456,7 +463,7 @@ class ScaleClient(object):
                     f"Illegal parameter {key} for ScaleClient.batches()"
                 )
         endpoint = "batches"
-        response = self.api._get_request(endpoint, params=kwargs)
+        response = self.api.get_request(endpoint, params=kwargs)
         docs = [Batch(doc, self) for doc in response["docs"]]
 
         return Batchlist(
@@ -521,7 +528,7 @@ class ScaleClient(object):
             has_more = batches.has_more
 
     def create_project(
-        self, project_name: str, type: TaskType, params: Dict
+        self, project_name: str, task_type: TaskType, params: Dict
     ) -> Project:
         """Creates a new project.
         https://docs.scale.com/reference#project-creation
@@ -530,7 +537,7 @@ class ScaleClient(object):
             project_name (str):
                 Project name
 
-            type (TaskType):
+            task_type (TaskType):
                 Task Type i.e. `TaskType.ImageAnnotation`
 
             params (Dict):
@@ -541,8 +548,8 @@ class ScaleClient(object):
             Project: [description]
         """
         endpoint = "projects"
-        payload = dict(type=type.value, name=project_name, params=params)
-        projectdata = self.api._post_request(endpoint, body=payload)
+        payload = dict(type=task_type.value, name=project_name, params=params)
+        projectdata = self.api.post_request(endpoint, body=payload)
         return Project(projectdata, self)
 
     def get_project(self, project_name: str) -> Project:
@@ -557,7 +564,7 @@ class ScaleClient(object):
             Project
         """
         endpoint = f"projects/{Api.quote_string(project_name)}"
-        projectdata = self.api._get_request(endpoint)
+        projectdata = self.api.get_request(endpoint)
         return Project(projectdata, self)
 
     def projects(self) -> List[Project]:
@@ -569,7 +576,7 @@ class ScaleClient(object):
             List[Project]
         """
         endpoint = "projects"
-        project_list = self.api._get_request(endpoint)
+        project_list = self.api.get_request(endpoint)
         return [Project(project, self) for project in project_list]
 
     def update_project(self, project_name: str, **kwargs) -> Project:
@@ -590,9 +597,9 @@ class ScaleClient(object):
         for key in kwargs:
             if key not in allowed_kwargs:
                 raise ScaleInvalidRequest(
-                    f"Illegal parameter {key} for" "ScaleClient.update_project()", None,
+                    f"Illegal parameter {key} for" "ScaleClient.update_project()"
                 )
 
         endpoint = f"projects/{Api.quote_string(project_name)}/setParams"
-        projectdata = self.api._post_request(endpoint, body=kwargs)
+        projectdata = self.api.post_request(endpoint, body=kwargs)
         return Project(projectdata, self)

@@ -2,26 +2,19 @@ import platform
 import urllib.parse
 
 import requests
-from requests.adapters import HTTPAdapter, Retry
+from requests.adapters import HTTPAdapter, Response, Retry
 
 from ._version import __package_name__, __version__
-from .exceptions import (
-    ScaleDuplicateTask,
-    ScaleException,
-    ScaleInternalError,
-    ScaleInvalidRequest,
-    ScaleNotEnabled,
-    ScaleResourceNotFound,
-    ScaleTimeoutError,
-    ScaleTooManyRequests,
-    ScaleUnauthorized,
-)
+from .exceptions import ExceptionMap, ScaleException
+
 
 SCALE_ENDPOINT = "https://api.scale.com/v1"
 NUM_OF_RETRIES = 3
 
 
-class Api(object):
+class Api():
+    """Internal Api reference for handling http operations"""
+
     def __init__(self, api_key, user_agent_extension=None):
         if api_key == "" or api_key is None:
             raise ScaleException("Please provide a valid API Key.")
@@ -34,13 +27,10 @@ class Api(object):
             "User-Agent": self._generate_useragent(user_agent_extension),
         }
 
-    def _request(
-        self, method, endpoint, headers=None, auth=None, params=None, body=None
-    ):
-        """Generic HTTP request method with error handling."""
-
-        url = f"{SCALE_ENDPOINT}/{endpoint}"
-        error_message = None
+    @staticmethod
+    def _http_request(
+        method, url, headers=None, auth=None, params=None, body=None
+    ) -> Response:
 
         https = requests.Session()
         retry_strategy = Retry(
@@ -67,45 +57,51 @@ class Api(object):
                 json=body,
             )
 
-            if res.status_code == 200:
-                return res.json()
-            else:
-                try:
-                    error_message = res.json().get("error", res.text)
-                except Exception:
-                    error_message = res.text
+            return res
+        except Exception as err:
+            raise ScaleException(err) from err
 
-                if res.status_code == 400:
-                    raise ScaleInvalidRequest(error_message, res.status_code)
-                elif res.status_code == 401:
-                    raise ScaleUnauthorized(error_message, res.status_code)
-                elif res.status_code == 402:
-                    raise ScaleNotEnabled(error_message, res.status_code)
-                elif res.status_code == 404:
-                    raise ScaleResourceNotFound(error_message, res.status_code)
-                elif res.status_code == 409:
-                    raise ScaleDuplicateTask(error_message, res.status_code)
-                elif res.status_code == 429:
-                    raise ScaleTooManyRequests(error_message, res.status_code)
-                elif res.status_code == 500:
-                    raise ScaleInternalError(error_message, res.status_code)
-                elif res.status_code == 504:
-                    raise ScaleTimeoutError(error_message, res.status_code)
-                else:
-                    raise ScaleException(error_message, res.status_code)
+    @staticmethod
+    def _raise_on_respose(res: Response):
 
-        except (requests.exceptions.Timeout, requests.exceptions.RetryError,) as err:
-            raise ScaleException(err)
+        message = ""
+        try:
+            message = res.json().get("error", res.text)
+        except ValueError:
+            message = res.text
 
-    def _get_request(self, endpoint, params=None):
+        try:
+            exception = ExceptionMap[res.status_code]
+            raise exception(message)
+        except KeyError as err:
+            raise ScaleException(message) from err
+
+    def _api_request(
+        self, method, endpoint, headers=None, auth=None, params=None, body=None
+    ):
+        """Generic HTTP request method with error handling."""
+
+        url = f"{SCALE_ENDPOINT}/{endpoint}"
+
+        res = self._http_request(method, url, headers, auth, params, body)
+
+        json = None
+        if res.status_code == 200:
+            json = res.json()
+        else:
+            self._raise_on_respose(res)
+
+        return json
+
+    def get_request(self, endpoint, params=None):
         """Generic GET Request Wrapper"""
-        return self._request(
+        return self._api_request(
             "GET", endpoint, headers=self._headers, auth=self._auth, params=params
         )
 
-    def _post_request(self, endpoint, body=None):
+    def post_request(self, endpoint, body=None):
         """Generic POST Request Wrapper"""
-        return self._request(
+        return self._api_request(
             "POST", endpoint, headers=self._headers, auth=self._auth, body=body
         )
 

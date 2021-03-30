@@ -1,11 +1,19 @@
 class ScaleException(Exception):
+    """Generic ScaleException class"""
+    code = None
+
     def __init__(self, message, errcode=None):
-        self.code = errcode
+        if not message:
+            message = type(self).__name__
         self.message = message
+
         if errcode:
-            super(ScaleException, self).__init__(f"<Response [{errcode}]> {message}")
+            self.code = errcode
+
+        if self.code:
+            super().__init__(f"<Response [{self.code}]> {message}")
         else:
-            super(ScaleException, self).__init__(f"<Response> {message}")
+            super().__init__(f"<Response> {message}")
 
 
 class ScaleInvalidRequest(ScaleException):
@@ -13,13 +21,13 @@ class ScaleInvalidRequest(ScaleException):
     often due to missing a required parameter.
     """
 
-    pass
+    code = 400
 
 
 class ScaleUnauthorized(ScaleException):
     """401 - Unauthorized -- No valid API key provided."""
 
-    pass
+    code = 401
 
 
 class ScaleNotEnabled(ScaleException):
@@ -27,13 +35,13 @@ class ScaleNotEnabled(ScaleException):
     creating this type of task.
     """
 
-    pass
+    code = 402
 
 
 class ScaleResourceNotFound(ScaleException):
     """404 - Not Found -- The requested resource doesn't exist."""
 
-    pass
+    code = 404
 
 
 class ScaleDuplicateTask(ScaleException):
@@ -41,7 +49,7 @@ class ScaleDuplicateTask(ScaleException):
     already in use for a different request.
     """
 
-    pass
+    code = 409
 
 
 class ScaleTooManyRequests(ScaleException):
@@ -49,7 +57,7 @@ class ScaleTooManyRequests(ScaleException):
     too quickly.
     """
 
-    pass
+    code = 429
 
 
 class ScaleInternalError(ScaleException):
@@ -57,11 +65,23 @@ class ScaleInternalError(ScaleException):
     Try again later.
     """
 
-    pass
+    code = 500
 
 
 class ScaleTimeoutError(ScaleException):
     """504 - Server Timeout Error -- Try again later.
     """
 
-    pass
+    code = 504
+
+
+ExceptionMap = {
+    ScaleInvalidRequest.code: ScaleInvalidRequest,
+    ScaleUnauthorized.code: ScaleUnauthorized,
+    ScaleNotEnabled.code: ScaleNotEnabled,
+    ScaleResourceNotFound.code: ScaleResourceNotFound,
+    ScaleDuplicateTask.code: ScaleDuplicateTask,
+    ScaleTooManyRequests.code: ScaleTooManyRequests,
+    ScaleInternalError.code: ScaleInternalError,
+    ScaleTimeoutError.code: ScaleTimeoutError,
+}
