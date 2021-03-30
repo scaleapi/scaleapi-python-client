@@ -76,7 +76,7 @@ __________________
 
 Enabled Auto-Retry
 __________________
-SDK now enabled auto-retry in case of a ``TimeOut(504)`` or ``TooManyRequests(429)`` error occurs.
+SDK now supports auto-retry in case of a ``TimeOut(504)`` or ``TooManyRequests(429)`` error occurs.
 
 New Exceptions
 ______________
