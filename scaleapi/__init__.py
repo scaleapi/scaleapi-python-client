@@ -343,7 +343,7 @@ class ScaleClient:
             callback (str, optional):
                 Email to notify, or URL to POST to
                 when a batch is complete.
-clea
+
         Returns:
             Batch: Created batch object
         """
@@ -384,7 +384,6 @@ clea
                 completed (optional): # of tasks in completed stage
                 canceled (optional): # of tasks in canceled stage
             }
-
         """
         endpoint = f"batches/{Api.quote_string(batch_name)}/status"
         status_data = self.api.get_request(endpoint)
