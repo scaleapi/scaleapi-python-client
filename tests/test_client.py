@@ -7,8 +7,12 @@ from datetime import datetime
 
 import pytest
 import scaleapi
-from scaleapi.exceptions import (ScaleDuplicateTask, ScaleInvalidRequest,
-                                 ScaleResourceNotFound, ScaleUnauthorized)
+from scaleapi.exceptions import (
+    ScaleDuplicateTask,
+    ScaleInvalidRequest,
+    ScaleResourceNotFound,
+    ScaleUnauthorized,
+)
 from scaleapi.tasks import TaskType
 
 TEST_PROJECT_NAME = "scaleapi-python-sdk"
@@ -28,7 +32,7 @@ def test_invalidkey_fail():
         client_fail.batches(limit=1)
 
 
-def make_a_task(unique_id: str = None):
+def make_a_task(unique_id: str = None, batch: str = None):
 
     args = {
         "callback_url": "http://www.example.com/callback",
@@ -45,6 +49,8 @@ def make_a_task(unique_id: str = None):
     }
     if unique_id:
         args["unique_id"] = unique_id
+    if batch:
+        args["batch"] = batch
 
     return client.create_task(TaskType.ImageAnnotation, **args)
 
@@ -304,6 +310,16 @@ def create_a_batch():
         batch_name=str(uuid.uuid4()),
         project=TEST_PROJECT_NAME,
     )
+
+
+def test_tasks_all():
+    batch = create_a_batch()
+    tasks = []
+    for _ in range(3):
+        tasks.append(make_a_task(batch=batch.name))
+    task_ids = {task.id for task in tasks}
+    for task in client.tasks_all(project_name=TEST_PROJECT_NAME, batch_name=batch.name):
+        assert task.id in task_ids
 
 
 def test_finalize_batch():
