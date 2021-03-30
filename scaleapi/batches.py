@@ -2,12 +2,14 @@ from enum import Enum
 
 
 class BatchStatus(Enum):
+    """Status of Batches"""
     Staging = "staging"
     InProgress = "in_progress"
     Completed = "completed"
 
 
-class Batch(object):
+class Batch():
+    """Batch class, contains Batch information"""
     def __init__(self, json, client):
         self._json = json
         self.name = json["name"]
@@ -33,14 +35,19 @@ class Batch(object):
         return f"Batch({self._json})"
 
     def as_dict(self):
+        """Returns all attributes as a dictionary"""
         return self._json
 
     def finalize(self):
+        """Finalizes the batch"""
         res = self._client.finalize_batch(self.name)
         self.status = res.status
         return res
 
     def get_status(self):
+        """Returns status of the batch and
+        updates tasks_... parameters
+        """
         res = self._client.batch_status(self.name)
         self.status = res["status"]
         for stat in ["pending", "completed", "error", "canceled"]:

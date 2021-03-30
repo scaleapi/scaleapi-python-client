@@ -1,4 +1,5 @@
-class Project(object):
+class Project():
+    """Project class, containing Project information."""
     def __init__(self, json, client):
         self._json = json
         self.name = json["name"]
@@ -21,4 +22,5 @@ class Project(object):
         return f"Project({self._json})"
 
     def as_dict(self):
+        """Returns all attributes as a dictionary"""
         return self._json

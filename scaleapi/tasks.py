@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class TaskType(Enum):
+    """Task Type List"""
     Annotation = "annotation"
     Categorization = "categorization"
     Comparison = "comparison"
@@ -29,6 +30,7 @@ class TaskType(Enum):
 
 
 class TaskReviewStatus(Enum):
+    """Customer Audit Status of Task"""
     Accepted = "accepted"
     Fixed = "fixed"
     Commented = "commented"
@@ -36,12 +38,13 @@ class TaskReviewStatus(Enum):
 
 
 class TaskStatus(Enum):
+    """Status of Task"""
     Pending = "pending"
     Completed = "completed"
     Canceled = "canceled"
 
 
-class Task(object):
+class Task():
     """Task class, containing task information."""
 
     def __init__(self, json, client):
