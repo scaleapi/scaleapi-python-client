@@ -405,10 +405,10 @@ class ScaleClient:
         return Batch(batchdata, self)
 
     def list_batches(self, **kwargs) -> Batchlist:
-        """list_batches() will be deprecated, please use batches() method
+        """list_batches will be deprecated, please use batches() method
         """
         warnings.warn(
-            "list_batches() will be deprecated, please use batches() method "
+            "list_batches will be deprecated, please use batches() method "
             "as the alternative.",
             DeprecationWarning,
             stacklevel=2,
@@ -591,15 +591,12 @@ class ScaleClient:
             project_name (str):
                 Project's name
 
+            **kwargs:
+                Project parameters to be set.
+
         Returns:
             Project
         """
-        allowed_kwargs = {"patch", "instruction"}
-        for key in kwargs:
-            if key not in allowed_kwargs:
-                raise ScaleInvalidRequest(
-                    f"Illegal parameter {key} for" "ScaleClient.update_project()"
-                )
 
         endpoint = f"projects/{Api.quote_string(project_name)}/setParams"
         projectdata = self.api.post_request(endpoint, body=kwargs)
