@@ -5,7 +5,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-install_requires = ["requests>=2.25.0"]
+install_requires = ["requests>=2.25.0", "urllib3>=1.26.0"]
 
 
 def read(rel_path):
