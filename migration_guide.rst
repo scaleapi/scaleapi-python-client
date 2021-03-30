@@ -32,7 +32,7 @@ Creating a new task is now unified under the ``create_task(TaskType, ...)`` meth
 Retrieving Tasks
 ________________
 A new generator method is introduced to retrieve a list of tasks with all available parameters. The new method handles pagination and tokens: ``tasks_all(...)``. 
-You can have a simpler code by replacing ``tasks()`` loops with pagination and tokens. 
+You can have a simpler code by replacing ``tasks()`` loops with single ``tasks_all()`` call. 
 
 Please refer to `List Tasks <README.rst#list-tasks>`_ for more details.
 
@@ -56,9 +56,9 @@ Accessing ``task.params`` child objects at task level is **deprecated**. Instead
     task.params["attachment"]   # Migrate from => task.attachment
 
 
-Task Counts Summary of Batch
-____________________________
-Attributes of Batch ``pending``, ``completed``, ``error``, ``canceled`` are replaced with ``tasks_pending``, ``tasks_completed``, ``tasks_error``, ``tasks_canceled`` respectively.
+Task Counts as Summary of Batch
+_______________________________
+Attributes of Batch ``pending``, ``completed``, ``error``, ``canceled`` are replaced with ``tasks_pending``, ``tasks_completed``, ``tasks_error``, ``tasks_canceled`` respectively to avoid confusion.
 
 .. code-block:: python
 
@@ -84,4 +84,5 @@ New error types are introduces if you want to handle specific exception cases.
 ``ScaleInvalidRequest``, ``ScaleUnauthorized``, ``ScaleNotEnabled``, ``ScaleResourceNotFound``, ``ScaleDuplicateTask``, ``ScaleTooManyRequests``, ``ScaleInternalError`` and ``ScaleTimeoutError``.
 
 All new error types are child of the existing ``ScaleException`` which can be used to handle all cases.
+
 Please review `Error handling <README.rst#error-handling>`_ section for more details.
