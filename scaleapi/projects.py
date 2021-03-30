@@ -1,5 +1,6 @@
-class Project():
+class Project:
     """Project class, containing Project information."""
+
     def __init__(self, json, client):
         self._json = json
         self.name = json["name"]

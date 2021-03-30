@@ -1,5 +1,6 @@
 class ScaleException(Exception):
     """Generic ScaleException class"""
+
     code = None
 
     def __init__(self, message, errcode=None):

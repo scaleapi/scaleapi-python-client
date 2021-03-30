@@ -14,6 +14,7 @@ T = TypeVar("T")
 
 class Paginator(list, Generic[T]):
     """Paginator for list endpoints"""
+
     def __init__(
         self,
         docs: List[T],
@@ -40,9 +41,10 @@ class Batchlist(Paginator[Batch]):
     """Batches Paginator"""
 
 
-class ScaleClient():
+class ScaleClient:
     """Main class serves as an interface for Scale API
     """
+
     def __init__(self, api_key, source=None):
         self.api = Api(api_key, source)
         warnings.simplefilter("always", DeprecationWarning)

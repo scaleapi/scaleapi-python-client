@@ -3,13 +3,15 @@ from enum import Enum
 
 class BatchStatus(Enum):
     """Status of Batches"""
+
     Staging = "staging"
     InProgress = "in_progress"
     Completed = "completed"
 
 
-class Batch():
+class Batch:
     """Batch class, contains Batch information"""
+
     def __init__(self, json, client):
         self._json = json
         self.name = json["name"]

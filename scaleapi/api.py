@@ -7,12 +7,11 @@ from requests.adapters import HTTPAdapter, Response, Retry
 from ._version import __package_name__, __version__
 from .exceptions import ExceptionMap, ScaleException
 
-
 SCALE_ENDPOINT = "https://api.scale.com/v1"
 NUM_OF_RETRIES = 3
 
 
-class Api():
+class Api:
     """Internal Api reference for handling http operations"""
 
     def __init__(self, api_key, user_agent_extension=None):
