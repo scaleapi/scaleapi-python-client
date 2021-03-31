@@ -25,7 +25,6 @@ class Batch:
         self.tasks_error = None
         self.tasks_canceled = None
         self._client = client
-        self.get_status()
 
     def __hash__(self):
         return hash(self.name)

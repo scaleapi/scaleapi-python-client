@@ -1,4 +1,4 @@
-# coding: utf-8
+# pylint: disable=missing-function-docstring
 
 import os
 import time
@@ -21,10 +21,10 @@ TEST_PROJECT_NAME = "scaleapi-python-sdk"
 try:
     test_api_key = os.environ["SCALE_TEST_API_KEY"]
     client = scaleapi.ScaleClient(test_api_key, "pytest")
-except KeyError:
+except KeyError as err:
     raise Exception(
         "Please set the environment variable SCALE_TEST_API_KEY to run tests."
-    )
+    ) from err
 
 
 def test_invalidkey_fail():
