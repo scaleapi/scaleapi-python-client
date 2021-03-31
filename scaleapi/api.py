@@ -8,7 +8,12 @@ from ._version import __package_name__, __version__
 from .exceptions import ExceptionMap, ScaleException
 
 SCALE_ENDPOINT = "https://api.scale.com/v1"
-NUM_OF_RETRIES = 3
+
+# Parameters for HTTP retry
+HTTP_TOTAL_RETRIES = 3  # Number of total retries
+HTTP_RETRY_BACKOFF_FACTOR = 2  # Wait 1, 2, 4 seconds between retries
+HTTP_STATUS_FORCE_LIST = [429, 504]  # Status codes to force retry
+HTTP_RETRY_ALLOWED_METHODS = frozenset({"GET", "POST"})
 
 
 class Api:
@@ -33,10 +38,10 @@ class Api:
 
         https = requests.Session()
         retry_strategy = Retry(
-            total=NUM_OF_RETRIES,
-            backoff_factor=2,  # Will wait 1, 2, 4 seconds between retries
-            status_forcelist=[429, 504],
-            allowed_methods=["GET", "POST"],
+            total=HTTP_TOTAL_RETRIES,
+            backoff_factor=HTTP_RETRY_BACKOFF_FACTOR,
+            status_forcelist=HTTP_STATUS_FORCE_LIST,
+            allowed_methods=HTTP_RETRY_ALLOWED_METHODS,
             raise_on_status=False,
         )
 
