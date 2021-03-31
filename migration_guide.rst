@@ -31,8 +31,8 @@ Creating a new task is now unified under the ``create_task(TaskType, ...)`` meth
 
 Retrieving Tasks
 ________________
-A new generator method is introduced to retrieve a list of tasks with all available parameters. The new method handles pagination and tokens: ``tasks_all(...)``. 
-You can have a simpler code by replacing ``tasks()`` loops with single ``tasks_all()`` call. 
+A new generator method is introduced to retrieve a list of tasks with all available parameters. The new method handles pagination and tokens: ``tasks_all(...)``.
+You can have a simpler code by replacing ``tasks()`` loops with single ``tasks_all()`` call.
 
 Please refer to `List Tasks <README.rst#list-tasks>`_ for more details.
 
@@ -40,14 +40,14 @@ Accessing Attributes (Task, Batch, Project)
 __________________________________________________
 The old ``param_dict`` attribute is now replaced with a method ``as_dict()`` to return an object's attributes as a dictionary.
 
-First-level attributes of Task are still accessible with `.` annotation as the following: 
+First-level attributes of Task are still accessible with `.` annotation as the following:
 
 .. code-block:: python
 
     task.status                   # same as task.as_dict()["status"]
     task.params["geometries"]     # same as task.as_dict()["params"]["geometries"]
     task.response["annotations"]  # same as task.as_dict()["response"]["annotations"]
-    
+
 Accessing ``task.params`` child objects at task level is **deprecated**. Instead of ``task.attribute``, you should use ``task.params["attribute"]`` for accessing objects under ``params``.
 
 .. code-block:: python

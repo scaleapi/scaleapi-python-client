@@ -49,7 +49,7 @@ __ https://docs.scale.com/reference
 .. code-block:: python
 
     from scaleapi.tasks import TaskType
-    
+
     client.create_task(
         TaskType.ImageAnnotation,
         project = 'test_project',
@@ -65,7 +65,7 @@ __ https://docs.scale.com/reference
             }
         }
     )
-    
+
 Retrieve a task
 ^^^^^^^^^^^^^^^
 
@@ -82,7 +82,7 @@ __ https://docs.scale.com/reference#retrieve-tasks
 List Tasks
 ^^^^^^^^^^
 
-Retrieve a list of `Task` objects, with optional filters for: `project_name, batch_name, type, status, review_status, unique_id, completed_after, completed_before, updated_after, updated_before, created_after, created_before` and `tags`. 
+Retrieve a list of `Task` objects, with optional filters for: `project_name, batch_name, type, status, review_status, unique_id, completed_after, completed_before, updated_after, updated_before, created_after, created_before` and `tags`.
 
 This method is a generator and yields tasks. It can be wrapped in a `list` statement if a Task list is needed.
 
@@ -91,7 +91,7 @@ Check out `Scale's API documentation`__ for more information.
 __ https://docs.scale.com/reference#list-multiple-tasks
 
 .. code-block :: python
-    
+
     from scaleapi.tasks import TaskReviewStatus, TaskStatus
 
     tasks = client.tasks_all(
@@ -101,13 +101,13 @@ __ https://docs.scale.com/reference#list-multiple-tasks
         status = TaskStatus.Completed,
         review_status = TaskReviewStatus.Accepted
     )
-    
+
     for task in tasks:
         # Download task or do something!
         print(task.task_id)
-    
+
     # Alternative for accessing as a Task list
-    task_list = list(tasks) 
+    task_list = list(tasks)
     print(f"{len(task_list))} tasks retrieved")
 
 Cancel Task
@@ -180,7 +180,7 @@ __ https://docs.scale.com/reference#batch-retrieval
 List Batches
 ^^^^^^^^^^^^
 
-Retrieve a list of Batches. Optional parameters are `project_name, batch_status, created_after, created_before`. 
+Retrieve a list of Batches. Optional parameters are `project_name, batch_status, created_after, created_before`.
 
 Check out `Scale's API documentation`__ for more information.
 
@@ -189,20 +189,20 @@ __ https://docs.scale.com/reference#batch-list
 .. code-block :: python
 
     from scaleapi.batches import BatchStatus
-    
+
     batches = client.batches_all(
         batch_status=BatchStatus.Completed,
         created_after = "2020-09-08"
-    )    
-    
+    )
+
     counter = 0
     for batch in batches:
         counter += 1
         print(f'Downloading batch {counter} | {batch.name} | {batch.project}')
 
     # Alternative for accessing as a Batch list
-    batch_list = list(batches) 
-    print(f"{len(batch_list))} batches retrieved")    
+    batch_list = list(batches)
+    print(f"{len(batch_list))} batches retrieved")
 
 Projects
 ________
@@ -236,7 +236,7 @@ __ https://docs.scale.com/reference#project-retrieval
 List Projects
 ^^^^^^^^^^^^^
 
-This function does not take any arguments. Retrieve a list of every Project. 
+This function does not take any arguments. Retrieve a list of every Project.
 Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#batch-list
@@ -268,7 +268,7 @@ Error handling
 ______________
 
 If something went wrong while making API calls, then exceptions will be raised automatically
-as a `ScaleException` parent type and child exceptions: 
+as a `ScaleException` parent type and child exceptions:
 
 - ``ScaleInvalidRequest``: 400 - Bad Request -- The request was unacceptable, often due to missing a required parameter.
 - ``ScaleUnauthorized``: 401 - Unauthorized -- No valid API key provided.
@@ -292,7 +292,7 @@ For example:
     except ScaleException as err:
         print(err.code)  # 400
         print(err.message)  # Parameters is invalid, reason: "attachments" is required
-    
+
 Troubleshooting
 _______________
 
