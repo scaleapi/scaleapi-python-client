@@ -9,12 +9,14 @@ install_requires = ["requests>=2.25.0", "urllib3>=1.26.0"]
 
 
 def read(rel_path):
+    """Read lines from given file"""
     here = os.path.abspath(os.path.dirname(__file__))
     with open(os.path.join(here, rel_path), "r") as fp:
         return fp.read()
 
 
 def get_version(rel_path):
+    """Read __version__ from given file"""
     for line in read(rel_path).splitlines():
         if line.startswith("__version__"):
             delim = '"' if '"' in line else "'"

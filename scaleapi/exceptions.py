@@ -70,8 +70,7 @@ class ScaleInternalError(ScaleException):
 
 
 class ScaleTimeoutError(ScaleException):
-    """504 - Server Timeout Error -- Try again later.
-    """
+    """504 - Server Timeout Error -- Try again later."""
 
     code = 504
 

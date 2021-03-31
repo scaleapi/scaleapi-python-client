@@ -6,6 +6,7 @@ import uuid
 from datetime import datetime
 
 import pytest
+
 import scaleapi
 from scaleapi.exceptions import (
     ScaleDuplicateTask,

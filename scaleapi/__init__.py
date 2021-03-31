@@ -42,8 +42,7 @@ class Batchlist(Paginator[Batch]):
 
 
 class ScaleClient:
-    """Main class serves as an interface for Scale API
-    """
+    """Main class serves as an interface for Scale API"""
 
     def __init__(self, api_key, source=None):
         self.api = Api(api_key, source)
@@ -63,8 +62,9 @@ class ScaleClient:
         return Task(self.api.get_request(endpoint), self)
 
     def fetch_task(self, task_id: str) -> Task:
-        """fetch_task() will be deprecated, please use get_task() method
-        """
+        """fetch_task() will be deprecated,
+        please use get_task() method"""
+
         warnings.warn(
             "fetch_task() will be deprecated, please use get_task() method "
             "as the alternative.",
@@ -405,8 +405,9 @@ class ScaleClient:
         return Batch(batchdata, self)
 
     def list_batches(self, **kwargs) -> Batchlist:
-        """list_batches will be deprecated, please use batches() method
-        """
+        """list_batches will be deprecated,
+        please use batches() method"""
+
         warnings.warn(
             "list_batches will be deprecated, please use batches() method "
             "as the alternative.",
