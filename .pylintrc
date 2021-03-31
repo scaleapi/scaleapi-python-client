@@ -1,8 +1,8 @@
 [MASTER]
 disable=
-    C0114,
-    R0903,
-    R0914,
-    R0913,
-    R0902,
-    C0103,
+    missing-module-docstring,
+    too-few-public-methods,
+    too-many-locals,
+    too-many-arguments,
+    too-many-instance-attributes,
+    invalid-name,
