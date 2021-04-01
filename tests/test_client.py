@@ -26,6 +26,13 @@ except KeyError as err:
         "Please set the environment variable SCALE_TEST_API_KEY to run tests."
     ) from err
 
+try:
+    project = client.get_project(TEST_PROJECT_NAME)
+except ScaleResourceNotFound:
+    client.create_project(
+        project_name=TEST_PROJECT_NAME, task_type=TaskType.ImageAnnotation
+    )
+
 
 def test_invalidkey_fail():
     client_fail = scaleapi.ScaleClient("dummy_api_key", "pytest")

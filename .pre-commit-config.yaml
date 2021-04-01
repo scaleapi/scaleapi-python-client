@@ -30,6 +30,7 @@ repos:
         entry: pylint
         language: python
         types: [python]
+        files: scaleapi/
         additional_dependencies:
         -   'pylint>=2.7.4'
         -   'requests>=2.25.0'
