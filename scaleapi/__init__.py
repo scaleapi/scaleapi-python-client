@@ -530,7 +530,7 @@ class ScaleClient:
             has_more = batches.has_more
 
     def create_project(
-        self, project_name: str, task_type: TaskType, params: Dict
+        self, project_name: str, task_type: TaskType, params: Dict = None
     ) -> Project:
         """Creates a new project.
         https://docs.scale.com/reference#project-creation
