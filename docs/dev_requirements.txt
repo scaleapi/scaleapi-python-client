@@ -1,0 +1,6 @@
+black>=19.10b0
+flake8>=3.8.4
+pre-commit==2.11.1
+isort>=5.7.0
+pytest>=6.2.2
+pylint>=2.7.2

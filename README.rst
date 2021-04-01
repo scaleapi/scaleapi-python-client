@@ -4,7 +4,7 @@ Scale AI | Python SDK
 
 If you use earlier versions of the SDK, please refer to `v1.0.4 documentation <https://github.com/scaleapi/scaleapi-python-client/blob/release-1.0.4/README.rst>`_.
 
-If you are migrating from earlier versions to v2,  please refer to `Migration Guide to v2 <https://github.com/scaleapi/scaleapi-python-client/blob/master/migration_guide.rst>`_.
+If you are migrating from earlier versions to v2,  please refer to `Migration Guide to v2 <https://github.com/scaleapi/scaleapi-python-client/blob/master/docs/migration_guide.md>`_.
 
 |pic1| |pic2| |pic3|
 

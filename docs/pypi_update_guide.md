@@ -1,4 +1,6 @@
-_Creating and deploying a new package version is easy_
+# Deployment and Publishing Guide for Python SDK
+
+_Creating and deploying a new package version is easy!_
 
 ### Prerequisites
 
@@ -16,14 +18,15 @@ We use [semantic versioning](https://packaging.python.org/guides/distributing-pa
 
 **Step 1: Run Publish Script**
 
-```
+```bash
 ./publish.sh
 ```
 
 If you want to run test cases via `pytest` before publishing, add the _optional_ `runtest` arg to the script.
 
 You need to set your own test key as `SCALE_TEST_API_KEY` environment variable before running.
-```
+
+```bash
 SCALE_TEST_API_KEY="{apikey}|{userid}|test" ./publish.sh runtest
 ```
 

@@ -41,12 +41,17 @@ fi
 
 if [ "$1" == "runtest" ];
 then
-    echo "Validating environment variable [SCALE_TEST_API_KEY] for pytest..."
+    echo "Validating environment for pytest..."
+    if ! pip show pytest > /dev/null 2>&1;
+    then
+        echo "WARN: 'pytest' package is not found, installing...";
+        pip install pytest
+    fi
+
     if [[ -z "${SCALE_TEST_API_KEY}" ]]; then
         echo "Test key not found. Please assign 'SCALE_TEST_API_KEY=...' as your test environment key."
         exit 1
     fi
-
 
     if ! python -m pytest; then echo "ERROR: pytest failed."; exit; fi
     echo "pytest is successful!"

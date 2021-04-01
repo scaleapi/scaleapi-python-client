@@ -9,7 +9,8 @@ repos:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
     -   id: check-added-large-files
-    stages: [-re-c]
+    -   id: check-yaml
+    -   id: check-case-conflict
 -   repo: https://github.com/pycqa/isort
     rev: 5.8.0
     hooks:
@@ -24,7 +25,6 @@ repos:
     rev: 3.8.4
     hooks:
     -   id: flake8
-        args: [--max-complexity=10, --max-line-length=88, --max-doc-length=72]
 -   repo: local
     hooks:
     -   id: pylint
