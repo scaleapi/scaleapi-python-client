@@ -10,10 +10,13 @@ If you are migrating from earlier versions to v2,  please refer to `Migration Gu
 
 .. |pic1| image:: https://pepy.tech/badge/scaleapi/month
   :alt: Downloads
+  :target: https://pepy.tech/project/scaleapi
 .. |pic2| image:: https://img.shields.io/pypi/pyversions/scaleapi.svg
   :alt: Supported Versions
+  :target: https://pypi.org/project/scaleapi
 .. |pic3| image:: https://img.shields.io/github/contributors/scaleapi/scaleapi-python-client.svg
   :alt: Contributors
+  :target: https://github.com/scaleapi/scaleapi-python-client/graphs/contributors
 
 Installation
 ____________
