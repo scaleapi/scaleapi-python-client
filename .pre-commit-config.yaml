@@ -39,12 +39,3 @@ repos:
         -   'urllib3>=1.26.0'
         -   'pytest>=6.2.2'
         language_version: python3.6
--   repo: local
-    hooks:
-    -   id: pytest-check
-        name: pytest-check
-        entry: -m pytest
-        language: python
-        stages: [push]
-        pass_filenames: false
-        always_run: true
