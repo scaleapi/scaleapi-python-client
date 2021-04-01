@@ -2,50 +2,35 @@ _Creating and deploying a new package version is easy_
 
 ### Prerequisites
 
-1. Ensure you're on the latest master
+1. Ensure you're on the latest `master` branch
 
-2. Ensure you have a PyPI account created and are added as a Collaborator
+2. Ensure you have access to a PyPI account that is a maintainer of [scaleapi](https://pypi.org/project/scaleapi/) on PyPI
 
 ### Deployment Steps:
 
 **Step 0: Critical - Bump Project Version**
 
-In `_version.py`, you need to specify a new project version.
+Ensure `_version.py` has an updated project version. If not, please increment the project version, commit and push the changes.
 
 We use [semantic versioning](https://packaging.python.org/guides/distributing-packages-using-setuptools/#semantic-versioning-preferred). If you are adding a meaningful feature, bump the minor version. If you are fixing a bug, bump the incremental version.
 
-**Step 1: Remove Previous Versions**
-
-Clear out any previously packages and files in the `dist` and `build/lib` folders
-
-**Step 2: Create a Source Distribution**
+**Step 1: Run Publish Script**
 
 ```
-python3 setup.py sdist
+./publish.sh
 ```
 
-**Step 3: Create `wheel`**
+If you want to run test cases via `pytest` before publishing, add the _optional_ `runtest` arg to the script.
 
-You should also create a wheel for your project. A wheel is a built package that can be installed without needing to go through the “build” process. Installing wheels is substantially faster for the end user than installing from a source distribution
-
+You need to set your own test key as `SCALE_TEST_API_KEY` environment variable before running.
 ```
-python3 setup.py bdist_wheel
-```
-
-**Step 4: Install Twine**
-
-Twine is what is used to manage PyPI pacakges
-
-```
-pip3 install twine
+SCALE_TEST_API_KEY="{apikey}|{userid}|test" ./publish.sh runtest
 ```
 
-**Step 5: Upload distribution to PyPI**
-
-```
-twine upload dist/*
-```
-
-**Step 6: Check out the PyPI page to ensure all looks good**
+**Step 2: Check out the PyPI page to ensure all looks good**
 
 [https://pypi.org/project/scaleapi/](https://pypi.org/project/scaleapi/)
+
+**Step 3: Create a New Release**
+
+Create a [new release](https://github.com/scaleapi/scaleapi-python-client/releases/new) on GitHub with a matching version tag _(i.e. v2.0.1)_. Please provide a summary about new features and fixed bugs in the Release Notes.

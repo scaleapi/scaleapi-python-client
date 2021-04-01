@@ -1,6 +1,17 @@
 #!/bin/bash
 echo "##### STARTING BUILD and PUBLISH #####"
-echo
+
+VERSION_FILE="scaleapi/_version.py"
+
+staged_files=$(git diff --cached --name-only --diff-filter=ACMR ${VERSION_FILE})
+changed_files=$(git diff --name-only --diff-filter=ACMR ${VERSION_FILE})
+
+if [[ "$staged_files" == "$VERSION_FILE" ||  "$changed_files" == "$VERSION_FILE" ]];
+then
+    echo "ERROR: You have uncommitted changes in version file: ${VERSION_FILE}"
+    echo "       Please commit and push your changes before publishing."
+    exit
+fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd "${DIR}" || exit 1
@@ -20,11 +31,11 @@ while IFS= read -r line; do
         echo "SDK Package Version: ${PKG_VERSION}"
         break
     fi
-done < "${DIR}/scaleapi/_version.py"
+done < "${DIR}/${VERSION_FILE}"
 
-if [ "$BRANCH_NAME" != "release-${PKG_VERSION}" ];
+if [ "$BRANCH_NAME" != "master" ];
 then
-    echo "ERROR: You need to be in 'release-${PKG_VERSION}' git branch to publish this version (${PKG_VERSION})."
+    echo "ERROR: You need to be in 'master' git branch to publish this version (${PKG_VERSION})."
     exit 1
 fi
 
