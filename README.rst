@@ -6,11 +6,13 @@ If you use earlier versions of the SDK, please refer to `v1.0.4 documentation <h
 
 If you are migrating from earlier versions to v2,  please refer to `Migration Guide to v2 <https://github.com/scaleapi/scaleapi-python-client/blob/master/migration_guide.rst>`_.
 
-.. image:: https://pepy.tech/badge/scaleapi/month
+|pic1| |pic2| |pic3|
+
+.. |pic1| image:: https://pepy.tech/badge/scaleapi/month
   :alt: Downloads
-.. image:: https://img.shields.io/pypi/pyversions/scaleapi.svg
+.. |pic2| image:: https://img.shields.io/pypi/pyversions/scaleapi.svg
   :alt: Supported Versions
-.. image:: https://img.shields.io/github/contributors/scaleapi/scaleapi-python-client.svg
+.. |pic3| image:: https://img.shields.io/github/contributors/scaleapi/scaleapi-python-client.svg
   :alt: Contributors
 
 Installation
