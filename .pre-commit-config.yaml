@@ -1,5 +1,6 @@
 default_language_version:
     python: python3.6
+default_stages: [commit]
 
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
@@ -8,6 +9,7 @@ repos:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
     -   id: check-added-large-files
+    stages: [-re-c]
 -   repo: https://github.com/pycqa/isort
     rev: 5.8.0
     hooks:
@@ -37,3 +39,12 @@ repos:
         -   'urllib3>=1.26.0'
         -   'pytest>=6.2.2'
         language_version: python3.6
+-   repo: local
+    hooks:
+    -   id: pytest-check
+        name: pytest-check
+        entry: pytest
+        language: system
+        stages: [push]
+        pass_filenames: false
+        always_run: true
