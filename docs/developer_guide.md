@@ -98,5 +98,7 @@ tests/test_client.py::test_transcription_ok PASSED                             [
 Please refer to [Deployment and Publishing Guide](pypi_update_guide.md) for details.
 _____
 <sup>[1] pre-commit configuration is available in `.pre-commit-config.yaml`</sup>
+
 <sup>[2] Pylint configuration is available in `.pylintrc`</sup>
+
 <sup>[3] flake8 configuration is available in `setup.cfg`</sup>
