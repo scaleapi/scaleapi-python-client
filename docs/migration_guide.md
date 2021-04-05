@@ -32,8 +32,8 @@ client.create_task(
 
 ### Retrieving Tasks
 
-A new generator method is introduced to retrieve a list of tasks with all available parameters. The new method `tasks_all(...)` handles pagination and tokens.
-You can have a simpler code by replacing `tasks()` loops with a single `tasks_all()` call.
+A new generator method is introduced to retrieve a list of tasks with all available parameters. The new method `get_tasks(...)` handles pagination and tokens.
+You can have a simpler code by replacing `tasks()` loops with a single `get_tasks()` call.
 
 Please refer to [List Tasks](../README.rst#list-tasks) for more details.
 
@@ -72,7 +72,7 @@ batch.tasks_canceled        # batch.canceled
 ### Deprecated Methods
 
 - `fetch_task()` replaced with `get_task()`
-- `list_batches()`  replaced with `batches()`
+- `list_batches()`  replaced with `get_batches()`
 
 ### Enabled Auto-Retry
 

@@ -37,7 +37,7 @@ Tasks
 _____
 
 Most of these methods will return a `scaleapi.Task` object, which will contain information
-about the json response (task_id, status, params, response etc.).
+about the json response (task_id, status, params, response, etc.).
 
 Any parameter available in `Scale's API documentation`__ can be passed as an argument option with the corresponding type.
 
@@ -94,9 +94,19 @@ __ https://docs.scale.com/reference#retrieve-tasks
 List Tasks
 ^^^^^^^^^^
 
-Retrieve a list of `Task` objects, with optional filters for: `project_name, batch_name, type, status, review_status, unique_id, completed_after, completed_before, updated_after, updated_before, created_after, created_before` and `tags`.
+Retrieve a list of `Task` objects, with filters for: ``project_name``, ``batch_name``, ``type``, ``status``,
+``review_status``, ``unique_id``, ``completed_after``, ``completed_before``, ``updated_after``, ``updated_before``,
+``created_after``, ``created_before`` and ``tags``.
 
-This method is a generator and yields tasks. It can be wrapped in a `list` statement if a Task list is needed.
+``get_tasks()`` is a **generator** method and yields ``Task`` objects.
+
+`A generator is another type of function, returns an iterable that you can loop over like a list.
+However, unlike lists, generators do not store the content in the memory.
+That helps you to process a large number of objects without increasing memory usage.`
+
+If you will iterate through the tasks and process them once, using a generator is the most efficient method.
+However, if you need to process the list of tasks multiple times, you can wrap the generator in a ``list(...)``
+statement, which returns a list of Tasks by loading them into the memory.
 
 Check out `Scale's API documentation`__ for more information.
 
@@ -106,7 +116,7 @@ __ https://docs.scale.com/reference#list-multiple-tasks
 
     from scaleapi.tasks import TaskReviewStatus, TaskStatus
 
-    tasks = client.tasks_all(
+    tasks = client.get_tasks(
         project_name = "My Project",
         created_after = "2020-09-08",
         completed_before = "2021-04-01",
@@ -114,18 +124,19 @@ __ https://docs.scale.com/reference#list-multiple-tasks
         review_status = TaskReviewStatus.Accepted
     )
 
+    # Iterating through the generator
     for task in tasks:
         # Download task or do something!
         print(task.task_id)
 
-    # Alternative for accessing as a Task list
+    # For retrieving results as a Task list
     task_list = list(tasks)
     print(f"{len(task_list))} tasks retrieved")
 
 Cancel Task
 ^^^^^^^^^^^
 
-Cancel a task given its id if work has not started on the task (task status is `Queued` in the UI). Check out `Scale's API documentation`__ for more information.
+Cancel a task given its id if work has not started on the task (task status is ``Queued`` in the UI). Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference#cancel-task
 
@@ -178,8 +189,8 @@ __ https://docs.scale.com/reference#batch-status
     batch.get_status() # Refreshes tasks_{status} attributes of Batch
     print(batch.tasks_pending, batch.tasks_completed)
 
-Retrieve Batch
-^^^^^^^^^^^^^^
+Retrieve A Batch
+^^^^^^^^^^^^^^^^
 
 Retrieve a single Batch. Check out `Scale's API documentation`__ for more information.
 
@@ -192,7 +203,15 @@ __ https://docs.scale.com/reference#batch-retrieval
 List Batches
 ^^^^^^^^^^^^
 
-Retrieve a list of Batches. Optional parameters are `project_name, batch_status, created_after, created_before`.
+Retrieve a list of Batches. Optional parameters are ``project_name``, ``batch_status``, ``created_after`` and ``created_before``.
+
+``get_batches()`` is a **generator** method and yields ``Batch`` objects.
+
+`A generator is another type of function, returns an iterable that you can loop over like a list.
+However, unlike lists, generators do not store the content in the memory.
+That helps you to process a large number of objects without increasing memory usage.`
+
+When wrapped in a ``list(...)`` statement, it returns a list of Batches by loading them into the memory.
 
 Check out `Scale's API documentation`__ for more information.
 
@@ -202,7 +221,7 @@ __ https://docs.scale.com/reference#batch-list
 
     from scaleapi.batches import BatchStatus
 
-    batches = client.batches_all(
+    batches = client.get_batches(
         batch_status=BatchStatus.Completed,
         created_after = "2020-09-08"
     )
@@ -259,7 +278,7 @@ __ https://docs.scale.com/reference#batch-list
     projects = client.projects()
     for project in projects:
         counter += 1
-        print(f'Downloading project {counter} | {project.name} | { project.type}')
+        print(f'Downloading project {counter} | {project.name} | {project.type}')
 
 Update Project
 ^^^^^^^^^^^^^^
@@ -303,7 +322,7 @@ For example:
         client.create_task(TaskType.TextCollection, attachment='Some parameters are missing.')
     except ScaleException as err:
         print(err.code)  # 400
-        print(err.message)  # Parameters is invalid, reason: "attachments" is required
+        print(err.message)  # Parameter is invalid, reason: "attachments" is required
 
 Troubleshooting
 _______________
