@@ -320,13 +320,13 @@ def create_a_batch():
     )
 
 
-def test_tasks_all():
+def test_get_tasks():
     batch = create_a_batch()
     tasks = []
     for _ in range(3):
         tasks.append(make_a_task(batch=batch.name))
     task_ids = {task.id for task in tasks}
-    for task in client.tasks_all(project_name=TEST_PROJECT_NAME, batch_name=batch.name):
+    for task in client.get_tasks(project_name=TEST_PROJECT_NAME, batch_name=batch.name):
         assert task.id in task_ids
 
 
@@ -355,7 +355,7 @@ def test_get_batch():
     assert batch2.status == "staging"
 
 
-def test_list_batch():
+def test_batches():
     batches = []
     for _ in range(3):
         batches.append(create_a_batch())
@@ -365,11 +365,11 @@ def test_list_batch():
         assert batch.name in batch_names
 
 
-def test_list_batch_all():
+def test_get_batches():
     # Get count of all batches
     batchlist = client.batches(project=TEST_PROJECT_NAME, limit=1)
     total_batches = batchlist.total
 
     # Download all batches to check total count
-    all_batches = list(client.batches_all(project_name=TEST_PROJECT_NAME))
+    all_batches = list(client.get_batches(project_name=TEST_PROJECT_NAME))
     assert total_batches == len(all_batches)

@@ -1,4 +1,3 @@
-import warnings
 from typing import Dict, Generator, Generic, List, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
@@ -46,7 +45,6 @@ class ScaleClient:
 
     def __init__(self, api_key, source=None):
         self.api = Api(api_key, source)
-        warnings.simplefilter("always", DeprecationWarning)
 
     def get_task(self, task_id: str) -> Task:
         """Fetches a task.
@@ -60,18 +58,6 @@ class ScaleClient:
         """
         endpoint = f"task/{task_id}"
         return Task(self.api.get_request(endpoint), self)
-
-    def fetch_task(self, task_id: str) -> Task:
-        """fetch_task() will be deprecated,
-        please use get_task() method"""
-
-        warnings.warn(
-            "fetch_task() will be deprecated, please use get_task() method "
-            "as the alternative.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.get_task(task_id)
 
     def cancel_task(self, task_id: str) -> Task:
         """Cancels a task and returns the associated task.
@@ -191,7 +177,7 @@ class ScaleClient:
             response.get("next_token"),
         )
 
-    def tasks_all(
+    def get_tasks(
         self,
         project_name: str,
         batch_name: str = None,
@@ -207,12 +193,12 @@ class ScaleClient:
         created_before: str = None,
         tags: Union[List[str], str] = None,
     ) -> Generator[Task, None, None]:
-        """Retrieve all tasks as a generator function, with the
+        """Retrieve all tasks as a `generator` method, with the
         given parameters. This methods handles pagination of
         tasks() method.
 
         In order to retrieve results as a list, please use:
-        `tasks = list(tasks_all(...))`
+        `task_list = list(get_tasks(...))`
 
         Args:
             project_name (str):
@@ -404,18 +390,6 @@ class ScaleClient:
         batchdata = self.api.get_request(endpoint)
         return Batch(batchdata, self)
 
-    def list_batches(self, **kwargs) -> Batchlist:
-        """list_batches will be deprecated,
-        please use batches() method"""
-
-        warnings.warn(
-            "list_batches will be deprecated, please use batches() method "
-            "as the alternative.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.batches(**kwargs)
-
     def batches(self, **kwargs) -> Batchlist:
         """This is a paged endpoint for all of your batches.
         Pagination is based off limit and offset parameters,
@@ -476,18 +450,18 @@ class ScaleClient:
             response["has_more"],
         )
 
-    def batches_all(
+    def get_batches(
         self,
         project_name: str = None,
         batch_status: BatchStatus = None,
         created_after: str = None,
         created_before: str = None,
     ) -> Generator[Batch, None, None]:
-        """Generator method to yield all batches with the given
+        """`Generator` method to yield all batches with the given
         parameters.
 
         In order to retrieve results as a list, please use:
-        `batches = list(batches_all(...))`
+        `batches_list = list(get_batches(...))`
 
         Args:
             project_name (str):
@@ -568,6 +542,17 @@ class ScaleClient:
         endpoint = f"projects/{Api.quote_string(project_name)}"
         projectdata = self.api.get_request(endpoint)
         return Project(projectdata, self)
+
+    def get_projects(self) -> List[Project]:
+        """Returns all projects.
+        Refer to Projects API Reference:
+        https://docs.scale.com/reference#list-all-projects
+        Same as `projects()` method.
+
+        Returns:
+            List[Project]
+        """
+        return self.projects()
 
     def projects(self) -> List[Project]:
         """Returns all projects.
