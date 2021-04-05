@@ -1,30 +1,88 @@
-class Task(object):
+from enum import Enum
+
+
+class TaskType(Enum):
+    """Task Type List"""
+
+    Annotation = "annotation"
+    Categorization = "categorization"
+    Comparison = "comparison"
+    CuboidAnnotation = "cuboidannotation"
+    DataCollection = "datacollection"
+    DocumentModel = "documentmodel"
+    DocumentTranscription = "documenttranscription"
+    ImageAnnotation = "imageannotation"
+    LaneAnnotation = "laneannotation"
+    LidarAnnotation = "lidarannotation"
+    LidarLinking = "lidarlinking"
+    LidarSegmentation = "lidarsegmentation"
+    LidarTopdown = "lidartopdown"
+    LineAnnotation = "lineannotation"
+    NamedEntityRecognition = "namedentityrecognition"
+    PointAnnotation = "pointannotation"
+    PolygonAnnotation = "polygonannotation"
+    SegmentAnnotation = "segmentannotation"
+    Transcription = "transcription"
+    TextCollection = "textcollection"
+    VideoAnnotation = "videoannotation"
+    VideoBoxAnnotation = "videoboxannotation"
+    VideoPlaybackAnnotation = "videoplaybackannotation"
+    VideoCuboidAnnotation = "videocuboidannotation"
+
+
+class TaskReviewStatus(Enum):
+    """Customer Audit Status of Task"""
+
+    Accepted = "accepted"
+    Fixed = "fixed"
+    Commented = "commented"
+    Rejected = "rejected"
+
+
+class TaskStatus(Enum):
+    """Status of Task"""
+
+    Pending = "pending"
+    Completed = "completed"
+    Canceled = "canceled"
+
+
+class Task:
     """Task class, containing task information."""
 
-    def __init__(self, param_dict, client):
-        self.client = client
-        self.param_dict = param_dict
-        self.id = param_dict['task_id']
+    def __init__(self, json, client):
+        self._client = client
+        self._json = json
+        self.id = json["task_id"]
 
     def __getattr__(self, name):
-        if name in self.param_dict:
-            return self.param_dict[name]
-        if name in self.params:
-            return self.params[name]
-        raise AttributeError("'%s' object has no attribute %s"
-                             % (type(self).__name__, name))
+        if name in self._json:
+            return self._json[name]
+        raise AttributeError(f"'{type(self).__name__}' object has no attribute {name}")
 
     def __hash__(self):
         return hash(self.id)
 
     def __str__(self):
-        return 'Task(id=%s)' % self.id
+        return f"Task(id={self.id})"
 
     def __repr__(self):
-        return 'Task(%s)' % self.param_dict
+        return f"Task({self._json})"
+
+    def as_dict(self):
+        """Returns object details as a dictionary
+
+        `Task.as_dict()['params']`
+
+        Returns:
+            Dict with object content
+        """
+        return self._json
 
     def refresh(self):
-        self.param_dict = self.client._getrequest('task/%s' % self.id)
+        """Refreshes the task details."""
+        self._json = self._client.fetch_task(self.id).as_dict()
 
     def cancel(self):
-        self.client.cancel_task(self.id)
+        """Cancels the task"""
+        self._client.cancel_task(self.id)

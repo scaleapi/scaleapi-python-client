@@ -1,0 +1,8 @@
+[MASTER]
+disable=
+    missing-module-docstring,
+    too-few-public-methods,
+    too-many-locals,
+    too-many-arguments,
+    too-many-instance-attributes,
+    invalid-name,

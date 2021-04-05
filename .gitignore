@@ -1,8 +1,28 @@
-*.pyc
-/dist/
-/*.egg-info
-.tox
-.cache
-/.vscode/
-.DS_Store
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
 /build/
+/dist/
+*.egg
+*.eggs
+*.egg-info/
+MANIFEST
+
+# For Visual Studio Code
+.vscode/
+
+# Mac
+.DS_Store
+
+# Unit test / coverage reports
+.[nt]ox/
+htmlcov/
+.coverage
+.coverage.*
+.*cache
+nosetests.xml
+coverage.xml
+*.cover
