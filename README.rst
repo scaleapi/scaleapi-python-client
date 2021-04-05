@@ -100,9 +100,9 @@ Retrieve a list of `Task` objects, with filters for: ``project_name``, ``batch_n
 
 ``get_tasks()`` is a **generator** method and yields ``Task`` objects.
 
-`A generator is another type of function, returns an iterable that you can loop over like a list.
+*A generator is another type of function, returns an iterable that you can loop over like a list.
 However, unlike lists, generators do not store the content in the memory.
-That helps you to process a large number of objects without increasing memory usage.`
+That helps you to process a large number of objects without increasing memory usage.*
 
 If you will iterate through the tasks and process them once, using a generator is the most efficient method.
 However, if you need to process the list of tasks multiple times, you can wrap the generator in a ``list(...)``
@@ -207,9 +207,9 @@ Retrieve a list of Batches. Optional parameters are ``project_name``, ``batch_st
 
 ``get_batches()`` is a **generator** method and yields ``Batch`` objects.
 
-`A generator is another type of function, returns an iterable that you can loop over like a list.
+*A generator is another type of function, returns an iterable that you can loop over like a list.
 However, unlike lists, generators do not store the content in the memory.
-That helps you to process a large number of objects without increasing memory usage.`
+That helps you to process a large number of objects without increasing memory usage.*
 
 When wrapped in a ``list(...)`` statement, it returns a list of Batches by loading them into the memory.
 
