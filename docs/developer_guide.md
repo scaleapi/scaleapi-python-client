@@ -19,7 +19,7 @@ $ pip install -r docs/dev_requirements.txt
 ```
 ### 3. Setup pre-commit
 
-Assure pre-commit<sup>1</sup> is installed:
+Assure pre-commit<sup>[1]</sup> is installed:
 ```bash
 $ pre-commit --version
 # pre-commit 2.11.1
