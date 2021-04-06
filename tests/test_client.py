@@ -19,6 +19,7 @@ from scaleapi.tasks import TaskType
 TEST_PROJECT_NAME = "scaleapi-python-sdk"
 
 try:
+    print(f"SDK Version: {scaleapi.__version__}")
     test_api_key = os.environ["SCALE_TEST_API_KEY"]
     client = scaleapi.ScaleClient(test_api_key, "pytest")
 except KeyError as err:

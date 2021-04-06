@@ -1,0 +1,80 @@
+version: 2.1
+jobs:
+  build_test:
+    docker:
+      - image: cimg/python:3.6
+    steps:
+      - checkout  # checkout source code to working directory
+      - run:
+          name: Initialize environment
+          command: |  # install env dependencies
+            sudo pip install -r docs/dev_requirements.txt
+      - run:
+          name: Black Formatting Check  # Only validation, without re-formatting
+          command: |
+            black --check -t py36 .
+      - run:
+          name: isort Import Ordering Check  # Only validation, without re-formatting
+          command: |
+            isort --check-only --profile black .
+      - run:
+          name: Flake8 Lint Check  # Uses setup.cfg for configuration
+          command: |
+            flake8 . --count --statistics
+      - run:
+          name: Pylint Lint Check
+          command: |
+            pylint scaleapi
+      - run:
+          name: Build Package # create whl and install package
+          command: |
+            python setup.py sdist bdist_wheel
+            sudo pip install --no-cache-dir dist/*.whl
+      - run:
+          name: Pytest Test Cases
+          command: |  # Run test suite, uses SCALE_TEST_API_KEY env variable
+            pytest
+      - run:
+          name: Twine PyPI Check
+          command: |  # Validate distribution and setup.py configuration
+            twine check --strict dist/*
+  pypi_publish:
+    docker:
+      - image: cimg/python:3.6
+    steps:
+      - checkout  # checkout source code to working directory
+      - run:
+          name: Validate SDK Version
+          command: |
+            PKG_VERSION=$(sed -n 's/^__version__ = //p' scaleapi/_version.py | sed -e 's/^"//' -e 's/"$//')
+
+            if pip install "scaleapi>=${PKG_VERSION}" > /dev/null 2>&1;
+            then
+                echo "ERROR: You need to increment to a new version before publishing!"
+                echo "Version found in _version.py file: ${PKG_VERSION}"
+                exit 1;
+            fi
+      - run:
+          name: Initialize Environment
+          command: |  # install env dependencies
+            sudo pip install twine
+      - run:
+          name: Build and Validate
+          command: |  # create whl, validate with twine
+            python setup.py sdist bdist_wheel
+            twine check --strict dist/*
+      - run:
+          name: Publish to PyPI
+          command: |
+            twine upload dist/*
+workflows:
+  build_test_publish:
+    jobs:
+      - build_test
+      - pypi_publish:
+          requires:
+            - build_test
+          filters:
+            branches:
+              only:
+                - master
