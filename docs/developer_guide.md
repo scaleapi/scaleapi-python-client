@@ -52,6 +52,8 @@ Append following lines to the json file:
     },
 ```
 
+In Python SDK we follow [Google's Python Docstring Guide](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings) for comments and docstring of modules, functions and classes. [Python Docstring Generator](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring) is a useful VS Code extension that helps to generate docstrings.
+
 ### 5. Running pre-commit Tests Manually
 
 You can run following command to run pre-commit linter for all files, without a commit. It provides a report for issues as well as fixes formatting.
