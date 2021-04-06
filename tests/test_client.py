@@ -21,7 +21,11 @@ TEST_PROJECT_NAME = "scaleapi-python-sdk"
 try:
     print(f"SDK Version: {scaleapi.__version__}")
     test_api_key = os.environ["SCALE_TEST_API_KEY"]
-    client = scaleapi.ScaleClient(test_api_key, "pytest")
+
+    if test_api_key.startswith("test_") or test_api_key.endswith("|test"):
+        client = scaleapi.ScaleClient(test_api_key, "pytest")
+    else:
+        raise Exception("Please provide a valid TEST environment key.")
 except KeyError as err:
     raise Exception(
         "Please set the environment variable SCALE_TEST_API_KEY to run tests."
