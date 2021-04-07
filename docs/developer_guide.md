@@ -19,7 +19,7 @@ $ pip install -r docs/dev_requirements.txt
 ```
 ### 3. Setup pre-commit
 
-Assure pre-commit<sup>1</sup> is installed:
+Assure pre-commit<sup>[1]</sup> is installed:
 ```bash
 $ pre-commit --version
 # pre-commit 2.11.1
@@ -51,6 +51,8 @@ Append following lines to the json file:
     "editor.defaultFormatter": "ms-python.python"
     },
 ```
+
+In Python SDK we follow [Google's Python Docstring Guide](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings) for comments and docstring of modules, functions and classes. [Python Docstring Generator](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring) is a useful VS Code extension that helps to generate docstrings.
 
 ### 5. Running pre-commit Tests Manually
 

@@ -12,7 +12,7 @@ SCALE_ENDPOINT = "https://api.scale.com/v1"
 # Parameters for HTTP retry
 HTTP_TOTAL_RETRIES = 3  # Number of total retries
 HTTP_RETRY_BACKOFF_FACTOR = 2  # Wait 1, 2, 4 seconds between retries
-HTTP_STATUS_FORCE_LIST = [429, 504]  # Status codes to force retry
+HTTP_STATUS_FORCE_LIST = [429, 500, 504]  # Status codes to force retry
 HTTP_RETRY_ALLOWED_METHODS = frozenset({"GET", "POST"})
 
 

@@ -23,15 +23,7 @@ echo "Active Git Branch: ${BRANCH_NAME}" # release-1.0.5
 # BRANCH_PREFIX="${strarr[0]}"  # release
 # BRANCH_VERSION="${strarr[1]}" # 1.0.5
 
-while IFS= read -r line; do
-    if [[ $line == __version__* ]];
-    then
-        IFS=' = ' read -ra strarr <<< "$line"
-        PKG_VERSION=$( sed -e 's/^"//' -e 's/"$//' <<< "${strarr[1]}" )
-        echo "SDK Package Version: ${PKG_VERSION}"
-        break
-    fi
-done < "${DIR}/${VERSION_FILE}"
+PKG_VERSION=$(sed -n 's/^__version__ = //p' "${DIR}/${VERSION_FILE}" | sed -e 's/^"//' -e 's/"$//')
 
 if [ "$BRANCH_NAME" != "master" ];
 then

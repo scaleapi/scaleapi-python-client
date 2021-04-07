@@ -31,7 +31,8 @@ _____
 .. code-block:: python
 
     import scaleapi
-    client = scaleapi.ScaleClient('YOUR_API_KEY_HERE')
+
+    client = scaleapi.ScaleClient("YOUR_API_KEY_HERE")
 
 Tasks
 _____
@@ -62,21 +63,27 @@ __ https://docs.scale.com/reference
 
     from scaleapi.tasks import TaskType
 
-    client.create_task(
-        TaskType.ImageAnnotation,
-        project = 'test_project',
+    payload = dict(
+        project = "test_project",
         callback_url = "http://www.example.com/callback",
-        instruction= "Draw a box around each baby cow and big cow.",
+        instruction = "Draw a box around each baby cow and big cow.",
         attachment_type = "image",
         attachment = "http://i.imgur.com/v4cBreD.jpg",
+        unique_id = "c235d023af73",
         geometries = {
             "box": {
-              "objects_to_annotate": ["Baby Cow", "Big Cow"],
-              "min_height": 10,
-              "min_width": 10
+                "objects_to_annotate": ["Baby Cow", "Big Cow"],
+                "min_height": 10,
+                "min_width": 10,
             }
-        }
+        },
     )
+
+    try:
+        client.create_task(TaskType.ImageAnnotation, **payload)
+    except ScaleDuplicateTask as err:
+        print(err.message)  # If unique_id is already used for a different task
+
 
 Retrieve a task
 ^^^^^^^^^^^^^^^
@@ -87,8 +94,8 @@ __ https://docs.scale.com/reference#retrieve-tasks
 
 .. code-block :: python
 
-    task = client.get_task('30553edd0b6a93f8f05f0fee')
-    print(task.status)  # Task status ('pending', 'completed', 'error', 'canceled')
+    task = client.get_task("30553edd0b6a93f8f05f0fee")
+    print(task.status)  # Task status ("pending", "completed", "error", "canceled")
     print(task.response) # If task is complete
 
 List Tasks
@@ -100,9 +107,9 @@ Retrieve a list of `Task` objects, with filters for: ``project_name``, ``batch_n
 
 ``get_tasks()`` is a **generator** method and yields ``Task`` objects.
 
-`A generator is another type of function, returns an iterable that you can loop over like a list.
+*A generator is another type of function, returns an iterable that you can loop over like a list.
 However, unlike lists, generators do not store the content in the memory.
-That helps you to process a large number of objects without increasing memory usage.`
+That helps you to process a large number of objects without increasing memory usage.*
 
 If you will iterate through the tasks and process them once, using a generator is the most efficient method.
 However, if you need to process the list of tasks multiple times, you can wrap the generator in a ``list(...)``
@@ -157,9 +164,9 @@ __ https://docs.scale.com/reference#batch-creation
 .. code-block:: python
 
     client.create_batch(
-        project = 'test_project',
+        project = "test_project",
         callback = "http://www.example.com/callback",
-        name = 'batch_name_01_07_2021'
+        name = "batch_name_01_07_2021"
     )
 
 Finalize Batch
@@ -171,7 +178,11 @@ __ https://docs.scale.com/reference#batch-finalization
 
 .. code-block:: python
 
-    client.finalize_batch(batch_name = 'batch_name_01_07_2021')
+    client.finalize_batch(batch_name="batch_name_01_07_2021")
+
+    # Alternative method
+    batch = client.get_batch(batch_name="batch_name_01_07_2021")
+    batch.finalize()
 
 Check Batch Status
 ^^^^^^^^^^^^^^^^^^
@@ -182,10 +193,10 @@ __ https://docs.scale.com/reference#batch-status
 
 .. code-block:: python
 
-    client.batch_status(batch_name = 'batch_name_01_07_2021')
+    client.batch_status(batch_name = "batch_name_01_07_2021")
 
     # Alternative via Batch.get_status()
-    batch = client.get_batch('batch_name_01_07_2021')
+    batch = client.get_batch("batch_name_01_07_2021")
     batch.get_status() # Refreshes tasks_{status} attributes of Batch
     print(batch.tasks_pending, batch.tasks_completed)
 
@@ -198,7 +209,7 @@ __ https://docs.scale.com/reference#batch-retrieval
 
 .. code-block:: python
 
-    client.get_batch(batch_name = 'batch_name_01_07_2021')
+    client.get_batch(batch_name = "batch_name_01_07_2021")
 
 List Batches
 ^^^^^^^^^^^^
@@ -207,9 +218,9 @@ Retrieve a list of Batches. Optional parameters are ``project_name``, ``batch_st
 
 ``get_batches()`` is a **generator** method and yields ``Batch`` objects.
 
-`A generator is another type of function, returns an iterable that you can loop over like a list.
+*A generator is another type of function, returns an iterable that you can loop over like a list.
 However, unlike lists, generators do not store the content in the memory.
-That helps you to process a large number of objects without increasing memory usage.`
+That helps you to process a large number of objects without increasing memory usage.*
 
 When wrapped in a ``list(...)`` statement, it returns a list of Batches by loading them into the memory.
 
@@ -229,7 +240,7 @@ __ https://docs.scale.com/reference#batch-list
     counter = 0
     for batch in batches:
         counter += 1
-        print(f'Downloading batch {counter} | {batch.name} | {batch.project}')
+        print(f"Downloading batch {counter} | {batch.name} | {batch.project}")
 
     # Alternative for accessing as a Batch list
     batch_list = list(batches)
@@ -247,11 +258,15 @@ __ https://docs.scale.com/reference#project-creation
 
 .. code-block:: python
 
-    client.create_project(
-        project_name = 'test_project',
-        type = 'imageannotation,
-        params = {'instruction':'Please label the kittens'}
+    from scaleapi.tasks import TaskType
+
+    project = client.create_project(
+        project_name = "Test_Project",
+        task_type = TaskType.ImageAnnotation,
+        params = {"instruction": "Please label the kittens"},
     )
+
+    print(project.name)  # Test_Project
 
 Retrieve Project
 ^^^^^^^^^^^^^^^^
@@ -262,7 +277,7 @@ __ https://docs.scale.com/reference#project-retrieval
 
 .. code-block:: python
 
-    client.get_project(project_name = 'test_project')
+    client.get_project(project_name = "test_project")
 
 List Projects
 ^^^^^^^^^^^^^
@@ -290,9 +305,9 @@ __ https://docs.scale.com/reference#project-update-parameters
 .. code-block :: python
 
     data = client.update_project(
-        project_name='test_project',
+        project_name="test_project",
         patch = false,
-        instruction='update: Please label all the stuff',
+        instruction="update: Please label all the stuff",
     )
 
 Error handling
@@ -319,7 +334,7 @@ For example:
     from scaleapi.exceptions import ScaleException
 
     try:
-        client.create_task(TaskType.TextCollection, attachment='Some parameters are missing.')
+        client.create_task(TaskType.TextCollection, attachment="Some parameters are missing.")
     except ScaleException as err:
         print(err.code)  # 400
         print(err.message)  # Parameter is invalid, reason: "attachments" is required
