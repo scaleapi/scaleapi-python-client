@@ -1,14 +1,19 @@
+# CircleCI jobs are only enabled to on Pull Requests and commits to master branch.
+# "Only build pull requests" enabled in Project's Advanced Settings.
 version: 2.1
 jobs:
   build_test:
     docker:
       - image: cimg/python:3.6
+    resource_class: small
     steps:
       - checkout  # checkout source code to working directory
       - run:
-          name: Initialize environment
+          name: Install Environment Dependencies
           command: |  # install env dependencies
-            sudo pip install -r docs/dev_requirements.txt
+            set -e
+            pip install --upgrade pip
+            pip install -r docs/dev_requirements.txt
       - run:
           name: Black Formatting Check  # Only validation, without re-formatting
           command: |
@@ -22,18 +27,19 @@ jobs:
           command: |
             flake8 . --count --statistics
       - run:
-          name: Pylint Lint Check
+          name: Pylint Lint Check # Uses .pylintrc for configuration
           command: |
             pylint scaleapi
       - run:
           name: Build Package # create whl and install package
           command: |
+            set -e
             python setup.py sdist bdist_wheel
-            sudo pip install --no-cache-dir dist/*.whl
+            pip install --no-cache-dir dist/*.whl
       - run:
           name: Pytest Test Cases
           command: |  # Run test suite, uses SCALE_TEST_API_KEY env variable
-            pytest
+            pytest -v
       - run:
           name: Twine PyPI Check
           command: |  # Validate distribution and setup.py configuration
@@ -44,28 +50,44 @@ jobs:
     steps:
       - checkout  # checkout source code to working directory
       - run:
-          name: Validate SDK Version
+          name: Validate Tag Version  # Check if the tag name matches the package version
+          command: |
+            PKG_VERSION=$(sed -n 's/^__version__ = //p' scaleapi/_version.py | sed -e 's/^"//' -e 's/"$//')
+
+            if [[ "$CIRCLE_TAG" != "v${PKG_VERSION}" ]]; then
+                echo "ERROR: Tag name ($CIRCLE_TAG) must match package version (v${PKG_VERSION})."
+                exit 1;
+            fi
+      - run:
+          name: Validate SDK Version Increment  # Check if the version is already on PyPI
           command: |
             PKG_VERSION=$(sed -n 's/^__version__ = //p' scaleapi/_version.py | sed -e 's/^"//' -e 's/"$//')
 
             if pip install "scaleapi>=${PKG_VERSION}" > /dev/null 2>&1;
             then
                 echo "ERROR: You need to increment to a new version before publishing!"
-                echo "Version found in _version.py file: ${PKG_VERSION}"
+                echo "Version (${PKG_VERSION}) already exists on PyPI."
                 exit 1;
             fi
       - run:
-          name: Initialize Environment
+          name: Install Environment Dependencies
           command: |  # install env dependencies
-            sudo pip install twine
+            set -e
+            pip install --upgrade pip
+            pip install twine
       - run:
           name: Build and Validate
           command: |  # create whl, validate with twine
+            set -e
             python setup.py sdist bdist_wheel
             twine check --strict dist/*
       - run:
           name: Publish to PyPI
           command: |
+            if test -z "${TWINE_USERNAME}" || test -z "${TWINE_PASSWORD}" ; then
+                echo "ERROR: Please assign TWINE_USERNAME and TWINE_PASSWORD as environment variables"
+                exit 1
+            fi
             twine upload dist/*
 workflows:
   build_test_publish:
@@ -75,6 +97,7 @@ workflows:
           requires:
             - build_test
           filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/  # Runs only for tags with the format [v1.2.3]
             branches:
-              only:
-                - master
+              ignore: /.*/  # Runs for none of the branches
