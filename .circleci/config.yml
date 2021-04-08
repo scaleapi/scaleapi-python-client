@@ -7,23 +7,23 @@ jobs:
       - image: cimg/python:3.6
     resource_class: small
     steps:
-      - checkout  # checkout source code to working directory
+      - checkout # checkout source code to working directory
       - run:
           name: Install Environment Dependencies
-          command: |  # install env dependencies
+          command: | # install env dependencies
             set -e
             pip install --upgrade pip
             pip install -r docs/dev_requirements.txt
       - run:
-          name: Black Formatting Check  # Only validation, without re-formatting
+          name: Black Formatting Check # Only validation, without re-formatting
           command: |
             black --check -t py36 .
       - run:
-          name: isort Import Ordering Check  # Only validation, without re-formatting
+          name: isort Import Ordering Check # Only validation, without re-formatting
           command: |
             isort --check-only --profile black .
       - run:
-          name: Flake8 Lint Check  # Uses setup.cfg for configuration
+          name: Flake8 Lint Check # Uses setup.cfg for configuration
           command: |
             flake8 . --count --statistics
       - run:
@@ -38,19 +38,19 @@ jobs:
             pip install --no-cache-dir dist/*.whl
       - run:
           name: Pytest Test Cases
-          command: |  # Run test suite, uses SCALE_TEST_API_KEY env variable
+          command: | # Run test suite, uses SCALE_TEST_API_KEY env variable
             pytest -v
       - run:
           name: Twine PyPI Check
-          command: |  # Validate distribution and setup.py configuration
+          command: | # Validate distribution and setup.py configuration
             twine check --strict dist/*
   pypi_publish:
     docker:
       - image: cimg/python:3.6
     steps:
-      - checkout  # checkout source code to working directory
+      - checkout # checkout source code to working directory
       - run:
-          name: Validate Tag Version  # Check if the tag name matches the package version
+          name: Validate Tag Version # Check if the tag name matches the package version
           command: |
             PKG_VERSION=$(sed -n 's/^__version__ = //p' scaleapi/_version.py | sed -e 's/^"//' -e 's/"$//')
 
@@ -59,7 +59,7 @@ jobs:
                 exit 1;
             fi
       - run:
-          name: Validate SDK Version Increment  # Check if the version is already on PyPI
+          name: Validate SDK Version Increment # Check if the version is already on PyPI
           command: |
             PKG_VERSION=$(sed -n 's/^__version__ = //p' scaleapi/_version.py | sed -e 's/^"//' -e 's/"$//')
 
@@ -71,13 +71,13 @@ jobs:
             fi
       - run:
           name: Install Environment Dependencies
-          command: |  # install env dependencies
+          command: | # install env dependencies
             set -e
             pip install --upgrade pip
             pip install twine
       - run:
           name: Build and Validate
-          command: |  # create whl, validate with twine
+          command: | # create whl, validate with twine
             set -e
             python setup.py sdist bdist_wheel
             twine check --strict dist/*
@@ -92,12 +92,15 @@ jobs:
 workflows:
   build_test_publish:
     jobs:
-      - build_test
+      - build_test:
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/ # Runs only for tags with the format [v1.2.3]
       - pypi_publish:
           requires:
             - build_test
           filters:
-            tags:
-              only: /^v\d+\.\d+\.\d+$/  # Runs only for tags with the format [v1.2.3]
             branches:
-              ignore: /.*/  # Runs for none of the branches
+              ignore: /.*/ # Runs for none of the branches
+            tags:
+              only: /^v\d+\.\d+\.\d+$/ # Runs only for tags with the format [v1.2.3]
