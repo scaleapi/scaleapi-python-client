@@ -306,7 +306,7 @@ __ https://docs.scale.com/reference#project-update-parameters
 
     data = client.update_project(
         project_name="test_project",
-        patch = false,
+        patch=False,
         instruction="update: Please label all the stuff",
     )
 
