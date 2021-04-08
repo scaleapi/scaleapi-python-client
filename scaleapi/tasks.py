@@ -81,7 +81,7 @@ class Task:
 
     def refresh(self):
         """Refreshes the task details."""
-        self._json = self._client.fetch_task(self.id).as_dict()
+        self._json = self._client.get_task(self.id).as_dict()
 
     def cancel(self):
         """Cancels the task"""
