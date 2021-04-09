@@ -12,7 +12,7 @@ SCALE_ENDPOINT = "https://api.scale.com/v1"
 # Parameters for HTTP retry
 HTTP_TOTAL_RETRIES = 3  # Number of total retries
 HTTP_RETRY_BACKOFF_FACTOR = 2  # Wait 1, 2, 4 seconds between retries
-HTTP_STATUS_FORCE_LIST = [429, 500, 504]  # Status codes to force retry
+HTTP_STATUS_FORCE_LIST = [429, 500, 503, 504]  # Status codes to force retry
 HTTP_RETRY_ALLOWED_METHODS = frozenset({"GET", "POST"})
 
 
@@ -68,7 +68,6 @@ class Api:
     @staticmethod
     def _raise_on_respose(res: Response):
 
-        message = ""
         try:
             message = res.json().get("error", res.text)
         except ValueError:
@@ -78,7 +77,7 @@ class Api:
             exception = ExceptionMap[res.status_code]
             raise exception(message)
         except KeyError as err:
-            raise ScaleException(message) from err
+            raise ScaleException(message, res.status_code) from err
 
     def _api_request(
         self, method, endpoint, headers=None, auth=None, params=None, body=None

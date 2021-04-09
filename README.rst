@@ -322,7 +322,8 @@ as a `ScaleException` parent type and child exceptions:
 - ``ScaleResourceNotFound``: 404 - Not Found -- The requested resource doesn't exist.
 - ``ScaleDuplicateTask``: 409 - Conflict -- The provided idempotency key or unique_id is already in use for a different request.
 - ``ScaleTooManyRequests``: 429 - Too Many Requests -- Too many requests hit the API too quickly.
-- ``ScaleInternalError``: 500 - Internal Server Error -- We had a problem with our server. Try again later
+- ``ScaleInternalError``: 500 - Internal Server Error -- We had a problem with our server. Try again later.
+- ``ScaleServiceUnavailable``: 503 - Server Timeout From Request Queueing -- Try again later.
 - ``ScaleTimeoutError``: 504 - Server Timeout Error -- Try again later.
 
 Check out `Scale's API documentation <https://docs.scale.com/reference#errors>`_ for more details.
