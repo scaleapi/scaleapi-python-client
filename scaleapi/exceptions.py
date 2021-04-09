@@ -69,6 +69,12 @@ class ScaleInternalError(ScaleException):
     code = 500
 
 
+class ScaleServiceUnavailable(ScaleException):
+    """503 - Server Timeout From Request Queueing -- Try again later."""
+
+    code = 503
+
+
 class ScaleTimeoutError(ScaleException):
     """504 - Server Timeout Error -- Try again later."""
 
@@ -84,4 +90,5 @@ ExceptionMap = {
     ScaleTooManyRequests.code: ScaleTooManyRequests,
     ScaleInternalError.code: ScaleInternalError,
     ScaleTimeoutError.code: ScaleTimeoutError,
+    ScaleServiceUnavailable.code: ScaleServiceUnavailable,
 }
