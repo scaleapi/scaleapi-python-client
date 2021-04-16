@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Pytest Test Cases
           command: | # Run test suite, uses SCALE_TEST_API_KEY env variable
-            pytest -v
+            pytest -v -s
       - run:
           name: Twine PyPI Check
           command: | # Validate distribution and setup.py configuration

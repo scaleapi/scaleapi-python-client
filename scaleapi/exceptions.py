@@ -1,3 +1,6 @@
+from typing import Dict
+
+
 class ScaleException(Exception):
     """Generic ScaleException class"""
 
@@ -81,7 +84,7 @@ class ScaleTimeoutError(ScaleException):
     code = 504
 
 
-ExceptionMap = {
+ExceptionMap: Dict[int, ScaleException] = {
     ScaleInvalidRequest.code: ScaleInvalidRequest,
     ScaleUnauthorized.code: ScaleUnauthorized,
     ScaleNotEnabled.code: ScaleNotEnabled,
