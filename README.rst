@@ -166,7 +166,7 @@ __ https://docs.scale.com/reference#batch-creation
     client.create_batch(
         project = "test_project",
         callback = "http://www.example.com/callback",
-        name = "batch_name_01_07_2021"
+        batch_name = "batch_name_01_07_2021"
     )
 
 Finalize Batch
