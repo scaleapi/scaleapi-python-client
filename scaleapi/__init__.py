@@ -504,7 +504,11 @@ class ScaleClient:
             has_more = batches.has_more
 
     def create_project(
-        self, project_name: str, task_type: TaskType, params: Dict = None, self_serve: bool = False,
+        self,
+        project_name: str,
+        task_type: TaskType,
+        params: Dict = None,
+        self_serve: bool = False,
     ) -> Project:
         """Creates a new project.
         https://docs.scale.com/reference#project-creation
@@ -524,7 +528,12 @@ class ScaleClient:
             Project: [description]
         """
         endpoint = "projects"
-        payload = dict(type=task_type.value, name=project_name, params=params, self_serve=self_serve)
+        payload = dict(
+            type=task_type.value,
+            name=project_name,
+            params=params,
+            self_serve=self_serve,
+        )
         projectdata = self.api.post_request(endpoint, body=payload)
         return Project(projectdata, self)
 
