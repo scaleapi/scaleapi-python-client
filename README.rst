@@ -62,6 +62,7 @@ __ https://docs.scale.com/reference
 .. code-block:: python
 
     from scaleapi.tasks import TaskType
+    from scaleapi.exceptions import ScaleDuplicateTask
 
     payload = dict(
         project = "test_project",

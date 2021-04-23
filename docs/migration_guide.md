@@ -76,7 +76,7 @@ batch.tasks_canceled        # batch.canceled
 
 ### Enabled Auto-Retry
 
-SDK now supports auto-retry in case of a `TimeOut(504)` or `TooManyRequests(429)` error occurs.
+SDK now supports auto-retry in case of a `408`, `429` or `5xx` error occurs.
 
 ### New Exceptions
 
