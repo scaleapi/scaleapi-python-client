@@ -99,6 +99,28 @@ __ https://docs.scale.com/reference#retrieve-tasks
     print(task.status)  # Task status ("pending", "completed", "error", "canceled")
     print(task.response) # If task is complete
 
+
+Task Attributes
+^^^^^^^^^^^^^^^
+
+The older ``param_dict`` attribute is now replaced with a method ``as_dict()`` to return a task's all attributes as a dictionary (JSON).
+
+First-level attributes of Task are accessible with ``.`` annotation as the following:
+
+.. code-block :: python
+
+    task.status                   # same as task.as_dict()["status"]
+    task.params["geometries"]     # same as task.as_dict()["params"]["geometries"]
+    task.response["annotations"]  # same as task.as_dict()["response"]["annotations"]
+
+
+Accessing ``task.params`` child objects directly at task level is **deprecated**. Instead of ``task.attribute``, you should use ``task.params["attribute"]`` for accessing objects under `params`.
+
+.. code-block :: python
+
+    task.params["geometries"]   # task.geometries is DEPRECATED
+    task.params["attachment"]   # task.attachment is DEPRECATED
+
 List Tasks
 ^^^^^^^^^^
 
@@ -210,7 +232,9 @@ __ https://docs.scale.com/reference#batch-retrieval
 
 .. code-block:: python
 
-    client.get_batch(batch_name = "batch_name_01_07_2021")
+    batch = client.get_batch(batch_name = "batch_name_01_07_2021")
+
+The older ``param_dict`` attribute is now replaced with a method ``batch.as_dict()`` to return a batch's all attributes as a dictionary (JSON).
 
 List Batches
 ^^^^^^^^^^^^
@@ -278,7 +302,9 @@ __ https://docs.scale.com/reference#project-retrieval
 
 .. code-block:: python
 
-    client.get_project(project_name = "test_project")
+    project = client.get_project(project_name = "test_project")
+
+The older ``param_dict`` attribute is now replaced with a method ``project.as_dict()`` to return a project's all attributes as a dictionary (JSON).
 
 List Projects
 ^^^^^^^^^^^^^
