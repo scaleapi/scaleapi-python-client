@@ -378,3 +378,19 @@ def test_get_batches():
     # Download all batches to check total count
     all_batches = list(client.get_batches(project_name=TEST_PROJECT_NAME))
     assert total_batches == len(all_batches)
+
+
+def test_files_upload():
+    with open("tests/test_image.png", "rb") as f:
+        file = ("test_image.png", f)
+        client.upload_file(
+            file=file,
+            project_name=TEST_PROJECT_NAME,
+        )
+
+
+def test_files_import():
+    client.import_file(
+        file_url="https://static.scale.com/uploads/selfserve-sample-image.png",
+        project_name=TEST_PROJECT_NAME,
+    )

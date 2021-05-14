@@ -1,7 +1,9 @@
-from typing import Dict, Generator, Generic, List, TypeVar, Union
+from io import IOBase
+from typing import Dict, Generator, Generic, List, Tuple, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
 from scaleapi.exceptions import ScaleInvalidRequest
+from scaleapi.files import File
 from scaleapi.projects import Project
 
 from ._version import __version__  # noqa: F401
@@ -317,7 +319,13 @@ class ScaleClient:
         taskdata = self.api.post_request(endpoint, body=kwargs)
         return Task(taskdata, self)
 
-    def create_batch(self, project: str, batch_name: str, callback: str = "") -> Batch:
+    def create_batch(
+        self,
+        project: str,
+        batch_name: str,
+        callback: str = "",
+        instruction_batch: bool = False,
+    ) -> Batch:
         """Create a new Batch within a project.
         https://docs.scale.com/reference#batch-creation
 
@@ -329,12 +337,21 @@ class ScaleClient:
             callback (str, optional):
                 Email to notify, or URL to POST to
                 when a batch is complete.
+            instruction_batch (bool):
+                Only applicable for self serve projects.
+                Create an instruction batch by setting
+                the instruction_batch flag to true.
 
         Returns:
             Batch: Created batch object
         """
         endpoint = "batches"
-        payload = dict(project=project, name=batch_name, callback=callback)
+        payload = dict(
+            project=project,
+            name=batch_name,
+            instruction_batch=instruction_batch,
+            callback=callback,
+        )
         batchdata = self.api.post_request(endpoint, body=payload)
         return Batch(batchdata, self)
 
@@ -596,3 +613,39 @@ class ScaleClient:
         endpoint = f"projects/{Api.quote_string(project_name)}/setParams"
         projectdata = self.api.post_request(endpoint, body=kwargs)
         return Project(projectdata, self)
+
+    def upload_file(self, file: Tuple[str, IOBase], **kwargs) -> File:
+        """Upload file.
+        Refer to Files API Reference:
+        https://docs.scale.com/reference#file-upload-1
+
+        Args:
+            file (Tuple[str, IOBase]):
+                File name and buffer
+
+        Returns:
+            File
+        """
+
+        endpoint = "files/upload"
+        files = {"file": file}
+        filedata = self.api.post_request(endpoint, files=files, data=kwargs)
+        return File(filedata, self)
+
+    def import_file(self, file_url: str, **kwargs) -> File:
+        """Import file from a remote url.
+        Refer to Files API Reference:
+        https://docs.scale.com/reference#file-import-1
+
+        Args:
+            file_url (str):
+                File's url
+
+        Returns:
+            File
+        """
+
+        endpoint = "files/import"
+        payload = dict(file_url=file_url, **kwargs)
+        filedata = self.api.post_request(endpoint, body=payload)
+        return File(filedata, self)

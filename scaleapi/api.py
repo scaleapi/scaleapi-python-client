@@ -30,10 +30,20 @@ class Api:
             "Content-Type": "application/json",
             "User-Agent": self._generate_useragent(user_agent_extension),
         }
+        self._headers_multipart_form_data = {
+            "User-Agent": self._generate_useragent(user_agent_extension),
+        }
 
     @staticmethod
     def _http_request(
-        method, url, headers=None, auth=None, params=None, body=None
+        method,
+        url,
+        headers=None,
+        auth=None,
+        params=None,
+        body=None,
+        files=None,
+        data=None,
     ) -> Response:
 
         https = requests.Session()
@@ -59,6 +69,8 @@ class Api:
                 auth=auth,
                 params=params,
                 json=body,
+                files=files,
+                data=data,
             )
 
             return res
@@ -77,13 +89,21 @@ class Api:
         raise exception(message, res.status_code)
 
     def _api_request(
-        self, method, endpoint, headers=None, auth=None, params=None, body=None
+        self,
+        method,
+        endpoint,
+        headers=None,
+        auth=None,
+        params=None,
+        body=None,
+        files=None,
+        data=None,
     ):
         """Generic HTTP request method with error handling."""
 
         url = f"{SCALE_ENDPOINT}/{endpoint}"
 
-        res = self._http_request(method, url, headers, auth, params, body)
+        res = self._http_request(method, url, headers, auth, params, body, files, data)
 
         json = None
         if res.status_code == 200:
@@ -99,10 +119,18 @@ class Api:
             "GET", endpoint, headers=self._headers, auth=self._auth, params=params
         )
 
-    def post_request(self, endpoint, body=None):
+    def post_request(self, endpoint, body=None, files=None, data=None):
         """Generic POST Request Wrapper"""
         return self._api_request(
-            "POST", endpoint, headers=self._headers, auth=self._auth, body=body
+            "POST",
+            endpoint,
+            headers=self._headers
+            if files is None
+            else self._headers_multipart_form_data,
+            auth=self._auth,
+            body=body,
+            files=files,
+            data=data,
         )
 
     @staticmethod
