@@ -1,5 +1,4 @@
-from io import IOBase
-from typing import Dict, Generator, Generic, List, Tuple, TypeVar, Union
+from typing import IO, Dict, Generator, Generic, List, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
 from scaleapi.exceptions import ScaleInvalidRequest
@@ -614,14 +613,14 @@ class ScaleClient:
         projectdata = self.api.post_request(endpoint, body=kwargs)
         return Project(projectdata, self)
 
-    def upload_file(self, file: Tuple[str, IOBase], **kwargs) -> File:
+    def upload_file(self, file: IO, **kwargs) -> File:
         """Upload file.
         Refer to Files API Reference:
         https://docs.scale.com/reference#file-upload-1
 
         Args:
-            file (Tuple[str, IOBase]):
-                File name and buffer
+            file (IO):
+                File buffer
 
         Returns:
             File

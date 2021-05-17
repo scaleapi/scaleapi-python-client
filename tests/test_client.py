@@ -382,9 +382,8 @@ def test_get_batches():
 
 def test_files_upload():
     with open("tests/test_image.png", "rb") as f:
-        file = ("test_image.png", f)
         client.upload_file(
-            file=file,
+            file=f,
             project_name=TEST_PROJECT_NAME,
         )
 
