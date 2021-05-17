@@ -349,9 +349,10 @@ __ https://docs.scale.com/reference#file-upload-1
 
 .. code-block:: python
 
-    with open('test_file.png', 'rb') as f:
+    file_name = "test_file.png"
+    with open(file_name, 'rb') as f:
         data = client.upload_file(
-            file=("file_name.png", f),
+            file=(file_name, f),
             project_name = "test_project",
         )
 
