@@ -364,11 +364,10 @@ __ https://docs.scale.com/reference#file-import-1
 
 .. code-block:: python
 
-    with open('test_file.png', 'rb') as f:
-        data = client.import_file(
-            file_url="http://i.imgur.com/v4cBreD.jpg",
-            project_name = "test_project",
-        )
+    data = client.import_file(
+        file_url="http://i.imgur.com/v4cBreD.jpg",
+        project_name = "test_project",
+    )
 
 
 Error handling
