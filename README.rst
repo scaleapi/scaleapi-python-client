@@ -340,6 +340,10 @@ __ https://docs.scale.com/reference#project-update-parameters
 Files
 ________
 
+Files are a way of uploading local files directly to Scale storage or importing files before creating tasks.
+
+The ``file.attachment_url`` can be used in place of attachments in task payload.
+
 Upload Files
 ^^^^^^^^^^^^^^
 
@@ -350,7 +354,7 @@ __ https://docs.scale.com/reference#file-upload-1
 .. code-block:: python
 
     with open(file_name, 'rb') as f:
-        data = client.upload_file(
+        my_file = client.upload_file(
             file=f,
             project_name = "test_project",
         )
@@ -364,10 +368,27 @@ __ https://docs.scale.com/reference#file-import-1
 
 .. code-block:: python
 
-    data = client.import_file(
+    my_file = client.import_file(
         file_url="http://i.imgur.com/v4cBreD.jpg",
         project_name = "test_project",
     )
+
+
+After the files are successfully uploaded to Scale's storage, you can access the URL as ``my_file.attachment_url``, which will have a prefix like ``scaledata://``.
+
+The attribute can be passed to the task payloads, in the ``attachment`` parameter.
+
+.. code-block:: python
+
+  task_payload = dict(
+      ...
+      ...
+      attachment_type = "image",
+      attachment = my_file.attachment_url,
+      ...
+      ...
+  )
+
 
 
 Error handling
