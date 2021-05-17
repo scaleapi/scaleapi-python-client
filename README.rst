@@ -337,6 +337,40 @@ __ https://docs.scale.com/reference#project-update-parameters
         instruction="update: Please label all the stuff",
     )
 
+Files
+________
+
+Upload Files
+^^^^^^^^^^^^^^
+
+Upload a file. Check out `Scale's API documentation`__ for more information.
+
+__ https://docs.scale.com/reference#file-upload-1
+
+.. code-block:: python
+
+    with open('test_file.png', 'rb') as f:
+        data = client.upload_file(
+            file=("file_name.png", f),
+            project_name = "test_project",
+        )
+
+Import Files
+^^^^^^^^^^^^^^
+
+Import a file from a URL. Check out `Scale's API documentation`__ for more information.
+
+__ https://docs.scale.com/reference#file-import-1
+
+.. code-block:: python
+
+    with open('test_file.png', 'rb') as f:
+        data = client.import_file(
+            file_url="http://i.imgur.com/v4cBreD.jpg",
+            project_name = "test_project",
+        )
+
+
 Error handling
 ______________
 
