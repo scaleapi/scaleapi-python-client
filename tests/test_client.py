@@ -8,6 +8,7 @@ from datetime import datetime
 import pytest
 
 import scaleapi
+from scaleapi.batches import BatchStatus
 from scaleapi.exceptions import (
     ScaleDuplicateTask,
     ScaleInvalidRequest,
@@ -346,18 +347,18 @@ def test_finalize_batch():
 def test_get_batch_status():
     batch = create_a_batch()
     client.batch_status(batch.name)
-    assert batch.status == "staging"
+    assert batch.status == BatchStatus.InProgress.value
 
     batch2 = client.get_batch(batch.name)
     batch2.get_status()  # Test status update
-    assert batch2.status == "staging"
+    assert batch2.status == BatchStatus.InProgress.value
 
 
 def test_get_batch():
     batch = create_a_batch()
     batch2 = client.get_batch(batch.name)
     assert batch.name == batch2.name
-    assert batch2.status == "staging"
+    assert batch2.status == BatchStatus.InProgress.value
 
 
 def test_batches():
