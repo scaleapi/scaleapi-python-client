@@ -24,6 +24,10 @@ ____________
 .. code-block:: bash
 
     $ pip install --upgrade scaleapi
+    
+.. code-block:: bash
+
+    $ conda install -c conda-forge scaleapi
 
 Usage
 _____
