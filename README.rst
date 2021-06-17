@@ -24,6 +24,10 @@ ____________
 .. code-block:: bash
 
     $ pip install --upgrade scaleapi
+    
+.. code-block:: bash
+
+    $ conda install -c conda-forge scaleapi
 
 Usage
 _____
@@ -105,7 +109,31 @@ Task Attributes
 
 The older ``param_dict`` attribute is now replaced with a method ``as_dict()`` to return a task's all attributes as a dictionary (JSON).
 
-First-level attributes of Task are accessible with ``.`` annotation as the following:
+.. code-block :: python
+
+    task.as_dict()
+
+    # {
+    #  'task_id': '30553edd0b6a93f8f05f0fee',
+    #  'created_at': '2021-06-17T21:46:36.359Z',
+    #  'type': 'imageannotation',
+    #  'status': 'pending',
+    #   ....
+    #  'params': {
+    #   'attachment': 'http://i.imgur.com/v4cBreD.jpg',
+    #   'attachment_type': 'image',
+    #   'geometries': {
+    #    'box': {
+    #     'objects_to_annotate': ['Baby Cow', 'Big Cow'],
+    #     'min_height': 10,
+    #     'min_width': 10,
+    #     ...
+    #   },
+    #  'project': 'My Project',
+    #  ...
+    # }
+
+First-level attributes of Task are also accessible with ``.`` annotation as the following:
 
 .. code-block :: python
 
@@ -342,7 +370,6 @@ ________
 
 Files are a way of uploading local files directly to Scale storage or importing files before creating tasks.
 
-The ``file.attachment_url`` can be used in place of attachments in task payload.
 
 Upload Files
 ^^^^^^^^^^^^^^
@@ -358,6 +385,23 @@ __ https://docs.scale.com/reference#file-upload-1
             file=f,
             project_name = "test_project",
         )
+
+The ``file.attachment_url`` can be used in place of attachments in task payload.
+
+
+.. code-block:: python
+
+    my_file.as_dict()
+
+    # {
+    #  'attachment_url': 'scaledata://606e2a0a46102303a130949/8ac09a90-c143-4154-9a9b-6c35121396d1f',
+    #  'created_at': '2021-06-17T21:56:53.825Z',
+    #  'id': '8ac09d70-ca43-4354-9a4b-6c3591396d1f',
+    #  'mime_type': 'image/png',
+    #  'project_names': ['test_project'],
+    #  'size': 340714,
+    #  'updated_at': '2021-06-17T21:56:53.825Z'
+    # }
 
 Import Files
 ^^^^^^^^^^^^^^
@@ -384,7 +428,7 @@ The attribute can be passed to the task payloads, in the ``attachment`` paramete
       ...
       ...
       attachment_type = "image",
-      attachment = my_file.attachment_url,
+      attachment = my_file.attachment_url,  # scaledata://606e2a30949/89a90-c143-4154-9a9b-6c36d1f
       ...
       ...
   )
