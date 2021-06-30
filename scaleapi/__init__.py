@@ -45,7 +45,9 @@ class ScaleClient:
     """Main class serves as an interface for Scale API"""
 
     def __init__(self, api_key, source=None, api_instance_url=None):
-        self.api = Api(api_key, user_agent_extension=source, api_instance_url=api_instance_url)
+        self.api = Api(
+            api_key, user_agent_extension=source, api_instance_url=api_instance_url
+        )
 
     def get_task(self, task_id: str) -> Task:
         """Fetches a task.
