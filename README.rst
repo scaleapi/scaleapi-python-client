@@ -24,7 +24,7 @@ ____________
 .. code-block:: bash
 
     $ pip install --upgrade scaleapi
-    
+
 .. code-block:: bash
 
     $ conda install -c conda-forge scaleapi
@@ -66,7 +66,7 @@ __ https://docs.scale.com/reference
 .. code-block:: python
 
     from scaleapi.tasks import TaskType
-    from scaleapi.exceptions import ScaleDuplicateTask
+    from scaleapi.exceptions import ScaleDuplicateResource
 
     payload = dict(
         project = "test_project",
@@ -86,7 +86,7 @@ __ https://docs.scale.com/reference
 
     try:
         client.create_task(TaskType.ImageAnnotation, **payload)
-    except ScaleDuplicateTask as err:
+    except ScaleDuplicateResource as err:
         print(err.message)  # If unique_id is already used for a different task
 
 
@@ -149,8 +149,8 @@ Accessing ``task.params`` child objects directly at task level is **deprecated**
     task.params["geometries"]   # task.geometries is DEPRECATED
     task.params["attachment"]   # task.attachment is DEPRECATED
 
-List Tasks
-^^^^^^^^^^
+Retrieve List of Tasks
+^^^^^^^^^^^^^^^^^^^^^^
 
 Retrieve a list of `Task` objects, with filters for: ``project_name``, ``batch_name``, ``type``, ``status``,
 ``review_status``, ``unique_id``, ``completed_after``, ``completed_before``, ``updated_after``, ``updated_before``,
@@ -191,6 +191,28 @@ __ https://docs.scale.com/reference#list-multiple-tasks
     task_list = list(tasks)
     print(f"{len(task_list))} tasks retrieved")
 
+Get Tasks Count
+^^^^^^^^^^^^^^^
+
+``get_tasks_count()`` method returns the number of tasks with the given optional parameters for: ``project_name``, ``batch_name``, ``type``, ``status``,
+``review_status``, ``unique_id``, ``completed_after``, ``completed_before``, ``updated_after``, ``updated_before``,
+``created_after``, ``created_before`` and ``tags``.
+
+.. code-block :: python
+
+    from scaleapi.tasks import TaskReviewStatus, TaskStatus
+
+    task_count = client.get_tasks_count(
+        project_name = "My Project",
+        created_after = "2020-09-08",
+        completed_before = "2021-04-01",
+        status = TaskStatus.Completed,
+        review_status = TaskReviewStatus.Accepted
+    )
+
+    print(task_count)  # 1923
+
+
 Cancel Task
 ^^^^^^^^^^^
 
@@ -214,11 +236,15 @@ __ https://docs.scale.com/reference#batch-creation
 
 .. code-block:: python
 
-    client.create_batch(
+    batch = client.create_batch(
         project = "test_project",
         callback = "http://www.example.com/callback",
         batch_name = "batch_name_01_07_2021"
     )
+
+    print(batch.name)  # batch_name_01_07_2021
+
+Throws ``ScaleDuplicateResource`` exception if a batch with the same name already exists.
 
 Finalize Batch
 ^^^^^^^^^^^^^^^
@@ -320,6 +346,8 @@ __ https://docs.scale.com/reference#project-creation
     )
 
     print(project.name)  # Test_Project
+
+Throws ``ScaleDuplicateResource`` exception if a project with the same name already exists.
 
 Retrieve Project
 ^^^^^^^^^^^^^^^^
@@ -445,7 +473,7 @@ as a `ScaleException` parent type and child exceptions:
 - ``ScaleUnauthorized``: 401 - Unauthorized -- No valid API key provided.
 - ``ScaleNotEnabled``: 402 - Not enabled -- Please contact sales@scaleapi.com before creating this type of task.
 - ``ScaleResourceNotFound``: 404 - Not Found -- The requested resource doesn't exist.
-- ``ScaleDuplicateTask``: 409 - Conflict -- The provided idempotency key or unique_id is already in use for a different request.
+- ``ScaleDuplicateResource``: 409 - Conflict -- Object already exists with same name, idempotency key or unique_id.
 - ``ScaleTooManyRequests``: 429 - Too Many Requests -- Too many requests hit the API too quickly.
 - ``ScaleInternalError``: 500 - Internal Server Error -- We had a problem with our server. Try again later.
 - ``ScaleServiceUnavailable``: 503 - Server Timeout From Request Queueing -- Try again later.

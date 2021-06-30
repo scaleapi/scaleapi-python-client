@@ -262,32 +262,24 @@ class ScaleClient:
         next_token = None
         has_more = True
 
+        tasks_args = self._process_tasks_endpoint_args(
+            project_name,
+            batch_name,
+            task_type,
+            status,
+            review_status,
+            unique_id,
+            completed_after,
+            completed_before,
+            updated_after,
+            updated_before,
+            created_after,
+            created_before,
+            tags,
+        )
+
         while has_more:
-            tasks_args = {
-                "next_token": next_token,
-                "start_time": created_after,
-                "end_time": created_before,
-                "project": project_name,
-                "batch": batch_name,
-                "completed_before": completed_before,
-                "completed_after": completed_after,
-                "tags": tags,
-                "updated_before": updated_before,
-                "updated_after": updated_after,
-                "unique_id": unique_id,
-            }
-
-            if status:
-                tasks_args["status"] = status.value
-            if task_type:
-                tasks_args["type"] = task_type.value
-            if review_status:
-                if isinstance(review_status, List):
-                    value = ",".join(map(lambda x: x.value, review_status))
-                else:
-                    value = review_status.value
-
-                tasks_args["customer_review_status"] = value
+            tasks_args["next_token"] = next_token
 
             tasks = self.tasks(**tasks_args)
             for task in tasks.docs:
@@ -295,6 +287,145 @@ class ScaleClient:
 
             next_token = tasks.next_token
             has_more = tasks.has_more
+
+    def get_tasks_count(
+        self,
+        project_name: str,
+        batch_name: str = None,
+        task_type: TaskType = None,
+        status: TaskStatus = None,
+        review_status: Union[List[TaskReviewStatus], TaskReviewStatus] = None,
+        unique_id: Union[List[str], str] = None,
+        completed_after: str = None,
+        completed_before: str = None,
+        updated_after: str = None,
+        updated_before: str = None,
+        created_after: str = None,
+        created_before: str = None,
+        tags: Union[List[str], str] = None,
+    ) -> int:
+        """Returns number of tasks with given filters.
+
+        Args:
+            project_name (str):
+                Project Name
+
+            batch_name (str, optional):
+                Batch Name
+
+            task_type (TaskType, optional):
+                Task type to filter i.e. `TaskType.TextCollection`
+
+            status (TaskStatus, optional):
+                Task status i.e. `TaskStatus.Completed`
+
+            review_status (List[TaskReviewStatus] | TaskReviewStatus):
+                The status of the audit result of the task.
+                Input can be a single element or a list of
+                TaskReviewStatus. i.e. `TaskReviewStatus.Accepted` to
+                filter the tasks that you accepted after audit.
+
+            unique_id (List[str] | str, optional):
+                The unique_id of a task. Multiple unique IDs can be
+                specified at the same time as a list.
+
+            completed_after (str, optional):
+                The minimum value of `completed_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            completed_before (str, optional):
+                The maximum value of `completed_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            updated_after (str, optional):
+                The minimum value of `updated_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            updated_before (str, optional):
+                The maximum value of `updated_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            created_after (str, optional):
+                The minimum value of `created_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            created_before (str, optional):
+                The maximum value of `created_at` in UTC timezone
+                ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
+
+            tags (List[str] | str, optional):
+                The tags of a task; multiple tags can be
+                specified as a list.
+
+        Returns:
+            int:
+                Returns number of tasks
+        """
+
+        tasks_args = self._process_tasks_endpoint_args(
+            project_name,
+            batch_name,
+            task_type,
+            status,
+            review_status,
+            unique_id,
+            completed_after,
+            completed_before,
+            updated_after,
+            updated_before,
+            created_after,
+            created_before,
+            tags,
+        )
+
+        tasks_args["limit"] = 1
+
+        tasks = self.tasks(**tasks_args)
+        return tasks.total
+
+    @staticmethod
+    def _process_tasks_endpoint_args(
+        project_name: str,
+        batch_name: str = None,
+        task_type: TaskType = None,
+        status: TaskStatus = None,
+        review_status: Union[List[TaskReviewStatus], TaskReviewStatus] = None,
+        unique_id: Union[List[str], str] = None,
+        completed_after: str = None,
+        completed_before: str = None,
+        updated_after: str = None,
+        updated_before: str = None,
+        created_after: str = None,
+        created_before: str = None,
+        tags: Union[List[str], str] = None,
+    ):
+        """Generates args for /tasks endpoint."""
+        tasks_args = {
+            "start_time": created_after,
+            "end_time": created_before,
+            "project": project_name,
+            "batch": batch_name,
+            "completed_before": completed_before,
+            "completed_after": completed_after,
+            "tags": tags,
+            "updated_before": updated_before,
+            "updated_after": updated_after,
+            "unique_id": unique_id,
+        }
+
+        if status:
+            tasks_args["status"] = status.value
+        if task_type:
+            tasks_args["type"] = task_type.value
+        if review_status:
+            if isinstance(review_status, List):
+                value = ",".join(map(lambda x: x.value, review_status))
+            else:
+                value = review_status.value
+
+            tasks_args["customer_review_status"] = value
+
+        return tasks_args
 
     def create_task(self, task_type: TaskType, **kwargs) -> Task:
         """This method can be used for any Scale supported task type.
