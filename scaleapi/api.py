@@ -7,7 +7,7 @@ from requests.adapters import HTTPAdapter, Response, Retry
 from ._version import __package_name__, __version__
 from .exceptions import ExceptionMap, ScaleException
 
-SCALE_ENDPOINT = "https://api.scale.com/v1"
+SCALE_API_BASE_URL_V1 = "https://api.scale.com/v1"
 
 # Parameters for HTTP retry
 HTTP_TOTAL_RETRIES = 3  # Number of total retries
@@ -19,7 +19,7 @@ HTTP_RETRY_ALLOWED_METHODS = frozenset({"GET", "POST"})
 class Api:
     """Internal Api reference for handling http operations"""
 
-    def __init__(self, api_key, user_agent_extension=None):
+    def __init__(self, api_key, user_agent_extension=None, api_instance_url=None):
         if api_key == "" or api_key is None:
             raise ScaleException("Please provide a valid API Key.")
 
@@ -33,6 +33,7 @@ class Api:
         self._headers_multipart_form_data = {
             "User-Agent": self._generate_useragent(user_agent_extension),
         }
+        self.base_api_url = api_instance_url or SCALE_API_BASE_URL_V1
 
     @staticmethod
     def _http_request(
@@ -101,7 +102,7 @@ class Api:
     ):
         """Generic HTTP request method with error handling."""
 
-        url = f"{SCALE_ENDPOINT}/{endpoint}"
+        url = f"{self.base_api_url}/{endpoint}"
 
         res = self._http_request(method, url, headers, auth, params, body, files, data)
 
