@@ -10,7 +10,7 @@ import pytest
 import scaleapi
 from scaleapi.batches import BatchStatus
 from scaleapi.exceptions import (
-    ScaleDuplicateTask,
+    ScaleDuplicateResource,
     ScaleInvalidRequest,
     ScaleResourceNotFound,
     ScaleUnauthorized,
@@ -72,7 +72,7 @@ def make_a_task(unique_id: str = None, batch: str = None):
 def test_uniquekey_fail():
     unique_key = str(uuid.uuid4())
     make_a_task(unique_key)
-    with pytest.raises(ScaleDuplicateTask):
+    with pytest.raises(ScaleDuplicateResource):
         make_a_task(unique_key)
 
 
@@ -334,6 +334,12 @@ def test_get_tasks():
     task_ids = {task.id for task in tasks}
     for task in client.get_tasks(project_name=TEST_PROJECT_NAME, batch_name=batch.name):
         assert task.id in task_ids
+
+
+def test_get_tasks_count():
+    tasks_count = client.tasks(project=TEST_PROJECT_NAME).total
+    get_tasks_count = client.get_tasks_count(project_name=TEST_PROJECT_NAME)
+    assert tasks_count == get_tasks_count
 
 
 def test_finalize_batch():

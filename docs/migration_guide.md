@@ -81,7 +81,7 @@ SDK now supports auto-retry in case of a `408`, `429` or `5xx` error occurs.
 ### New Exceptions
 
 New error types are introduces if you want to handle specific exception cases.
-`ScaleInvalidRequest`, `ScaleUnauthorized`, `ScaleNotEnabled`, `ScaleResourceNotFound`, `ScaleDuplicateTask`, `ScaleTooManyRequests`, `ScaleInternalError` and `ScaleTimeoutError`.
+`ScaleInvalidRequest`, `ScaleUnauthorized`, `ScaleNotEnabled`, `ScaleResourceNotFound`, `ScaleDuplicateResource`, `ScaleTooManyRequests`, `ScaleInternalError` and `ScaleTimeoutError`.
 
 All new error types are child of the existing `ScaleException` which can be used to handle all cases.
 

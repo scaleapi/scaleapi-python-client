@@ -48,9 +48,9 @@ class ScaleResourceNotFound(ScaleException):
     code = 404
 
 
-class ScaleDuplicateTask(ScaleException):
-    """409 - Conflict -- The provided idempotency key or unique_id is
-    already in use for a different request.
+class ScaleDuplicateResource(ScaleException):
+    """409 - Conflict -- Object already exists with same name,
+    idempotency key or unique_id.
     """
 
     code = 409
@@ -89,7 +89,7 @@ ExceptionMap: Dict[int, ScaleException] = {
     ScaleUnauthorized.code: ScaleUnauthorized,
     ScaleNotEnabled.code: ScaleNotEnabled,
     ScaleResourceNotFound.code: ScaleResourceNotFound,
-    ScaleDuplicateTask.code: ScaleDuplicateTask,
+    ScaleDuplicateResource.code: ScaleDuplicateResource,
     ScaleTooManyRequests.code: ScaleTooManyRequests,
     ScaleInternalError.code: ScaleInternalError,
     ScaleTimeoutError.code: ScaleTimeoutError,
