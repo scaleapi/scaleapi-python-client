@@ -1,6 +1,7 @@
 from typing import IO, Dict, Generator, Generic, List, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
+from scaleapi.benchmarks import Benchmark
 from scaleapi.exceptions import ScaleInvalidRequest
 from scaleapi.files import File
 from scaleapi.projects import Project
@@ -781,3 +782,32 @@ class ScaleClient:
         payload = dict(file_url=file_url, **kwargs)
         filedata = self.api.post_request(endpoint, body=payload)
         return File(filedata, self)
+
+    def create_benchmark(self, task_type: TaskType, **kwargs) -> Benchmark:
+        """This method can be used for Self-Serve projects only.
+        Supported Task Type: [
+            ImageAnnotation,
+            Categorization,
+            TextCollection,
+            NamedEntityRecognition
+        ]
+        Parameters may differ based on the given task_type.
+
+        Args:
+            task_type (TaskType):
+                Task type to be created
+                i.e. `TaskType.ImageAnnotation`
+            **kwargs:
+                Passing in the applicable values into thefunction
+                definition. The applicable fields and further
+                information for each task type can be found in
+                Scale's API documentation.
+                https://docs.scale.com/reference
+
+        Returns:
+            Task:
+                Returns created benchmark.
+        """
+        endpoint = f"benchmarks/{task_type.value}"
+        benchmark_data = self.api.post_request(endpoint, body=kwargs)
+        return Benchmark(benchmark_data, self)
