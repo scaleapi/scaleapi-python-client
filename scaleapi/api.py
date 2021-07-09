@@ -7,7 +7,6 @@ from requests.adapters import HTTPAdapter, Response, Retry
 from ._version import __package_name__, __version__
 from .exceptions import ExceptionMap, ScaleException
 
-# SCALE_API_BASE_URL_V1 = "http://localhost:3000/v1"
 SCALE_API_BASE_URL_V1 = "https://api.scale.com/v1"
 
 # Parameters for HTTP retry
