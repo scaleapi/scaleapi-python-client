@@ -1,4 +1,4 @@
-from typing import IO, Dict, Generator, Generic, List, TypeVar, Union
+from typing import IO, Dict, Generator, Generic, List, Optional, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
 from scaleapi.benchmarks import Benchmark
@@ -783,8 +783,15 @@ class ScaleClient:
         filedata = self.api.post_request(endpoint, body=payload)
         return File(filedata, self)
 
-    def create_benchmark(self, task_type: TaskType, **kwargs) -> Benchmark:
-        """This method can be used for Self-Serve projects only.
+    def create_benchmark(
+        self,
+        task_type: TaskType,
+        project: str,
+        expected_response: Dict,
+        initial_response: Optional[Dict] = None,
+        **kwargs,
+    ) -> Benchmark:
+        """This method can only be used for Self-Serve projects.
         Supported Task Type: [
             ImageAnnotation,
             Categorization,
@@ -809,5 +816,12 @@ class ScaleClient:
                 Returns created benchmark.
         """
         endpoint = f"benchmarks/{task_type.value}"
-        benchmark_data = self.api.post_request(endpoint, body=kwargs)
+
+        payload = dict(
+            project=project,
+            expected_response=expected_response,
+            initial_response=initial_response,
+        )
+
+        benchmark_data = self.api.post_request(endpoint, body={**payload, **kwargs})
         return Benchmark(benchmark_data, self)

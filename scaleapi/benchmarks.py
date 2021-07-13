@@ -3,7 +3,7 @@ class Benchmark:
 
     def __init__(self, json, client):
         self._json = json
-        self.id = json["benchmark_id"]
+        self.id = json["id"]
         self.initial_response = getattr(json, "initial_response", None)
         self.expected_response = json["expected_response"]
         self._client = client
