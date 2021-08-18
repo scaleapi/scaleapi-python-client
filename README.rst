@@ -475,7 +475,7 @@ Create an evaluation task.
 
     client.create_evaluation_task(TaskType, ...task parameters...)
 
-Passing in the applicable values into the function definition. The applicable fields are the same ones as for create_task. Additionally you need to pass in an expected_response and an optional initial_response if it is an review phase evaluation task.
+Passing in the applicable values into the function definition. The applicable fields are the same as for create_task. Applicable fields for each task type can be found in `Scale's API documentation`__. Additionally an expected_response is required. An optional initial_response can be provided if it's for a review phase evaluation task.
 
 __ https://docs.scale.com/reference
 
