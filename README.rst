@@ -466,7 +466,6 @@ ________________________________________________
 
 Evaluation tasks are tasks that we know the answer to and are used to measure workers' performance internally to ensure the quality
 
-
 Create Evaluation Task
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -476,9 +475,7 @@ Create an evaluation task.
 
     client.create_evaluation_task(TaskType, ...task parameters...)
 
-Passing in the applicable values into the function definition. The applicable fields are the same ones as for create_task.
-
-Additionally you need to pass in an expected_response and an optional initial_response if it is an review phase evaluation task.
+Passing in the applicable values into the function definition. The applicable fields are the same ones as for create_task. Additionally you need to pass in an expected_response and an optional initial_response if it is an review phase evaluation task.
 
 __ https://docs.scale.com/reference
 
