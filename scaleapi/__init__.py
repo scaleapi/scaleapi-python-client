@@ -1,7 +1,7 @@
-from typing import IO, Dict, Generator, Generic, List, Optional, TypeVar, Union
+from typing import IO, Dict, Generator, Generic, List, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
-from scaleapi.benchmarks import Benchmark
+from scaleapi.evaluation_tasks import EvaluationTask
 from scaleapi.exceptions import ScaleInvalidRequest
 from scaleapi.files import File
 from scaleapi.projects import Project
@@ -783,16 +783,13 @@ class ScaleClient:
         filedata = self.api.post_request(endpoint, body=payload)
         return File(filedata, self)
 
-    def create_benchmark(
+    def create_evaluation_task(
         self,
         task_type: TaskType,
-        project: str,
-        expected_response: Dict,
-        initial_response: Optional[Dict] = None,
         **kwargs,
-    ) -> Benchmark:
+    ) -> EvaluationTask:
         """This method can only be used for Self-Serve projects.
-        Supported Task Type: [
+        Supported Task Types: [
             ImageAnnotation,
             Categorization,
             TextCollection,
@@ -803,25 +800,24 @@ class ScaleClient:
         Args:
             task_type (TaskType):
                 Task type to be created
-                i.e. `TaskType.ImageAnnotation`
+                e.g.. `TaskType.ImageAnnotation`
             **kwargs:
-                Passing in the applicable values into thefunction
-                definition. The applicable fields and further
-                information for each task type can be found in
+                The same set of parameters are expected with
+                create_task function. Additionally with
+                an expected_response and an optional initial_response
+                if you want to make it a review phase evaluation task
+                The expected_response/initial_response should follow
+                the format of any other tasks' response on your project.
+                It's recommended to try a self_label batch to get
+                familiar with the response format.
                 Scale's API documentation.
                 https://docs.scale.com/reference
 
         Returns:
             Task:
-                Returns created benchmark.
+                Returns created evaluation task.
         """
-        endpoint = f"benchmarks/{task_type.value}"
+        endpoint = f"evaluation_tasks/{task_type.value}"
 
-        payload = dict(
-            project=project,
-            expected_response=expected_response,
-            initial_response=initial_response,
-        )
-
-        benchmark_data = self.api.post_request(endpoint, body={**payload, **kwargs})
-        return Benchmark(benchmark_data, self)
+        evaluation_task_data = self.api.post_request(endpoint, body=kwargs)
+        return EvaluationTask(evaluation_task_data, self)

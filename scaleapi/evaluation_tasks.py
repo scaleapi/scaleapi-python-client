@@ -1,5 +1,5 @@
-class Benchmark:
-    """Benchmark class, containing Benchmark information."""
+class EvaluationTask:
+    """EvaluationTask class, containing EvaluationTask information."""
 
     def __init__(self, json, client):
         self._json = json
@@ -12,10 +12,10 @@ class Benchmark:
         return hash(self.id)
 
     def __str__(self):
-        return f"Benchmark(id={self.id})"
+        return f"EvaluationTask(id={self.id})"
 
     def __repr__(self):
-        return f"Benchmark({self._json})"
+        return f"EvaluationTask({self._json})"
 
     def as_dict(self):
         """Returns all attributes as a dictionary"""
