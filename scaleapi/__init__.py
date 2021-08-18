@@ -457,7 +457,8 @@ class ScaleClient:
         project: str,
         batch_name: str,
         callback: str = "",
-        instruction_batch: bool = False,
+        calibration_batch: bool = False,
+        self_label_batch: bool = False,
     ) -> Batch:
         """Create a new Batch within a project.
         https://docs.scale.com/reference#batch-creation
@@ -470,10 +471,14 @@ class ScaleClient:
             callback (str, optional):
                 Email to notify, or URL to POST to
                 when a batch is complete.
-            instruction_batch (bool):
+            calibration_batch (bool):
                 Only applicable for self serve projects.
-                Create an instruction batch by setting
-                the instruction_batch flag to true.
+                Create a calibration_batch batch by setting
+                the calibration_batch flag to true.
+            self_label_batch (bool):
+                Only applicable for self serve projects.
+                Create a self_label batch by setting
+                the self_label_batch flag to true.
 
         Returns:
             Batch: Created batch object
@@ -482,7 +487,8 @@ class ScaleClient:
         payload = dict(
             project=project,
             name=batch_name,
-            instruction_batch=instruction_batch,
+            calibration_batch=calibration_batch,
+            self_label_batch=self_label_batch,
             callback=callback,
         )
         batchdata = self.api.post_request(endpoint, body=payload)
@@ -658,7 +664,7 @@ class ScaleClient:
         project_name: str,
         task_type: TaskType,
         params: Dict = None,
-        self_serve: bool = False,
+        rapid: bool = False,
     ) -> Project:
         """Creates a new project.
         https://docs.scale.com/reference#project-creation
@@ -682,7 +688,7 @@ class ScaleClient:
             type=task_type.value,
             name=project_name,
             params=params,
-            self_serve=self_serve,
+            rapid=rapid,
         )
         projectdata = self.api.post_request(endpoint, body=payload)
         return Project(projectdata, self)
