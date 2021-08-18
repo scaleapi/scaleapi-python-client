@@ -820,7 +820,7 @@ class ScaleClient:
                 https://docs.scale.com/reference
 
         Returns:
-            Task:
+            EvaluationTask:
                 Returns created evaluation task.
         """
         endpoint = f"evaluation_tasks/{task_type.value}"
