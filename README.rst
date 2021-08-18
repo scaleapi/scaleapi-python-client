@@ -461,6 +461,68 @@ The attribute can be passed to the task payloads, in the ``attachment`` paramete
       ...
   )
 
+Evaluation tasks (For Scale Rapid projects only)
+________________________________________________
+
+Evaluation tasks are tasks that we know the answer to and are used to measure workers' performance internally to ensure the quality
+
+Create Evaluation Task
+^^^^^^^^^^^^^^^^^^^^^^
+
+Create an evaluation task.
+
+.. code-block:: python
+
+    client.create_evaluation_task(TaskType, ...task parameters...)
+
+Passing in the applicable values into the function definition. The applicable fields are the same as for create_task. Applicable fields for each task type can be found in `Scale's API documentation`__. Additionally an expected_response is required. An optional initial_response can be provided if it's for a review phase evaluation task.
+
+__ https://docs.scale.com/reference
+
+.. code-block:: python
+
+    from scaleapi.tasks import TaskType
+
+    expected_response = {
+        "annotations": {
+            "answer_reasonable": {
+                "type": "category",
+                "field_id": "answer_reasonable",
+                "response": [
+                    [
+                        "no"
+                    ]
+                ]
+            }
+        }
+    }
+
+    initial_response = {
+        "annotations": {
+            "answer_reasonable": {
+                "type": "category",
+                "field_id": "answer_reasonable",
+                "response": [
+                    [
+                        "yes"
+                    ]
+                ]
+            }
+        }
+    }
+
+    attachments = [
+        {"type": "image", "content": "https://i.imgur.com/bGjrNzl.jpeg"}
+    ]
+
+    payload = dict(
+        project = "test_project",
+        attachments,
+        initial_response=initial_response,
+        expected_response=expected_response,
+    )
+
+    client.create_task(TaskType.TextCollection, **payload)
 
 
 Error handling
