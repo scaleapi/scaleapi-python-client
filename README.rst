@@ -21,9 +21,13 @@ If you are migrating from earlier versions to v2,  please refer to `Migration Gu
 Installation
 ____________
 
+Install with PyPI (pip)
+
 .. code-block:: bash
 
     $ pip install --upgrade scaleapi
+
+or install with Anaconda (conda)
 
 .. code-block:: bash
 
