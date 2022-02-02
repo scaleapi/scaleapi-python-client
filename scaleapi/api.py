@@ -61,7 +61,7 @@ class Api:
 
         try:
             params = params or {}
-            body = body or {}
+            body = body or None
 
             res = https.request(
                 method=method,
