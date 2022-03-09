@@ -526,7 +526,7 @@ __ https://docs.scale.com/reference
         expected_response=expected_response,
     )
 
-    client.create_task(TaskType.TextCollection, **payload)
+    client.create_evaluation_task(TaskType.TextCollection, **payload)
 
 
 Error handling
