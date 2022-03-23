@@ -37,6 +37,7 @@ class TaskReviewStatus(Enum):
     Fixed = "fixed"
     Commented = "commented"
     Rejected = "rejected"
+    Pending = "pending"
 
 
 class TaskStatus(Enum):
