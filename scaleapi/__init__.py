@@ -2,10 +2,10 @@ from typing import IO, Dict, Generator, Generic, List, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
 from scaleapi.evaluation_tasks import EvaluationTask
-from scaleapi.training_tasks import TrainingTask
 from scaleapi.exceptions import ScaleInvalidRequest
 from scaleapi.files import File
 from scaleapi.projects import Project
+from scaleapi.training_tasks import TrainingTask
 
 from ._version import __version__  # noqa: F401
 from .api import Api
