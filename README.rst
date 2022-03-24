@@ -528,6 +528,19 @@ __ https://docs.scale.com/reference
 
     client.create_evaluation_task(TaskType.TextCollection, **payload)
 
+Training tasks (For Scale Rapid projects only)
+________________________________________________
+
+Training tasks are used to onboard taskers onto your project
+
+Create Training Task
+^^^^^^^^^^^^^^^^^^^^^^
+
+Create a training task.
+
+.. code-block:: python
+
+    client.create_training_task(TaskType, ...task parameters...)
 
 Error handling
 ______________

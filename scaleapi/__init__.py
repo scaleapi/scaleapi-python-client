@@ -5,6 +5,7 @@ from scaleapi.evaluation_tasks import EvaluationTask
 from scaleapi.exceptions import ScaleInvalidRequest
 from scaleapi.files import File
 from scaleapi.projects import Project
+from scaleapi.training_tasks import TrainingTask
 
 from ._version import __version__  # noqa: F401
 from .api import Api
@@ -794,10 +795,12 @@ class ScaleClient:
         task_type: TaskType,
         **kwargs,
     ) -> EvaluationTask:
-        """This method can only be used for Self-Serve projects.
+        """This method can only be used for Rapid projects.
         Supported Task Types: [
+            DocumentTranscription,
+            SegmentAnnotation,
+            VideoPlaybackAnnotation,
             ImageAnnotation,
-            Categorization,
             TextCollection,
             NamedEntityRecognition
         ]
@@ -827,3 +830,38 @@ class ScaleClient:
 
         evaluation_task_data = self.api.post_request(endpoint, body=kwargs)
         return EvaluationTask(evaluation_task_data, self)
+
+    def create_training_task(
+        self,
+        task_type: TaskType,
+        **kwargs,
+    ) -> TrainingTask:
+        """This method can only be used for Rapid projects.
+        Supported Task Types: [
+            DocumentTranscription,
+            SegmentAnnotation,
+            VideoPlaybackAnnotation,
+            ImageAnnotation,
+            TextCollection,
+            NamedEntityRecognition
+        ]
+        Parameters may differ based on the given task_type.
+
+        Args:
+            task_type (TaskType):
+                Task type to be created
+                e.g.. `TaskType.ImageAnnotation`
+            **kwargs:
+                The same set of parameters are expected with
+                create_task function and an additional expected_response.
+                Scale's API documentation.
+                https://docs.scale.com/reference
+
+        Returns:
+            TrainingTask:
+                Returns created training task.
+        """
+        endpoint = f"training_tasks/{task_type.value}"
+
+        training_task_data = self.api.post_request(endpoint, body=kwargs)
+        return TrainingTask(training_task_data, self)
