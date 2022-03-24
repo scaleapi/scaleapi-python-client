@@ -835,7 +835,7 @@ class ScaleClient:
         self,
         task_type: TaskType,
         **kwargs,
-    ) -> EvaluationTask:
+    ) -> TrainingTask:
         """This method can only be used for Rapid projects.
         Supported Task Types: [
             DocumentTranscription,
@@ -858,10 +858,10 @@ class ScaleClient:
                 https://docs.scale.com/reference
 
         Returns:
-            EvaluationTask:
+            TrainingTask:
                 Returns created training task.
         """
         endpoint = f"training_tasks/{task_type.value}"
 
         training_task_data = self.api.post_request(endpoint, body=kwargs)
-        return EvaluationTask(training_task_data, self)
+        return TrainingTask(training_task_data, self)
