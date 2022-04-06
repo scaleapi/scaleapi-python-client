@@ -666,6 +666,7 @@ class ScaleClient:
         task_type: TaskType,
         params: Dict = None,
         rapid: bool = False,
+        studio: bool = False,
     ) -> Project:
         """Creates a new project.
         https://docs.scale.com/reference#project-creation
@@ -690,6 +691,7 @@ class ScaleClient:
             name=project_name,
             params=params,
             rapid=rapid,
+            studio=studio,
         )
         projectdata = self.api.post_request(endpoint, body=payload)
         return Project(projectdata, self)
