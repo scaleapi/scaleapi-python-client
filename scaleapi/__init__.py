@@ -855,7 +855,7 @@ class ScaleClient:
                 e.g.. `TaskType.ImageAnnotation`
             **kwargs:
                 The same set of parameters are expected with
-                create_task function and an additional 
+                create_task function and an additional
                 expected_response. Scale's API documentation.
                 https://docs.scale.com/reference
 
