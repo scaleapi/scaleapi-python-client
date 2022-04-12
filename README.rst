@@ -351,7 +351,7 @@ __ https://docs.scale.com/reference#project-creation
 
     print(project.name)  # Test_Project
 
-Throws ``ScaleDuplicateResource`` exception if a project with the same name already exists.
+Specify ``rapid=true`` for Rapid projects and ``studio=true`` for Studio projects. Throws ``ScaleDuplicateResource`` exception if a project with the same name already exists. 
 
 Retrieve Project
 ^^^^^^^^^^^^^^^^
