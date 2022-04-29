@@ -64,18 +64,23 @@ class ScaleClient:
         endpoint = f"task/{task_id}"
         return Task(self.api.get_request(endpoint), self)
 
-    def cancel_task(self, task_id: str) -> Task:
+    def cancel_task(self, task_id: str, clear_unique_id=False) -> Task:
         """Cancels a task and returns the associated task.
         Raises a ScaleException if it has already been canceled.
 
         Args:
             task_id (str):
                 Task id
+            clear_unique_id (boolean):
+                Option to clear unique id when the task is deleted
 
         Returns:
             Task
         """
-        endpoint = f"task/{task_id}/cancel"
+        if clear_unique_id:
+            endpoint = f"task/{task_id}/cancel?clear_unique_id=true"
+        else:
+            endpoint = f"task/{task_id}/cancel"
         return Task(self.api.post_request(endpoint), self)
 
     def tasks(self, **kwargs) -> Tasklist:
