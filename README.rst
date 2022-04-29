@@ -228,6 +228,49 @@ __ https://docs.scale.com/reference#cancel-task
 
     task = client.cancel_task('30553edd0b6a93f8f05f0fee')
 
+    # If you also want to clear 'unique_id' of a task while canceling
+    task = client.cancel_task('30553edd0b6a93f8f05f0fee', clear_unique_id=True)
+
+    # cancel() is also available on task object
+    task = client.get_task('30553edd0b6a93f8f05f0fee')
+    task.cancel()
+
+    # If you also want to clear 'unique_id' of a task while canceling
+    task.cancel(clear_unique_id=True)
+
+
+Update A Task's Unique Id
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Update a given task's unique_id. Check out `Scale's API documentation`__ for more information.
+
+__ https://docs.scale.com/reference/update-task-unique-id
+
+.. code-block :: python
+
+    task = client.update_task_unique_id('30553edd0b6a93f8f05f0fee', "new_unique_id")
+
+    # update_unique_id() is also available on task object
+    task = client.get_task('30553edd0b6a93f8f05f0fee')
+    task.update_unique_id("new_unique_id")
+
+
+Clear A Task's Unique Id
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Clear a given task's unique_id. Check out `Scale's API documentation`__ for more information.
+
+__ https://docs.scale.com/reference/delete-task-unique-id
+
+.. code-block :: python
+
+    task = client.clear_task_unique_id('30553edd0b6a93f8f05f0fee')
+
+    # clear_unique_id() is also available on task object
+    task = client.get_task('30553edd0b6a93f8f05f0fee')
+    task.clear_unique_id()
+
+
 Batches
 _______
 
@@ -351,7 +394,7 @@ __ https://docs.scale.com/reference#project-creation
 
     print(project.name)  # Test_Project
 
-Specify ``rapid=true`` for Rapid projects and ``studio=true`` for Studio projects. Throws ``ScaleDuplicateResource`` exception if a project with the same name already exists. 
+Specify ``rapid=true`` for Rapid projects and ``studio=true`` for Studio projects. Throws ``ScaleDuplicateResource`` exception if a project with the same name already exists.
 
 Retrieve Project
 ^^^^^^^^^^^^^^^^

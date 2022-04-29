@@ -69,11 +69,28 @@ def make_a_task(unique_id: str = None, batch: str = None):
     return client.create_task(TaskType.ImageAnnotation, **args)
 
 
-def test_uniquekey_fail():
-    unique_key = str(uuid.uuid4())
-    make_a_task(unique_key)
+def test_unique_id_fail():
+    unique_id = str(uuid.uuid4())
+    make_a_task(unique_id)
     with pytest.raises(ScaleDuplicateResource):
-        make_a_task(unique_key)
+        make_a_task(unique_id)
+
+
+def test_update_unique_id():
+    unique_id = str(uuid.uuid4())
+    task = make_a_task(unique_id)
+    unique_id_new = str(uuid.uuid4())
+
+    task = client.update_task_unique_id(task.id, unique_id_new)
+    assert unique_id_new == task.as_dict()["unique_id"]
+
+
+def test_clear_unique_id():
+    unique_id = str(uuid.uuid4())
+    task = make_a_task(unique_id)
+
+    task = client.clear_task_unique_id(task.id)
+    assert "unique_id" not in task.as_dict()
 
 
 def test_categorize_ok():

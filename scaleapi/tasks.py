@@ -84,6 +84,14 @@ class Task:
         """Refreshes the task details."""
         self._json = self._client.get_task(self.id).as_dict()
 
-    def cancel(self):
+    def cancel(self, clear_unique_id: bool = False):
         """Cancels the task"""
-        self._client.cancel_task(self.id)
+        self._client.cancel_task(self.id, clear_unique_id)
+
+    def update_unique_id(self, unique_id: str):
+        """Updates unique_id of a task"""
+        self._client.update_task_unique_id(self.id, unique_id)
+
+    def clear_unique_id(self):
+        """Clears unique_id of a task"""
+        self._client.clear_task_unique_id(self.id)
