@@ -508,6 +508,15 @@ The attribute can be passed to the task payloads, in the ``attachment`` paramete
       ...
   )
 
+Example Scripts
+_______________
+
+A list of examples scripts for use.
+
+* `cancel_batch.py`__ to concurrently cancel tasks in batches
+
+__ https://github.com/scaleapi/scaleapi-python-client/blob/master/examples/cancel_batch.py
+
 Evaluation tasks (For Scale Rapid projects only)
 ________________________________________________
 
