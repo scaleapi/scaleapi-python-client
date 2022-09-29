@@ -126,9 +126,8 @@ class ScaleClient:
         Returns:
             Task
         """
-        payload = {"metadata": metadata}
         endpoint = f"task/{task_id}/setMetadata"
-        return Task(self.api.post_request(endpoint, body=payload), self)
+        return Task(self.api.post_request(endpoint, body=metadata), self)
 
     def tasks(self, **kwargs) -> Tasklist:
         """Returns a list of your tasks.
