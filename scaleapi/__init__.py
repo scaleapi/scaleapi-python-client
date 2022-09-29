@@ -127,7 +127,7 @@ class ScaleClient:
         Returns:
             Task
         """
-        payload = {'metadata': metadata}
+        payload = {"metadata": metadata}
         endpoint = f"task/{task_id}/setMetadata"
         return Task(self.api.post_request(endpoint, body=payload), self)
 
