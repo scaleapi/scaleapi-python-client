@@ -96,7 +96,7 @@ def test_clear_unique_id():
 def test_set_metadata():
     unique_id = str(uuid.uuid4())
     original_task = make_a_task(unique_id)
-    new_metadata = {"metadata": {"myKey": "myValue"}}
+    new_metadata = {"myKey": "myValue"}
     updated_task = client.set_task_metadata(original_task.id, new_metadata)
     assert original_task.metadata == {}
     assert updated_task.metadata == new_metadata

@@ -115,13 +115,13 @@ class ScaleClient:
         endpoint = f"task/{task_id}/unique_id"
         return Task(self.api.delete_request(endpoint), self)
 
-    def set_task_metadata(self, task_id: str, metadata: json) -> Task:
+    def set_task_metadata(self, task_id: str, metadata: dict) -> Task:
         """Sets a task's metadata and returns the associated task.
 
         Args:
             task_id (str):
                 Task id
-            metadata (json):
+            metadata (dict):
                 metadata to set
 
         Returns:
