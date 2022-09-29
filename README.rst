@@ -281,7 +281,7 @@ __ https://docs.scale.com/reference/set-metadata
 .. code-block :: python
 
     # set metadata on a task to be the contents of new_metadata
-    new_metadata = {'metadata': {'myKey': 'myValue'}}
+    new_metadata = {'myKey': 'myValue'}
     task = client.set_task_metadata('30553edd0b6a93f8f05f0fee', new_metadata)
 
 Batches
