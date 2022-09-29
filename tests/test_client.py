@@ -178,7 +178,6 @@ def test_imageannotation_fail():
 def test_documenttranscription_ok():
     client.create_task(
         TaskType.DocumentTranscription,
-        callback_url="http://www.example.com/callback",
         instruction="Please transcribe this receipt.",
         attachment="http://document.scale.com/receipt-20200519.jpg",
         features=[{"type": "block", "label": "barcode"}],
