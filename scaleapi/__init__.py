@@ -1,3 +1,4 @@
+import json
 from typing import IO, Dict, Generator, Generic, List, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
@@ -113,6 +114,22 @@ class ScaleClient:
         """
         endpoint = f"task/{task_id}/unique_id"
         return Task(self.api.delete_request(endpoint), self)
+
+    def set_task_metadata(self, task_id: str, metadata: json) -> Task:
+        """Sets a task's metadata and returns the associated task.
+
+        Args:
+            task_id (str):
+                Task id
+            metadata (json):
+                metadata to set
+
+        Returns:
+            Task
+        """
+        payload = {'metadata': metadata}
+        endpoint = f"task/{task_id}/setMetadata"
+        return Task(self.api.post_request(endpoint, body=payload), self)
 
     def tasks(self, **kwargs) -> Tasklist:
         """Returns a list of your tasks.
