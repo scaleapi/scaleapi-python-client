@@ -1,4 +1,3 @@
-import json
 from typing import IO, Dict, Generator, Generic, List, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
