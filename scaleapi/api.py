@@ -12,7 +12,7 @@ SCALE_API_BASE_URL_V1 = "https://api.scale.com/v1"
 # Parameters for HTTP retry
 HTTP_TOTAL_RETRIES = 3  # Number of total retries
 HTTP_RETRY_BACKOFF_FACTOR = 2  # Wait 1, 2, 4 seconds between retries
-HTTP_STATUS_FORCE_LIST = [408, 429] + list(range(500, 531))
+HTTP_STATUS_FORCE_LIST = [408, 409, 429] + list(range(500, 531))
 HTTP_RETRY_ALLOWED_METHODS = frozenset({"GET", "POST", "DELETE"})
 
 
@@ -109,9 +109,22 @@ class Api:
         json = None
         if res.status_code == 200:
             json = res.json()
+        elif res.status_code == 409:
+            retry_history = res.raw.retries.history
+            # Example RequestHistory tuple
+            # RequestHistory(method='POST', url='/v1/task/imageannotation', error=None, status=409, redirect_location=None)
+            if retry_history != ():
+                # See if the first retry was a 500 error
+                # Change to 409 to easily test by running test_unique_id_fail
+                if retry_history[0][3] == 500:
+                    print(res.json())
+                    print(body['unique_id'])
+                    # grab task response via uuid by hitting /tasks endpoint?
+                    # newRes = self._http_request('GET', '/v1/tasks, headers, auth, params, body, files, data)
+                    # json = newRes.json()
         else:
             self._raise_on_respose(res)
-
+        print('Going to return the json now')
         return json
 
     def get_request(self, endpoint, params=None):
