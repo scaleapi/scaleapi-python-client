@@ -115,16 +115,12 @@ class Api:
             # RequestHistory(method='POST', url='/v1/task/imageannotation', error=None, status=409, redirect_location=None)
             if retry_history != ():
                 # See if the first retry was a 500 error
-                # Change to 409 to easily test by running test_unique_id_fail
-                if retry_history[0][3] == 409:
+                if retry_history[0][3] == 409: # Changed to 409 to easily test by running test_unique_id_fail
                     uuid = body['unique_id']
-                    newParams = f'?unique_id={uuid}'
                     newUrl = f'https://api.scale.com/v1/tasks?unique_id={uuid}'
-                    print(newUrl)
                     # grab task response via uuid by hitting /tasks endpoint
                     newRes = self._http_request("GET", newUrl, headers=headers, auth=auth)
                     json = newRes.json()['docs'][0]
-                    print(json)
         else:
             self._raise_on_respose(res)
         return json
