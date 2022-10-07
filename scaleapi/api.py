@@ -116,15 +116,17 @@ class Api:
             if retry_history != ():
                 # See if the first retry was a 500 error
                 # Change to 409 to easily test by running test_unique_id_fail
-                if retry_history[0][3] == 500:
-                    print(res.json())
-                    print(body['unique_id'])
-                    # grab task response via uuid by hitting /tasks endpoint?
-                    # newRes = self._http_request('GET', '/v1/tasks, headers, auth, params, body, files, data)
-                    # json = newRes.json()
+                if retry_history[0][3] == 409:
+                    uuid = body['unique_id']
+                    newParams = f'?unique_id={uuid}'
+                    newUrl = f'https://api.scale.com/v1/tasks?unique_id={uuid}'
+                    print(newUrl)
+                    # grab task response via uuid by hitting /tasks endpoint
+                    newRes = self._http_request("GET", newUrl, headers=headers, auth=auth)
+                    json = newRes.json()['docs'][0]
+                    print(json)
         else:
             self._raise_on_respose(res)
-        print('Going to return the json now')
         return json
 
     def get_request(self, endpoint, params=None):
