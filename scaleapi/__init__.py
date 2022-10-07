@@ -114,6 +114,21 @@ class ScaleClient:
         endpoint = f"task/{task_id}/unique_id"
         return Task(self.api.delete_request(endpoint), self)
 
+    def set_task_metadata(self, task_id: str, metadata: Dict) -> Task:
+        """Sets a task's metadata and returns the associated task.
+
+        Args:
+            task_id (str):
+                Task id
+            metadata (Dict):
+                metadata to set
+
+        Returns:
+            Task
+        """
+        endpoint = f"task/{task_id}/setMetadata"
+        return Task(self.api.post_request(endpoint, body=metadata), self)
+
     def tasks(self, **kwargs) -> Tasklist:
         """Returns a list of your tasks.
         Returns up to 100 at a time, to get more, use the

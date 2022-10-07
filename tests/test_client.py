@@ -93,6 +93,25 @@ def test_clear_unique_id():
     assert "unique_id" not in task.as_dict()
 
 
+def test_set_metadata():
+    unique_id = str(uuid.uuid4())
+    original_task = make_a_task(unique_id)
+    new_metadata = {"myKey": "myValue"}
+    updated_task = client.set_task_metadata(original_task.id, new_metadata)
+    assert original_task.metadata == {}
+    assert updated_task.metadata == new_metadata
+
+
+def test_task_set_metadata():
+    unique_id = str(uuid.uuid4())
+    task = make_a_task(unique_id)
+    assert task.metadata == {}
+    new_metadata = {"fromTaskKey": "fromTaskValue"}
+    task.set_metadata(new_metadata)
+    task.refresh()
+    assert task.metadata == new_metadata
+
+
 def test_categorize_ok():
     client.create_task(
         TaskType.Categorization,
@@ -169,7 +188,6 @@ def test_imageannotation_fail():
 def test_documenttranscription_ok():
     client.create_task(
         TaskType.DocumentTranscription,
-        callback_url="http://www.example.com/callback",
         instruction="Please transcribe this receipt.",
         attachment="http://document.scale.com/receipt-20200519.jpg",
         features=[{"type": "block", "label": "barcode"}],

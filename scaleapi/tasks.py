@@ -95,3 +95,7 @@ class Task:
     def clear_unique_id(self):
         """Clears unique_id of a task"""
         self._client.clear_task_unique_id(self.id)
+
+    def set_metadata(self, metadata: dict):
+        """Sets the metadata of a task"""
+        self._client.set_task_metadata(self.id, metadata)

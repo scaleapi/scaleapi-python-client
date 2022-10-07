@@ -271,6 +271,24 @@ __ https://docs.scale.com/reference/delete-task-unique-id
     task.clear_unique_id()
 
 
+Set A Task's Metadata
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Set a given task's ``metadata``. Check out `Scale's API documentation`__ for more information.
+
+__ https://docs.scale.com/reference/set-metadata
+
+.. code-block :: python
+
+    # set metadata on a task by specifying task id
+    new_metadata = {'myKey': 'myValue'}
+    task = client.set_task_metadata('30553edd0b6a93f8f05f0fee', new_metadata)
+
+    # set metadata on a task object
+    task = client.get_task('30553edd0b6a93f8f05f0fee')
+    new_metadata = {'myKey': 'myValue'}
+    task.set_metadata(new_metadata)
+
 Batches
 _______
 
