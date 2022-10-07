@@ -121,6 +121,8 @@ class Api:
                     # grab task response via uuid by hitting /tasks endpoint
                     newRes = self._http_request("GET", newUrl, headers=headers, auth=auth)
                     json = newRes.json()['docs'][0]
+            else:
+                self._raise_on_respose(res)
         else:
             self._raise_on_respose(res)
         return json
