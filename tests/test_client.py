@@ -102,6 +102,16 @@ def test_set_metadata():
     assert updated_task.metadata == new_metadata
 
 
+def test_task_set_metadata():
+    unique_id = str(uuid.uuid4())
+    task = make_a_task(unique_id)
+    assert task.metadata == {}
+    new_metadata = {"fromTaskKey": "fromTaskValue"}
+    task.set_metadata(new_metadata)
+    task.refresh()
+    assert task.metadata == new_metadata
+
+
 def test_categorize_ok():
     client.create_task(
         TaskType.Categorization,
