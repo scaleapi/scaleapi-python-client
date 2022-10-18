@@ -109,7 +109,7 @@ class Api:
         json = None
         if res.status_code == 200:
             json = res.json()
-        elif res.status_code == 409:
+        elif res.status_code == 409 and 'task' in endpoint and body.get('unique_id'):
             retry_history = res.raw.retries.history
             # Example RequestHistory tuple
             # RequestHistory(method='POST',
@@ -121,7 +121,7 @@ class Api:
                 # See if the first retry was a 500 error
                 if retry_history[0][3] == 500:
                     uuid = body["unique_id"]
-                    newUrl = f"https://api.scale.com/v1/tasks?unique_id={uuid}"
+                    newUrl = f"{self.base_api_url}/tasks?unique_id={uuid}"
                     # grab task from api
                     newRes = self._http_request(
                         "GET", newUrl, headers=headers, auth=auth
