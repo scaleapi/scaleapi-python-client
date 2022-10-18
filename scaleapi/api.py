@@ -109,7 +109,7 @@ class Api:
         json = None
         if res.status_code == 200:
             json = res.json()
-        elif res.status_code == 409 and 'task' in endpoint and body.get('unique_id'):
+        elif res.status_code == 409 and "task" in endpoint and body.get("unique_id"):
             retry_history = res.raw.retries.history
             # Example RequestHistory tuple
             # RequestHistory(method='POST',
