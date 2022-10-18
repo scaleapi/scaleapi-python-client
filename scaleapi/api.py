@@ -12,7 +12,7 @@ SCALE_API_BASE_URL_V1 = "https://api.scale.com/v1"
 # Parameters for HTTP retry
 HTTP_TOTAL_RETRIES = 3  # Number of total retries
 HTTP_RETRY_BACKOFF_FACTOR = 2  # Wait 1, 2, 4 seconds between retries
-HTTP_STATUS_FORCE_LIST = [408, 409, 429] + list(range(500, 531))
+HTTP_STATUS_FORCE_LIST = [408, 429] + list(range(500, 531))
 HTTP_RETRY_ALLOWED_METHODS = frozenset({"GET", "POST", "DELETE"})
 
 
@@ -115,7 +115,7 @@ class Api:
             # RequestHistory(method='POST', url='/v1/task/imageannotation', error=None, status=409, redirect_location=None)
             if retry_history != ():
                 # See if the first retry was a 500 error
-                if retry_history[0][3] == 409: # Changed to 409 to easily test by running test_unique_id_fail
+                if retry_history[0][3] == 500: # Changed to 409 to easily test by running test_unique_id_fail
                     uuid = body['unique_id']
                     newUrl = f'https://api.scale.com/v1/tasks?unique_id={uuid}'
                     # grab task response via uuid by hitting /tasks endpoint
