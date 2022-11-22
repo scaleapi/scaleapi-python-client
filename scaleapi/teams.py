@@ -21,7 +21,7 @@ class Teammate:
         self.expiry = json.get('expiry')
 
     def __hash__(self):
-        return hash(self.name)
+        return hash(self.email)
 
     def __str__(self):
         return f"Teammate(email={self.email})"
