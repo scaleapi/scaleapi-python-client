@@ -6,6 +6,8 @@ from scaleapi.exceptions import ScaleInvalidRequest
 from scaleapi.files import File
 from scaleapi.projects import Project
 from scaleapi.training_tasks import TrainingTask
+from .teams import Teammate, TeammateRole
+from .studio import StudioLabelerAssignment
 
 from ._version import __version__  # noqa: F401
 from .api import Api
@@ -42,6 +44,8 @@ class Tasklist(Paginator[Task]):
 class Batchlist(Paginator[Batch]):
     """Batches Paginator"""
 
+class Teammatelist(Paginator[Teammate]):
+    """Teammates Paginator"""
 
 class ScaleClient:
     """Main class serves as an interface for Scale API"""
@@ -918,3 +922,113 @@ class ScaleClient:
 
         training_task_data = self.api.post_request(endpoint, body=kwargs)
         return TrainingTask(training_task_data, self)
+
+    def list_teammates(self) -> List[Teammate]:
+        """Returns all teammates.
+        Refer to Teams API Reference:
+        https://docs.scale.com/reference/teams-list
+
+        Returns:
+            List[Teammate]
+        """
+        endpoint = "teams"
+        teammate_list = self.api.get_request(endpoint)
+        return [Teammate(teammate, self) for teammate in teammate_list]
+
+    def invite_teammates(self, emails, role):
+        """Invites a list of emails to your team.
+        
+        Args:
+            emails (List[str]):
+                emails to invite
+            role (TeammateRole):
+                role to invite
+
+        Returns:
+            List[Teammate]
+        """
+        endpoint = "teams/invite"
+        payload = {
+            "emails": emails,
+            "team_role": role,
+        }
+        invited_teammates = self.api.post_request(endpoint, payload)
+        return [Teammate(teammate, self) for teammate in invited_teammates]
+
+    def invite_teammate(self, email, role):
+        """Invites a single of email to your team.
+        
+        Args:
+            email (str):
+                email to invite
+            role (TeammateRole):
+                role to invite
+
+        Returns:
+            Teammate
+        """
+        return self.invite_teammates([email], role)[0]
+
+    def update_teammates_role(self, emails, role):
+        """Updates role of teammates by email
+
+        Args:
+            emails (List[str]):
+                emails to update
+            role (TeammateRole):
+                new role
+
+        Returns:
+            List[Teammate]
+        """
+        endpoint = "teams/set_role"
+        payload = {
+            "emails": emails,
+            "team_role": role,
+        }
+        updated_teammates = self.api.post_request(endpoint, payload)
+        return [Teammate(teammate, self) for teammate in updated_teammates]
+
+    def invite_teammate(self, email, role):
+        """Updates a single of email to your team.
+        
+        Args:
+            email (str):
+                email to update
+            role (TeammateRole):
+                new role
+
+        Returns:
+            Teammate
+        """
+        return self.update_teammates_role([email], role)[0]
+
+    def list_studio_assignments(self):
+        """Returns a dictionary where the keys are user emails and the values are projects the user is assigned to.
+
+        Returns:
+            Dict[StudioLabelerAssignment]
+        """
+        endpoint = "studio/assignments"
+        assignments = self.api.get_request(endpoint)
+        return [StudioLabelerAssignment(assigned_projects, email) for (assigned_projects, email) in assignments.items()]
+
+    def add_studio_assignments(self, emails, projects):
+        """Adds projects to the users based on emails.
+
+        Args:
+            emails (str):
+                emails to assign
+            projects (str):
+                projects to assign
+        
+        Returns:
+            Dict[StudioLabelerAssignment]
+        """
+        endpoint = "studio/assignments/add"
+        payload = {
+            "emails": emails,
+            "projects": projects,
+        }
+        assignments = self.api.post_request(endpoint, payload)
+        return [StudioLabelerAssignment(assigned_projects, email) for (assigned_projects, email) in assignments.items()]
