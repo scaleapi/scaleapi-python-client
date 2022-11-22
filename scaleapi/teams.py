@@ -4,6 +4,7 @@ class TeammateRole(Enum):
   Labeler = 'labeler'
   Member = 'member'
   Manager = 'manager'
+  Admin = 'admin'
 
 class Teammate:
     """Teammate class, containing teammate information."""
@@ -32,3 +33,6 @@ class Teammate:
     def as_dict(self):
         """Returns all attributes as a dictionary"""
         return self._json
+
+    def update_teammate_role(self, new_role):
+        return self._client.update_teammates_role([self.email], new_role)

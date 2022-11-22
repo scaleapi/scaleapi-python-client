@@ -1001,7 +1001,7 @@ class ScaleClient:
         Returns:
             Teammate
         """
-        return self.update_teammates_role([email], role)[0]
+        return self.update_teammates_role([email], role, self)[0]
 
     def list_studio_assignments(self):
         """Returns a dictionary where the keys are user emails and the values are projects the user is assigned to.
@@ -1011,7 +1011,7 @@ class ScaleClient:
         """
         endpoint = "studio/assignments"
         assignments = self.api.get_request(endpoint)
-        return [StudioLabelerAssignment(assigned_projects, email) for (assigned_projects, email) in assignments.items()]
+        return [StudioLabelerAssignment(assigned_projects, email, self) for (email, assigned_projects) in assignments.items()]
 
     def add_studio_assignments(self, emails, projects):
         """Adds projects to the users based on emails.
@@ -1031,4 +1031,4 @@ class ScaleClient:
             "projects": projects,
         }
         assignments = self.api.post_request(endpoint, payload)
-        return [StudioLabelerAssignment(assigned_projects, email) for (assigned_projects, email) in assignments.items()]
+        return [StudioLabelerAssignment(assigned_projects, email, self) for (assigned_projects, email) in assignments.items()]
