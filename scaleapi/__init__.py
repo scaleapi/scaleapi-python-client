@@ -44,9 +44,6 @@ class Tasklist(Paginator[Task]):
 class Batchlist(Paginator[Batch]):
     """Batches Paginator"""
 
-class Teammatelist(Paginator[Teammate]):
-    """Teammates Paginator"""
-
 class ScaleClient:
     """Main class serves as an interface for Scale API"""
 
