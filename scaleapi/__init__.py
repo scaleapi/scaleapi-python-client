@@ -7,7 +7,7 @@ from scaleapi.files import File
 from scaleapi.projects import Project
 from scaleapi.training_tasks import TrainingTask
 from .teams import Teammate, TeammateRole
-from .studio import StudioLabelerAssignment
+from .studio import StudioLabelerAssignment,StudioProjectGroup,StudioBatchStatus,StudioBatch,StudioWorker
 
 from ._version import __version__  # noqa: F401
 from .api import Api
@@ -924,7 +924,6 @@ class ScaleClient:
         """Returns all teammates.
         Refer to Teams API Reference:
         https://docs.scale.com/reference/teams-list
-
         Returns:
             List[Teammate]
         """
@@ -940,7 +939,6 @@ class ScaleClient:
                 emails to invite
             role (TeammateRole):
                 role to invite
-
         Returns:
             List[Teammate]
         """
@@ -960,7 +958,6 @@ class ScaleClient:
                 email to invite
             role (TeammateRole):
                 role to invite
-
         Returns:
             Teammate
         """
@@ -968,13 +965,11 @@ class ScaleClient:
 
     def update_teammates_role(self, emails, role):
         """Updates role of teammates by email
-
         Args:
             emails (List[str]):
                 emails to update
             role (TeammateRole):
                 new role
-
         Returns:
             List[Teammate]
         """
@@ -986,7 +981,7 @@ class ScaleClient:
         updated_teammates = self.api.post_request(endpoint, payload)
         return [Teammate(teammate, self) for teammate in updated_teammates]
 
-    def invite_teammate(self, email, role):
+    def update_teammate_role(self, email, role):
         """Updates a single of email to your team.
         
         Args:
@@ -994,7 +989,6 @@ class ScaleClient:
                 email to update
             role (TeammateRole):
                 new role
-
         Returns:
             Teammate
         """
@@ -1002,7 +996,6 @@ class ScaleClient:
 
     def list_studio_assignments(self):
         """Returns a dictionary where the keys are user emails and the values are projects the user is assigned to.
-
         Returns:
             Dict[StudioLabelerAssignment]
         """
@@ -1012,7 +1005,6 @@ class ScaleClient:
 
     def add_studio_assignments(self, emails, projects):
         """Adds projects to the users based on emails.
-
         Args:
             emails (str):
                 emails to assign
@@ -1029,3 +1021,130 @@ class ScaleClient:
         }
         assignments = self.api.post_request(endpoint, payload)
         return [StudioLabelerAssignment(assigned_projects, email, self) for (assigned_projects, email) in assignments.items()]
+
+    def remove_studio_assignments(self, emails, projects):
+        """Removes projects from users based on emails.
+        Args:
+            emails (str):
+                emails to unassign
+            projects (str):
+                projects to unassign
+        
+        Returns:
+            Dict[StudioLabelerAssignment]
+        """
+        endpoint = "studio/assignments/remove"
+        payload = {
+            "emails": emails,
+            "projects": projects,
+        }
+        assignments = self.api.post_request(endpoint, payload)
+        return [StudioLabelerAssignment(assigned_projects, email, self) for (assigned_projects, email) in assignments.items()]
+
+    def list_project_groups(self,project):
+        """List all labeler groups for the specified project.
+        Args:
+            project (str):
+                project to retrieve labeler groups from
+        
+        Returns:
+            Dict[StudioProjectGroup]
+        """
+        endpoint = f"studio/projects/{Api.quote_string(project)}/groups"
+        groups = self.api.get_request(endpoint)
+        return [StudioProjectGroup(group, self) for (group) in groups]
+    #StudioWorker for each worker in a group
+
+    def create_project_group(self,project,emails,project_group):
+        """Creates a labeler group for the specified project.
+        Args:
+            project (str):
+                project to create a labeler group in
+            emails (List(str)):
+                list of labeler emails to add to the project group
+            project_group (str):
+                name of the project group to create
+        
+        Returns:
+            Dict[StudioProjectGroup]
+        """
+        endpoint = f"studio/projects/{Api.quote_string(project)}/groups"
+        payload = {
+            "emails": emails,
+            "name": project_group
+        }
+        return StudioProjectGroup(self.api.post_request(endpoint,payload),self)
+    
+    def update_project_group(self,project,project_group,add_emails,remove_emails):
+        """Updates specified labeler group for the specified project.
+        Args:
+            project (str):
+                project to create a labeler group in
+            project_group (str):
+                name of the project group to create
+            add_emails (List(str)):
+                list of labeler emails to add to the project group
+            remove_emails (List(str)):
+                list of labeler emails to remove to the project group
+        
+        Returns:
+            Dict[StudioProjectGroup]
+        """
+        endpoint = f"studio/projects/{Api.quote_string(project)}/groups/{Api.quote_string(project_group)}"
+        payload = {
+            "add_emails": add_emails,
+            "remove_emails": remove_emails
+        }
+        return StudioProjectGroup(self.api.put_request(endpoint,payload),self)
+    #Api has no method for PUT request  
+
+    def list_studio_batches(self) -> List[StudioBatch]:
+        """Returns a list with all pending studio batches, in order of priority.
+        Returns:
+            List(StudioBatch)
+        """
+        endpoint = "studio/batches"
+        batches = self.api.get_request(endpoint)
+        return [StudioBatch(batch, self) for (batch) in batches]
+    #StudioBatchStatus for each batch_type in a batch
+
+    def assign_studio_batches(self,batch_name,project_groups):
+        """Sets labeler group assignment for the specified batch.
+        Args:
+            batch_name (str):
+                batch name to assign project_groups to
+        Returns:
+            StudioBatch
+        """
+        endpoint = f"studio/batches/{Api.quote_string(batch_name)}"
+        payload = {
+            "groups": project_groups
+        }
+        return StudioBatch(self.api.put_request(endpoint,payload),self)
+    #Api has no method for PUT request
+
+
+    def set_studio_batches_priorities(self,batches_names):
+        """Sets the priority of batches based on the array order.
+        Args:
+            batches (List(str)):
+                list of all pending batches names ordered by priority
+        Returns:
+            List(StudioBatch)
+        """
+        batches_names = map(lambda batch_name: {"name": batch_name},batches_names)
+        endpoint = "studio/batches/set_priorities"
+        payload = {
+            "groups": batches_names
+        }
+        batches = self.api.post_request(endpoint,payload)
+        return [StudioBatch(batch, self) for (batch) in batches]
+
+    def reset_studio_batches_priorities(self):
+        """Resets the priority of batches. (Default order is sorted by calibration batches first, then by creation date)
+        Returns:
+            List(StudioBatch)
+        """
+        endpoint = "studio/batches/reset_priorities"
+        batches = self.api.post_request(endpoint)
+        return [StudioBatch(batch, self) for (batch) in batches]

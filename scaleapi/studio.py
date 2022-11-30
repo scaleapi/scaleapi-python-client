@@ -52,8 +52,10 @@ class StudioProjectGroup:
       self.name = json['name']
       self.numWorkers = json['numWorkers']
       self.isSingleton = json['isSingleton']
-      self.workers = json['workers']
-
+      if json.get('workers'):
+        self.workers = [StudioWorker(w, client) for w in json['workers']],
+      else:
+        self.workers = []
   def __hash__(self):
       return hash(self.id)
 
