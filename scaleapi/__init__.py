@@ -986,7 +986,7 @@ class ScaleClient:
         updated_teammates = self.api.post_request(endpoint, payload)
         return [Teammate(teammate, self) for teammate in updated_teammates]
 
-    def invite_teammate(self, email, role):
+    def update_teammate(self, email, role):
         """Updates a single of email to your team.
         
         Args:
