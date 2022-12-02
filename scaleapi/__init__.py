@@ -9,6 +9,8 @@ from scaleapi.training_tasks import TrainingTask
 from .teams import Teammate, TeammateRole
 from .studio import StudioLabelerAssignment,StudioProjectGroup,StudioBatchStatus,StudioBatch,StudioWorker
 
+
+
 from ._version import __version__  # noqa: F401
 from .api import Api
 from .tasks import Task, TaskReviewStatus, TaskStatus, TaskType
@@ -1025,9 +1027,9 @@ class ScaleClient:
     def remove_studio_assignments(self, emails, projects):
         """Removes projects from users based on emails.
         Args:
-            emails (str):
+            emails (arr of str):
                 emails to unassign
-            projects (str):
+            projects (arr of str):
                 projects to unassign
         
         Returns:
@@ -1048,7 +1050,7 @@ class ScaleClient:
                 project to retrieve labeler groups from
         
         Returns:
-            Dict[StudioProjectGroup]
+            List[StudioProjectGroup]
         """
         endpoint = f"studio/projects/{Api.quote_string(project)}/groups"
         groups = self.api.get_request(endpoint)
