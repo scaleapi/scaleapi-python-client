@@ -1041,7 +1041,8 @@ class ScaleClient:
             "projects": projects,
         }
         assignments = self.api.post_request(endpoint, payload)
-        return [StudioLabelerAssignment(assigned_projects, email, self) for (assigned_projects, email) in assignments.items()]
+        return { "assigned_projects": assignments["assigned_projects"], "email": assignments["email"],
+}
 
     def list_project_groups(self,project):
         """List all labeler groups for the specified project.
