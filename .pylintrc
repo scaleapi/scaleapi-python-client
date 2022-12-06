@@ -7,4 +7,4 @@ disable=
     too-many-arguments,
     too-many-instance-attributes,
     invalid-name,
-    too-many-lines,
+    too-many-lines, # __init__.py is > 1000 lines
