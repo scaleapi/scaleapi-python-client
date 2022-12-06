@@ -13,7 +13,7 @@ class StudioLabelerAssignment:
       return hash(self.email)
 
   def __str__(self):
-      return f"StudioLabelerAssignment(assigned_projects={self.name}, email={self.email})"
+      return f"StudioLabelerAssignment(email={self.email}, assigned_projects={self.assigned_projects})"
 
   def __repr__(self):
       return f"StudioLabelerAssignment({self._json})"
@@ -34,7 +34,7 @@ class StudioWorker:
       return hash(self.id)
 
   def __str__(self):
-      return f"StudioWorker(id={self.id})"
+      return f"StudioWorker(id={self.email})"
 
   def __repr__(self):
       return f"StudioWorker({self._json})"

@@ -11,7 +11,7 @@ class Teammate:
 
     def __init__(self, json, client):
         self._json = json
-        self.email = json['email']
+        self.email: str = json['email']
         self.role = json['role']
         self._client = client
         # fill in rest here (non-optional fields)
