@@ -451,10 +451,6 @@ def test_invite_teammates():
     )
 
 
-def test_update_teammates():
-    client.update_teammates_role(["test+testing@scale.com"], TeammateRole.Manager)
-
-
 def test_list_assignments():
     client.list_studio_assignments()
 
