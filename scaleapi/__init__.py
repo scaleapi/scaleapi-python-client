@@ -6,14 +6,12 @@ from scaleapi.exceptions import ScaleInvalidRequest
 from scaleapi.files import File
 from scaleapi.projects import Project
 from scaleapi.training_tasks import TrainingTask
-from .teams import Teammate, TeammateRole
-from .studio import StudioLabelerAssignment,StudioProjectGroup,StudioBatchStatus,StudioBatch,StudioWorker
-
-
 
 from ._version import __version__  # noqa: F401
 from .api import Api
+from .studio import StudioBatch, StudioLabelerAssignment, StudioProjectGroup
 from .tasks import Task, TaskReviewStatus, TaskStatus, TaskType
+from .teams import Teammate, TeammateRole
 
 T = TypeVar("T")
 
@@ -45,6 +43,7 @@ class Tasklist(Paginator[Task]):
 
 class Batchlist(Paginator[Batch]):
     """Batches Paginator"""
+
 
 class ScaleClient:
     """Main class serves as an interface for Scale API"""
@@ -935,7 +934,7 @@ class ScaleClient:
 
     def invite_teammates(self, emails: List[str], role: TeammateRole) -> List[Teammate]:
         """Invites a list of emails to your team.
-        
+
         Args:
             emails (List[str]):
                 emails to invite
@@ -952,7 +951,9 @@ class ScaleClient:
         invited_teammates = self.api.post_request(endpoint, payload)
         return [Teammate(teammate, self) for teammate in invited_teammates]
 
-    def update_teammates_role(self, emails: List[str], role: TeammateRole) -> List[Teammate]:
+    def update_teammates_role(
+        self, emails: List[str], role: TeammateRole
+    ) -> List[Teammate]:
         """Updates role of teammates by email
 
         Args:
@@ -972,22 +973,29 @@ class ScaleClient:
         return [Teammate(teammate, self) for teammate in updated_teammates]
 
     def list_studio_assignments(self) -> Dict[str, StudioLabelerAssignment]:
-        """Returns a dictionary where the keys are user emails and the values are projects the user is assigned to.
+        """Returns a dictionary where the keys are user emails and the
+        values are projects the user is assigned to.
+
         Returns:
             Dict[StudioLabelerAssignment]
         """
         endpoint = "studio/assignments"
         assignments = self.api.get_request(endpoint)
-        return {email:StudioLabelerAssignment(assigned_projects, email, self) for (email, assigned_projects) in assignments.items()}
+        return {
+            email: StudioLabelerAssignment(assigned_projects, email, self)
+            for (email, assigned_projects) in assignments.items()
+        }
 
-    def add_studio_assignments(self, emails: List[str], projects: List[str]) -> Dict[str, StudioLabelerAssignment]:
+    def add_studio_assignments(
+        self, emails: List[str], projects: List[str]
+    ) -> Dict[str, StudioLabelerAssignment]:
         """Adds projects to the users based on emails.
         Args:
             emails (List[str]):
                 emails to assign
             projects (List[str]):
                 projects to assign
-        
+
         Returns:
             Dict[StudioLabelerAssignment]
         """
@@ -997,16 +1005,21 @@ class ScaleClient:
             "projects": projects,
         }
         assignments = self.api.post_request(endpoint, payload)
-        return {email:StudioLabelerAssignment(assigned_projects, email, self) for (email, assigned_projects) in assignments.items()}
+        return {
+            email: StudioLabelerAssignment(assigned_projects, email, self)
+            for (email, assigned_projects) in assignments.items()
+        }
 
-    def remove_studio_assignments(self, emails: List[str], projects: List[str]) -> Dict[str, StudioLabelerAssignment]:
+    def remove_studio_assignments(
+        self, emails: List[str], projects: List[str]
+    ) -> Dict[str, StudioLabelerAssignment]:
         """Removes projects from users based on emails.
         Args:
             emails (List[str]):
                 emails to unassign
             projects (List[str]):
                 projects to unassign
-        
+
         Returns:
             Dict[StudioLabelerAssignment]
         """
@@ -1016,23 +1029,29 @@ class ScaleClient:
             "projects": projects,
         }
         assignments = self.api.post_request(endpoint, payload)
-        return {email:StudioLabelerAssignment(assigned_projects, email, self) for (email, assigned_projects) in assignments.items()}
+        return {
+            email: StudioLabelerAssignment(assigned_projects, email, self)
+            for (email, assigned_projects) in assignments.items()
+        }
 
     def list_project_groups(self, project: str) -> List[StudioProjectGroup]:
         """List all labeler groups for the specified project.
         Args:
             project (str):
                 project to retrieve labeler groups from
-        
+
         Returns:
             List[StudioProjectGroup]
         """
         endpoint = f"studio/projects/{Api.quote_string(project)}/groups"
         groups = self.api.get_request(endpoint)
-        return [StudioProjectGroup(group, self) for (group) in groups]
-    #StudioWorker for each worker in a group
+        return [StudioProjectGroup(group, self) for group in groups]
 
-    def create_project_group(self, project: str, emails: List[str], project_group: str) -> StudioProjectGroup:
+    # StudioWorker for each worker in a group
+
+    def create_project_group(
+        self, project: str, emails: List[str], project_group: str
+    ) -> StudioProjectGroup:
         """Creates a labeler group for the specified project.
         Args:
             project (str):
@@ -1041,18 +1060,21 @@ class ScaleClient:
                 list of labeler emails to add to the project group
             project_group (str):
                 name of the project group to create
-        
+
         Returns:
             StudioProjectGroup
         """
         endpoint = f"studio/projects/{Api.quote_string(project)}/groups"
-        payload = {
-            "emails": emails,
-            "name": project_group
-        }
-        return StudioProjectGroup(self.api.post_request(endpoint,payload),self)
-    
-    def update_project_group(self,project: str, project_group: str, add_emails: List[str], remove_emails: List[str]) -> StudioProjectGroup:
+        payload = {"emails": emails, "name": project_group}
+        return StudioProjectGroup(self.api.post_request(endpoint, payload), self)
+
+    def update_project_group(
+        self,
+        project: str,
+        project_group: str,
+        add_emails: List[str],
+        remove_emails: List[str],
+    ) -> StudioProjectGroup:
         """Updates specified labeler group for the specified project.
         Args:
             project (str):
@@ -1063,28 +1085,31 @@ class ScaleClient:
                 list of labeler emails to add to the project group
             remove_emails (List[str]):
                 list of labeler emails to remove to the project group
-        
+
         Returns:
             StudioProjectGroup
         """
-        endpoint = f"studio/projects/{Api.quote_string(project)}/groups/{Api.quote_string(project_group)}"
-        payload = {
-            "add_emails": add_emails,
-            "remove_emails": remove_emails
-        }
-        return StudioProjectGroup(self.api.put_request(endpoint,payload),self)
+        endpoint = f"studio/projects/{Api.quote_string(project)}" \
+            f"/groups/{Api.quote_string(project_group)}"
+        payload = {"add_emails": add_emails, "remove_emails": remove_emails}
+        return StudioProjectGroup(self.api.put_request(endpoint, payload), self)
 
     def list_studio_batches(self) -> List[StudioBatch]:
-        """Returns a list with all pending studio batches, in order of priority.
+        """Returns a list with all pending studio batches,
+        in order of priority.
+
         Returns:
             List[StudioBatch]
         """
         endpoint = "studio/batches"
         batches = self.api.get_request(endpoint)
-        return [StudioBatch(batch, self) for (batch) in batches]
-    #StudioBatchStatus for each batch_type in a batch
+        return [StudioBatch(batch, self) for batch in batches]
 
-    def assign_studio_batches(self, batch_name: str, project_groups: List[str]) -> StudioBatch:
+    # StudioBatchStatus for each batch_type in a batch
+
+    def assign_studio_batches(
+        self, batch_name: str, project_groups: List[str]
+    ) -> StudioBatch:
         """Sets labeler group assignment for the specified batch.
         Args:
             batch_name (str):
@@ -1095,12 +1120,12 @@ class ScaleClient:
             StudioBatch
         """
         endpoint = f"studio/batches/{Api.quote_string(batch_name)}"
-        payload = {
-            "groups": project_groups
-        }
-        return StudioBatch(self.api.put_request(endpoint,payload),self)
+        payload = {"groups": project_groups}
+        return StudioBatch(self.api.put_request(endpoint, payload), self)
 
-    def set_studio_batches_priorities(self, batch_names: List[str]) -> List[StudioBatch]:
+    def set_studio_batches_priorities(
+        self, batch_names: List[str]
+    ) -> List[StudioBatch]:
         """Sets the priority of batches based on the array order.
         Args:
             batches (List[str]):
@@ -1110,17 +1135,17 @@ class ScaleClient:
         """
         batches_names = list(map(lambda batch_name: {"name": batch_name}, batch_names))
         endpoint = "studio/batches/set_priorities"
-        payload = {
-            "batches": batches_names
-        }
-        batches = self.api.post_request(endpoint,payload)
-        return [StudioBatch(batch, self) for (batch) in batches]
+        payload = {"batches": batches_names}
+        batches = self.api.post_request(endpoint, payload)
+        return [StudioBatch(batch, self) for batch in batches]
 
     def reset_studio_batches_priorities(self) -> List[StudioBatch]:
-        """Resets the priority of batches. (Default order is sorted by creation date)
+        """Resets the priority of batches. (Default order is
+        sorted by creation date)
+
         Returns:
             List[StudioBatch]
         """
         endpoint = "studio/batches/reset_priorities"
         batches = self.api.post_request(endpoint)
-        return [StudioBatch(batch, self) for (batch) in batches]
+        return [StudioBatch(batch, self) for batch in batches]
