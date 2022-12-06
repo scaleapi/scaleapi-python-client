@@ -438,7 +438,7 @@ def test_files_import():
     )
 
 
-current_timestamp = str(time.time_ns())
+current_timestamp = str(uuid.uuid4)[-9:]
 
 
 def test_list_teammates():
