@@ -83,7 +83,7 @@ class StudioBatch:
       self.project_id = json['projectId']
       self.project_name = json['projectName']
       self.batch_type = json['batchType']
-      self.studio_priority = json['studioPriority']
+      self.studio_priority = json.get('studioPriority')
       self.total = json['total']
       self.completed: json['completed']
       self.groups = json['groups']

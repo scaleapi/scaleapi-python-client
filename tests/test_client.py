@@ -16,6 +16,7 @@ from scaleapi.exceptions import (
     ScaleUnauthorized,
 )
 from scaleapi.tasks import TaskType
+from scaleapi.teams import TeammateRole
 
 TEST_PROJECT_NAME = "scaleapi-python-sdk"
 
@@ -435,3 +436,20 @@ def test_files_import():
         file_url="https://static.scale.com/uploads/selfserve-sample-image.png",
         project_name=TEST_PROJECT_NAME,
     )
+
+current_timestamp = str(time.time_ns())
+
+def test_list_teammates():
+    client.list_teammates()
+
+def test_invite_teammates():
+    client.invite_teammates([f'test+{current_timestamp}@scale.com'], TeammateRole.Member)
+
+def test_update_teammates():
+    client.update_teammates_role([f'test+testing@scale.com'], TeammateRole.Manager)
+
+def test_list_assignments():
+    client.list_studio_assignments()
+
+def test_list_studio_batches():
+    client.list_studio_batches()
