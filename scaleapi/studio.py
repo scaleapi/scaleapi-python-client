@@ -15,8 +15,10 @@ class StudioLabelerAssignment:
         return hash(self.email)
 
     def __str__(self):
-        return f"StudioLabelerAssignment(email={self.email}," \
+        return (
+            f"StudioLabelerAssignment(email={self.email},"
             f"assigned_projects={self.assigned_projects})"
+        )
 
     def __repr__(self):
         return f"StudioLabelerAssignment({self._json})"

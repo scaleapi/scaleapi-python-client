@@ -1089,8 +1089,10 @@ class ScaleClient:
         Returns:
             StudioProjectGroup
         """
-        endpoint = f"studio/projects/{Api.quote_string(project)}" \
+        endpoint = (
+            f"studio/projects/{Api.quote_string(project)}"
             f"/groups/{Api.quote_string(project_group)}"
+        )
         payload = {"add_emails": add_emails, "remove_emails": remove_emails}
         return StudioProjectGroup(self.api.put_request(endpoint, payload), self)
 

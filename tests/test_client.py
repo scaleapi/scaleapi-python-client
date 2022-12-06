@@ -447,13 +447,12 @@ def test_list_teammates():
 
 def test_invite_teammates():
     client.invite_teammates(
-        [f'test+{current_timestamp}@scale.com'],
-        TeammateRole.Member
+        [f"test+{current_timestamp}@scale.com"], TeammateRole.Member
     )
 
 
 def test_update_teammates():
-    client.update_teammates_role(['test+testing@scale.com'], TeammateRole.Manager)
+    client.update_teammates_role(["test+testing@scale.com"], TeammateRole.Manager)
 
 
 def test_list_assignments():
