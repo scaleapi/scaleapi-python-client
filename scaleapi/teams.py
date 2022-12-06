@@ -2,6 +2,8 @@ from enum import Enum
 
 
 class TeammateRole(Enum):
+    """Teammate Roles Enum"""
+
     Labeler = "labeler"
     Member = "member"
     Manager = "manager"
@@ -36,5 +38,6 @@ class Teammate:
         """Returns all attributes as a dictionary"""
         return self._json
 
-    def update_teammate_role(self, new_role):
+    def update_teammate_role(self, new_role: TeammateRole):
+        """Updates teammate role"""
         return self._client.update_teammates_role([self.email], new_role)
