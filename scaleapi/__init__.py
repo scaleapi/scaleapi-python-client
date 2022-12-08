@@ -1004,7 +1004,7 @@ class ScaleClient:
             "emails": emails,
             "projects": projects,
         }
-        raw_assignments = self.api.get_request(endpoint)
+        raw_assignments = self.api.post_request(endpoint, payload)
         assignments = {}
         for (email, assigned_projects) in raw_assignments.items():
             assignments[email] = StudioLabelerAssignment(assigned_projects, email, self)
@@ -1028,7 +1028,7 @@ class ScaleClient:
             "emails": emails,
             "projects": projects,
         }
-        raw_assignments = self.api.get_request(endpoint)
+        raw_assignments = self.api.post_request(endpoint, payload)
         assignments = {}
         for (email, assigned_projects) in raw_assignments.items():
             assignments[email] = StudioLabelerAssignment(assigned_projects, email, self)
