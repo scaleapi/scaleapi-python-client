@@ -557,7 +557,7 @@ Returns all teammates in a List of Teammate objects.
     teammates = client.invite_teammates(['email1@example.com', 'email2@example.com'], TeammateRole.Member)
     
 Update Teammate Role
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
 
 Updates a list of emails of your Scale team members with the new role.
 The available teammate roles are: 'labeler', 'member', or 'manager'.
@@ -699,7 +699,7 @@ Returns a dictionary of all teammate assignments with keys as 'emails' of each t
     assignments = client.remove_studio_assignments(['email1@example.com', 'email2@example.com'], ['project 1', 'project 2'])
     
 Studio Project Groups (For Scale Studio Only)
-______________________
+_____________________________________________
 
 Manage groups of labelers in our project by using Studio Project Groups.
 
@@ -739,7 +739,7 @@ Returns the updated StudioProjectGroup object.
     )
     
 Studio Batches (For Scale Studio Only)
-________________
+_______________________________________
 
 Get information about your pending Studio batches.
 
