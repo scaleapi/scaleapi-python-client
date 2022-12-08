@@ -1010,7 +1010,6 @@ class ScaleClient:
             assignments[email] = StudioLabelerAssignment(assigned_projects, email, self)
         return assignments
 
-
     def remove_studio_assignments(
         self, emails: List[str], projects: List[str]
     ) -> Dict[str, StudioLabelerAssignment]:
@@ -1034,7 +1033,6 @@ class ScaleClient:
         for (email, assigned_projects) in raw_assignments.items():
             assignments[email] = StudioLabelerAssignment(assigned_projects, email, self)
         return assignments
-
 
     def list_project_groups(self, project: str) -> List[StudioProjectGroup]:
         """List all labeler groups for the specified project.
