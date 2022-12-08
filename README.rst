@@ -692,7 +692,7 @@ Removes provided projects from specified teammate emails.
 
 Accepts a list of emails and a list of projects.
 
-Returns a dictionary of all teammate assignments with keys as 'emails' of each teammate, and values as a list of project names the teammate is assigned to.
+Returns a dictionary of all teammate assignments with keys as 'emails' of each teammate, and values as a list of project names the teammate are assigned to.
 
 .. code-block:: python
 
