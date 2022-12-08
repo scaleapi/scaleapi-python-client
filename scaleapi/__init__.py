@@ -948,8 +948,8 @@ class ScaleClient:
             "emails": emails,
             "team_role": role.value,
         }
-        invited_teammates = self.api.post_request(endpoint, payload)
-        return [Teammate(teammate, self) for teammate in invited_teammates]
+        teammate_list = self.api.post_request(endpoint, payload)
+        return [Teammate(teammate, self) for teammate in teammate_list]
 
     def update_teammates_role(
         self, emails: List[str], role: TeammateRole
@@ -969,8 +969,8 @@ class ScaleClient:
             "emails": emails,
             "team_role": role.value,
         }
-        updated_teammates = self.api.post_request(endpoint, payload)
-        return [Teammate(teammate, self) for teammate in updated_teammates]
+        teammate_list = self.api.post_request(endpoint, payload)
+        return [Teammate(teammate, self) for teammate in teammate_list]
 
     def list_studio_assignments(self) -> Dict[str, StudioLabelerAssignment]:
         """Returns a dictionary where the keys are user emails and the
@@ -980,11 +980,11 @@ class ScaleClient:
             Dict[StudioLabelerAssignment]
         """
         endpoint = "studio/assignments"
-        assignments = self.api.get_request(endpoint)
-        return {
-            email: StudioLabelerAssignment(assigned_projects, email, self)
-            for (email, assigned_projects) in assignments.items()
-        }
+        raw_assignments = self.api.get_request(endpoint)
+        assignments = {}
+        for (email, assigned_projects) in raw_assignments.items():
+            assignments[email] = StudioLabelerAssignment(assigned_projects, email, self)
+        return assignments
 
     def add_studio_assignments(
         self, emails: List[str], projects: List[str]
@@ -1004,11 +1004,12 @@ class ScaleClient:
             "emails": emails,
             "projects": projects,
         }
-        assignments = self.api.post_request(endpoint, payload)
-        return {
-            email: StudioLabelerAssignment(assigned_projects, email, self)
-            for (email, assigned_projects) in assignments.items()
-        }
+        raw_assignments = self.api.get_request(endpoint)
+        assignments = {}
+        for (email, assigned_projects) in raw_assignments.items():
+            assignments[email] = StudioLabelerAssignment(assigned_projects, email, self)
+        return assignments
+
 
     def remove_studio_assignments(
         self, emails: List[str], projects: List[str]
@@ -1028,11 +1029,12 @@ class ScaleClient:
             "emails": emails,
             "projects": projects,
         }
-        assignments = self.api.post_request(endpoint, payload)
-        return {
-            email: StudioLabelerAssignment(assigned_projects, email, self)
-            for (email, assigned_projects) in assignments.items()
-        }
+        raw_assignments = self.api.get_request(endpoint)
+        assignments = {}
+        for (email, assigned_projects) in raw_assignments.items():
+            assignments[email] = StudioLabelerAssignment(assigned_projects, email, self)
+        return assignments
+
 
     def list_project_groups(self, project: str) -> List[StudioProjectGroup]:
         """List all labeler groups for the specified project.
