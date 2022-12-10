@@ -83,6 +83,23 @@ class ScaleClient:
             endpoint = f"task/{task_id}/cancel"
         return Task(self.api.post_request(endpoint), self)
 
+    def audit_task(self, task_id: str, accepted: bool, comments: str = None):
+        """Allows you to accept or reject completed tasks.
+        Along with support for adding comments about the reason
+        for the given audit status, mirroring our Audit UI.
+
+        Args:
+            task_id (str):
+                Task id
+            accepted (boolean):
+                Optional, additional feedback to record the reason
+                for the audit status
+        """
+
+        payload = dict(accepted=accepted, comments=comments)
+        endpoint = f"task/{task_id}/audit"
+        return self.api.post_request(endpoint, body=payload)
+
     def update_task_unique_id(self, task_id: str, unique_id: str) -> Task:
         """Updates a task's unique_id and returns the associated task.
         Raises a ScaleDuplicateResource exception if unique_id
