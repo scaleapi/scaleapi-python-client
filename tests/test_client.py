@@ -439,21 +439,27 @@ def test_files_import():
 
 
 current_timestamp = str(uuid.uuid4)[-9:]
-
+TEST_USER = f"test+{current_timestamp}@scale.com"
 
 def test_list_teammates():
-    client.list_teammates()
+    teammates = client.list_teammates()
+    assert(len(teammates) > 0)
 
 
 def test_invite_teammates():
-    client.invite_teammates(
-        [f"test+{current_timestamp}@scale.com"], TeammateRole.Member
+    old_teammates = client.list_teammates()
+    new_teammates = client.invite_teammates(
+        [TEST_USER], TeammateRole.Member
     )
+    assert(len(new_teammates) >= len(old_teammates)) # needs to sleep for a couple of seconds before newly invited teammate is returned
 
 
 def test_list_assignments():
-    client.list_studio_assignments()
+    client.add_studio_assignments([TEST_USER], [TEST_PROJECT_NAME])
+    assignments = client.list_studio_assignments()
+    assert(len(assignments) > 0)
 
-
+STUDIO_TEST_PROJECT = 'python-sdk-studio-test'
 def test_list_studio_batches():
-    client.list_studio_batches()
+    client.create_project()
+    batches = client.list_studio_batches()
