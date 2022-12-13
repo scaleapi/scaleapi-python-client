@@ -22,7 +22,7 @@ TEST_PROJECT_NAME = "scaleapi-python-sdk"
 
 try:
     print(f"SDK Version: {scaleapi.__version__}")
-    test_api_key = os.environ["SCALE_TEST_API_KEY"]
+    test_api_key = "test_fe79860cdbe547bf91b4e7da897a6c92"
 
     if test_api_key.startswith("test_") or test_api_key.endswith("|test"):
         client = scaleapi.ScaleClient(test_api_key, "pytest")
@@ -438,8 +438,10 @@ def test_files_import():
     )
 
 
+
 current_timestamp = str(uuid.uuid4)[-9:]
 TEST_USER = f"test+{current_timestamp}@scale.com"
+
 
 def test_list_teammates():
     teammates = client.list_teammates()
@@ -460,6 +462,23 @@ def test_list_assignments():
     assert(len(assignments) > 0)
 
 STUDIO_TEST_PROJECT = 'python-sdk-studio-test'
+
+try:
+    project = client.get_project(STUDIO_TEST_PROJECT)
+except ScaleResourceNotFound:
+    client.create_project(
+        project_name=STUDIO_TEST_PROJECT
+    )
+STUDIO_BATCH_TEST_NAME = f'studio-test-batch-{current_timestamp}'
 def test_list_studio_batches():
-    client.create_project()
+    # Create a test project if it does not already exist
+    
+
+    # Create a test batch
+    client.create_batch(STUDIO_TEST_PROJECT, STUDIO_BATCH_TEST_NAME)
+
+
+    # Check that the batch is returned by the list_studio_batches method
     batches = client.list_studio_batches()
+    assert (len(batches) > 0)
+
