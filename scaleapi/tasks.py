@@ -88,6 +88,10 @@ class Task:
         """Cancels the task"""
         self._client.cancel_task(self.id, clear_unique_id)
 
+    def audit(self, accepted: bool, comments: str = None):
+        """Submit an audit to a completed task"""
+        self._client.audit_task(self.id, accepted, comments)
+
     def update_unique_id(self, unique_id: str):
         """Updates unique_id of a task"""
         self._client.update_task_unique_id(self.id, unique_id)

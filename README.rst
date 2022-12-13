@@ -239,6 +239,27 @@ __ https://docs.scale.com/reference#cancel-task
     task.cancel(clear_unique_id=True)
 
 
+Audit a Task
+^^^^^^^^^^^^
+
+This method allows you to ``accept`` or ``reject`` completed tasks, along with support for adding comments about the reason for the given audit status, mirroring our Audit UI.
+Check out `Scale's API documentation`__ for more information.
+
+__ https://docs.scale.com/reference/audit-a-task
+
+.. code-block :: python
+
+    # Accept a completed task by submitting an audit
+    client.audit_task('30553edd0b6a93f8f05f0fee', True)
+
+    # Reject a completed task by submitting a comment with the audit
+    client.audit_task('30553edd0b6a93f8f05f0fee', False, 'Rejected due to quality')
+
+    # audit() is also available on Task object
+    task = client.get_task('30553edd0b6a93f8f05f0fee')
+    task.audit(True)
+
+
 Update A Task's Unique Id
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
