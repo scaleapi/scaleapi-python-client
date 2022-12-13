@@ -108,7 +108,11 @@ class Api:
 
         json = None
         if res.status_code == 200:
-            json = res.json()
+            try:
+                json = res.json()
+            except ValueError:
+                # Some endpoints only return 'OK' message without JSON
+                return json
         elif res.status_code == 409 and "task" in endpoint and body.get("unique_id"):
             retry_history = res.raw.retries.history
             # Example RequestHistory tuple

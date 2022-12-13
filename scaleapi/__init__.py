@@ -98,7 +98,7 @@ class ScaleClient:
 
         payload = dict(accepted=accepted, comments=comments)
         endpoint = f"task/{task_id}/audit"
-        return self.api.post_request(endpoint, body=payload)
+        self.api.post_request(endpoint, body=payload)
 
     def update_task_unique_id(self, task_id: str, unique_id: str) -> Task:
         """Updates a task's unique_id and returns the associated task.
