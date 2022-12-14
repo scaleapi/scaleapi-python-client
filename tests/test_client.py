@@ -438,41 +438,38 @@ def test_files_import():
     )
 
 
-
 current_timestamp = str(uuid.uuid4)[-9:]
 TEST_USER = f"test+{current_timestamp}@scale.com"
 
 
 def test_list_teammates():
     teammates = client.list_teammates()
-    assert(len(teammates) > 0)
+    assert len(teammates) > 0
 
 
 def test_invite_teammates():
     old_teammates = client.list_teammates()
-    new_teammates = client.invite_teammates(
-        [TEST_USER], TeammateRole.Member
-    )
-    assert(len(new_teammates) >= len(old_teammates)) # needs to sleep for a couple of seconds before newly invited teammate is returned
+    new_teammates = client.invite_teammates([TEST_USER], TeammateRole.Member)
+    assert len(new_teammates) >= len(
+        old_teammates
+    )  # needs to sleep for a couple of seconds before newly invited teammate is returned
 
-STUDIO_TEST_PROJECT = 'python-sdk-studio-test'
+
+STUDIO_TEST_PROJECT = "python-sdk-studio-test"
 
 try:
     project = client.get_project(STUDIO_TEST_PROJECT)
 except ScaleResourceNotFound:
-    client.create_project(
-        project_name=STUDIO_TEST_PROJECT
-    )
-STUDIO_BATCH_TEST_NAME = f'studio-test-batch-{current_timestamp}'
+    client.create_project(project_name=STUDIO_TEST_PROJECT)
+STUDIO_BATCH_TEST_NAME = f"studio-test-batch-{current_timestamp}"
+
+
 def test_list_studio_batches():
     # Create a test project if it does not already exist
-    
 
     # Create a test batch
     client.create_batch(STUDIO_TEST_PROJECT, STUDIO_BATCH_TEST_NAME)
 
-
     # Check that the batch is returned by the list_studio_batches method
     batches = client.list_studio_batches()
-    assert (len(batches) > 0)
-
+    assert len(batches) > 0
