@@ -163,6 +163,17 @@ class Api:
             "DELETE", endpoint, headers=self._headers, auth=self._auth, params=params
         )
 
+    def put_request(self, endpoint, body=None, params=None):
+        """Generic PUT Request Wrapper"""
+        return self._api_request(
+            "PUT",
+            endpoint,
+            body=body,
+            headers=self._headers,
+            auth=self._auth,
+            params=params,
+        )
+
     @staticmethod
     def _generate_useragent(extension: str = None) -> str:
         """Generates UserAgent parameter with module, Python

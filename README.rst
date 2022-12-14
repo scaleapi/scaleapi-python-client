@@ -546,6 +546,49 @@ The attribute can be passed to the task payloads, in the ``attachment`` paramete
       ...
       ...
   )
+  
+Manage Teammates
+________________
+
+Manage the members of your Scale team via API. Check out `Scale Team API Documentation`__ for more information.
+
+__ https://docs.scale.com/reference/teams-overview
+
+List Teammates
+^^^^^^^^^^^^^^
+
+Lists all teammates in your Scale team.
+Returns all teammates in a List of Teammate objects.
+
+.. code-block:: python
+
+    teammates = client.list_teammates()
+
+Invite Teammate
+^^^^^^^^^^^^^^^
+
+Invites a list of email strings to your team with the provided role.
+The available teammate roles are: 'labeler', 'member', or 'manager'.
+Returns all teammates in a List of Teammate objects.
+
+.. code-block:: python
+
+    from scaleapi import TeammateRole
+    
+    teammates = client.invite_teammates(['email1@example.com', 'email2@example.com'], TeammateRole.Member)
+    
+Update Teammate Role
+^^^^^^^^^^^^^^^^^^^^^
+
+Updates a list of emails of your Scale team members with the new role.
+The available teammate roles are: 'labeler', 'member', or 'manager'.
+Returns all teammates in a List of Teammate objects.
+
+.. code-block python
+
+    from scaleapi import TeammateRole
+    
+    teammates = client.update_teammates_role(['email1@example.com', 'email2@example.com'], TeammateRole.Manager)
 
 Example Scripts
 _______________
@@ -633,6 +676,139 @@ Create a training task.
 
     client.create_training_task(TaskType, ...task parameters...)
 
+Studio Assignments (For Scale Studio only)
+__________________________________________
+
+Manage project assignments for your labelers.
+
+List All Assignments
+^^^^^^^^^^^^^^^^^^^^
+
+Lists all your Scale team members and the projects they are assigned to. 
+Returns a dictionary of all teammate assignments with keys as 'emails' of each teammate, and values as a list of project names the teammate are assigned to.
+
+.. code-block:: python
+
+    assignments = client.list_studio_assignments()
+    my_assignment = assignments.get('my-email@example.com')
+
+Add Studio Assignment
+^^^^^^^^^^^^^^^^^^^^^
+
+Assigns provided projects to specified teammate emails.
+
+Accepts a list of emails and a list of projects.
+
+Returns a dictionary of all teammate assignments with keys as 'emails' of each teammate, and values as a list of project names the teammate are assigned to.
+
+.. code-block:: python
+
+    assignments = client.add_studio_assignments(['email1@example.com', 'email2@example.com'], ['project 1', 'project 2'])
+
+
+Remove Studio Assignment
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Removes provided projects from specified teammate emails.
+
+Accepts a list of emails and a list of projects.
+
+Returns a dictionary of all teammate assignments with keys as 'emails' of each teammate, and values as a list of project names the teammate are assigned to.
+
+.. code-block:: python
+
+    assignments = client.remove_studio_assignments(['email1@example.com', 'email2@example.com'], ['project 1', 'project 2'])
+    
+Studio Project Groups (For Scale Studio Only)
+_____________________________________________
+
+Manage groups of labelers in our project by using Studio Project Groups.
+
+List Studio Project Groups
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Returns all labeler groups for the specified project.
+
+.. code-block:: python
+    
+    list_project_group = client.list_project_groups('project_name')
+
+Add Studio Project Group
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Creates a project group with the provided group_name for the specified project and adds the provided teammate emails to the new project group. The team members must be assigned to the specified project in order to be added to the new group.
+
+Returns the created StudioProjectGroup object.
+
+.. code-block:: python
+
+    added_project_group = client.create_project_group(
+        'project_name', ['email1@example.com'], 'project_group_name'
+    )
+
+Update Studio Project Group
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Assign or remove teammates from a project group. 
+
+Returns the updated StudioProjectGroup object.
+
+.. code-block:: python
+
+    updated_project_group = client.update_project_group(
+        'project_name', 'project_group_name', ['emails_to_add'], ['emails_to_remove']
+    )
+    
+Studio Batches (For Scale Studio Only)
+_______________________________________
+
+Get information about your pending Studio batches.
+
+List Studio Batches
+^^^^^^^^^^^^^^^^^^^
+
+Returns a list of StudioBatch objects for all pending Studio batches.
+
+.. code-block:: python
+
+    studio_batches = client.list_studio_batches()
+
+Assign Studio Batches
+^^^^^^^^^^^^^^^^^^^^^^
+
+Sets labeler group assignment for the specified batch.
+
+Returns a StudioBatch object for the specified batch.
+
+.. code-block:: python
+    
+    assigned_studio_batch = client.assign_studio_batches('batch_name', ['project_group_name'])
+
+Set Studio Batches Priority
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sets the order to prioritize your pending Studio batches. You must include all pending studio batches in the List.
+
+Returns a List of StudioBatch objects in the new order.
+
+.. code-block:: python
+
+    studio_batch_priority = client.set_studio_batches_priorities(
+        ['pending_batch_1', 'pending_batch_2', 'pending_batch_3']
+    )
+
+Reset Studio Batches Priority
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Resets the order of your Studio batches to the default order, which prioritizes older batches first.
+
+Returns a List of StudioBatch objects in the new order.
+
+.. code-block:: python
+
+    reset_studio_batch_prioprity = client.reset_studio_batches_priorities()
+
+
 Error handling
 ______________
 
@@ -663,7 +839,9 @@ For example:
         print(err.code)  # 400
         print(err.message)  # Parameter is invalid, reason: "attachments" is required
 
+
+
 Troubleshooting
 _______________
 
-If you notice any problems, please email us at support@scale.com.
+If you notice any problems, please contact our support via Intercom by logging into your dashboard, or, if you are Enterprise, by contacting your Engagement Manager.
