@@ -455,12 +455,6 @@ def test_invite_teammates():
     )
     assert(len(new_teammates) >= len(old_teammates)) # needs to sleep for a couple of seconds before newly invited teammate is returned
 
-
-def test_list_assignments():
-    client.add_studio_assignments([TEST_USER], [TEST_PROJECT_NAME])
-    assignments = client.list_studio_assignments()
-    assert(len(assignments) > 0)
-
 STUDIO_TEST_PROJECT = 'python-sdk-studio-test'
 
 try:
