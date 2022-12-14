@@ -1,6 +1,5 @@
 # pylint: disable=missing-function-docstring
 
-import os
 import time
 import uuid
 from datetime import datetime
@@ -452,7 +451,7 @@ def test_invite_teammates():
     new_teammates = client.invite_teammates([TEST_USER], TeammateRole.Member)
     assert len(new_teammates) >= len(
         old_teammates
-    )  # needs to sleep for a couple of seconds before newly invited teammate is returned
+    )  # needs to sleep for teammates list to be updated
 
 
 STUDIO_TEST_PROJECT = "python-sdk-studio-test"
