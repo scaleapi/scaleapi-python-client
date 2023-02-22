@@ -157,10 +157,10 @@ class Api:
             data=data,
         )
 
-    def delete_request(self, endpoint, params=None):
+    def delete_request(self, endpoint, params=None, body=None):
         """Generic DELETE Request Wrapper"""
         return self._api_request(
-            "DELETE", endpoint, headers=self._headers, auth=self._auth, params=params
+            "DELETE", endpoint, headers=self._headers, auth=self._auth, params=params, body=body
         )
 
     def put_request(self, endpoint, body=None, params=None):

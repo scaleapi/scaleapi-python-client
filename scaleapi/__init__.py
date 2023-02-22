@@ -147,7 +147,46 @@ class ScaleClient:
         """
         endpoint = f"task/{task_id}/setMetadata"
         return Task(self.api.post_request(endpoint, body=metadata), self)
-
+    
+    def set_task_tags(self, task_id: str, tags: List[str]) -> Task:
+        """Sets completely new list of tags on a task and returns the associated task.
+        Args:
+            task_id (str):
+                Task id
+            tags (List[str]):
+                List of new tags to set
+        Returns:
+            Task
+        """
+        endpoint = f"task/{task_id}/tags"
+        return Task(self.api.post_request(endpoint, body=tags), self)
+    
+    def add_task_tags(self, task_id: str, tags: List[str]) -> Task:
+            """Adds a list of tags to a task and returns the associated task.
+            Args:
+                task_id (str):
+                    Task id
+                tags (List[str]):
+                    List of tags to add. Already present tags will be ignored.
+            Returns:
+                Task
+            """
+            endpoint = f"task/{task_id}/tags"
+            return Task(self.api.put_request(endpoint, body=tags), self)
+    
+    def delete_task_tags(self, task_id: str, tags: List[str]) -> Task:
+            """Deletes a list of tags from a task and returns the associated task.
+            Args:
+                task_id (str):
+                    Task id
+                tags (List[str]):
+                    List of tags to delete. Nonpresent tags will be ignored.
+            Returns:
+                Task
+            """
+            endpoint = f"task/{task_id}/tags"
+            return Task(self.api.delete_request(endpoint, body=tags), self)
+    
     def tasks(self, **kwargs) -> Tasklist:
         """Returns a list of your tasks.
         Returns up to 100 at a time, to get more, use the
