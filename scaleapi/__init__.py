@@ -163,7 +163,7 @@ class ScaleClient:
         )
 
     def set_task_tags(self, task_id: str, tags: List[str]) -> Task:
-        """Sets completely new list of tags on a task and returns the
+        """Sets completely new list of tags to a task and returns the
         associated task.
         Args:
             task_id (str):
