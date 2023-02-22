@@ -318,9 +318,11 @@ Set a given task's ``tags``. Check out `Scale's API documentation`__ for more in
 __ https://docs.scale.com/reference/setting-tags
 
 .. code-block :: python
+
     # set a list of tags on a task by specifying task id
     new_tags = ["tag1","tag2","tag3"]
     task = client.set_task_tags('30553edd0b6a93f8f05f0fee', new_tags)
+
     # set a list of tags on a task object
     task = client.get_task('30553edd0b6a93f8f05f0fee')
     new_tags = ["tag1","tag2","tag3"]
@@ -334,9 +336,11 @@ Add ``tags`` to a given task. Check out `Scale's API documentation`__ for more i
 __ https://docs.scale.com/reference/adding-tags
 
 .. code-block :: python
+
     # add a list of tags on a task by specifying task id
     tags_to_add = ["tag4","tag5"]
     task = client.add_task_tags('30553edd0b6a93f8f05f0fee', tags_to_add)
+
     # add a list of tags on a task object
     task = client.get_task('30553edd0b6a93f8f05f0fee')
     tags_to_add = ["tag4","tag5"]
@@ -350,9 +354,11 @@ Delete ``tags`` to a given task. Check out `Scale's API documentation`__ for mor
 __ https://docs.scale.com/reference/deleting-tags
 
 .. code-block :: python
+
     # delete a list of tags on a task by specifying task id
     tags_to_delete = ["tag1","tag2"]
     task = client.delete_task_tags('30553edd0b6a93f8f05f0fee', tags_to_delete)
+    
     # delete a list of tags on a task object
     task = client.get_task('30553edd0b6a93f8f05f0fee')
     tags_to_delete = ["tag1","tag2"]
