@@ -9,11 +9,7 @@ from scaleapi.training_tasks import TrainingTask
 
 from ._version import __version__  # noqa: F401
 from .api import Api
-from .studio import (
-    StudioBatch,
-    StudioLabelerAssignment,
-    StudioProjectGroup,
-)
+from .studio import StudioBatch, StudioLabelerAssignment, StudioProjectGroup
 from .tasks import Task, TaskReviewStatus, TaskStatus, TaskType
 from .teams import Teammate, TeammateRole
 

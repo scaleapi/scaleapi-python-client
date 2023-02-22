@@ -167,11 +167,15 @@ def test_transcription_ok():
     client.create_task(
         TaskType.Transcription,
         callback_url="http://www.example.com/callback",
-        instruction="Transcribe the given fields. Then for each news item on the page, "
+        instruction="Transcribe the given fields. "
+        "Then for each news item on the page, "
         "transcribe the information for the row.",
         attachment_type="website",
         attachment="http://www.google.com/",
-        fields={"title": "Title of Webpage", "top_result": "Title of the top result"},
+        fields={
+            "title": "Title of Webpage",
+            "top_result": "Title of the top result",
+        },
         repeatable_fields={
             "username": "Username of submitter",
             "comment_count": "Number of comments",
@@ -397,7 +401,10 @@ def test_get_tasks():
     for _ in range(3):
         tasks.append(make_a_task(batch=batch.name))
     task_ids = {task.id for task in tasks}
-    for task in client.get_tasks(project_name=TEST_PROJECT_NAME, batch_name=batch.name):
+    for task in client.get_tasks(
+        project_name=TEST_PROJECT_NAME,
+        batch_name=batch.name,
+    ):
         assert task.id in task_ids
 
 
