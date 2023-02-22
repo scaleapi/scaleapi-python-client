@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import List
 
+
 class TaskType(Enum):
     """Task Type List"""
 
@@ -105,13 +106,13 @@ class Task:
         self._client.set_task_metadata(self.id, metadata)
 
     def set_tags(self, tags: List[str]):
-            """Sets tags of a task"""
-            self._client.set_task_tags(self.id, tags)
+        """Sets tags of a task"""
+        self._client.set_task_tags(self.id, tags)
 
     def add_tags(self, tags: List[str]):
-            """Adds tags for a task"""
-            self._client.add_task_tags(self.id, tags)
+        """Adds tags for a task"""
+        self._client.add_task_tags(self.id, tags)
 
     def delete_tags(self, tags: List[str]):
-            """Sets tags for a task"""
-            self._client.delete_task_tags(self.id, tags)
+        """Sets tags for a task"""
+        self._client.delete_task_tags(self.id, tags)

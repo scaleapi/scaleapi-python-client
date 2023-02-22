@@ -46,7 +46,6 @@ class Api:
         files=None,
         data=None,
     ) -> Response:
-
         https = requests.Session()
         retry_strategy = Retry(
             total=HTTP_TOTAL_RETRIES,
@@ -80,7 +79,6 @@ class Api:
 
     @staticmethod
     def _raise_on_respose(res: Response):
-
         try:
             message = res.json().get("error", res.text)
         except ValueError:
@@ -160,7 +158,12 @@ class Api:
     def delete_request(self, endpoint, params=None, body=None):
         """Generic DELETE Request Wrapper"""
         return self._api_request(
-            "DELETE", endpoint, headers=self._headers, auth=self._auth, params=params, body=body
+            "DELETE",
+            endpoint,
+            headers=self._headers,
+            auth=self._auth,
+            params=params,
+            body=body,
         )
 
     def put_request(self, endpoint, body=None, params=None):

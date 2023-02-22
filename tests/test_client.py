@@ -47,7 +47,6 @@ def test_invalidkey_fail():
 
 
 def make_a_task(unique_id: str = None, batch: str = None):
-
     args = {
         "callback_url": "http://www.example.com/callback",
         "instruction": "Draw a box around each baby cow and big cow.",
@@ -111,33 +110,37 @@ def test_task_set_metadata():
     task.refresh()
     assert task.metadata == new_metadata
 
+
 def test_set_task_tags():
     unique_id = str(uuid.uuid4())
     task = make_a_task(unique_id)
-    assert not hasattr(task, 'tags')
-    new_tags = ["tag1","tag2","tag3"]
+    assert not hasattr(task, "tags")
+    new_tags = ["tag1", "tag2", "tag3"]
     task.set_tags(new_tags)
     task.refresh()
     assert task.tags == new_tags
 
+
 def test_add_task_tags():
     unique_id = str(uuid.uuid4())
     task = make_a_task(unique_id)
-    assert not hasattr(task, 'tags')
-    new_tags = ["tag1","tag2","tag3"]
+    assert not hasattr(task, "tags")
+    new_tags = ["tag1", "tag2", "tag3"]
     task.add_tags(new_tags)
     task.refresh()
     assert task.tags == new_tags
 
+
 def test_delete_task_tags():
     unique_id = str(uuid.uuid4())
     task = make_a_task(unique_id)
-    assert not hasattr(task, 'tags')
-    new_tags = ["tag1","tag2","tag3"]
+    assert not hasattr(task, "tags")
+    new_tags = ["tag1", "tag2", "tag3"]
     task.add_tags(new_tags)
-    task.delete_tags(["tag1","tag2"])
+    task.delete_tags(["tag1", "tag2"])
     task.refresh()
     assert task.tags == ["tag3"]
+
 
 def test_categorize_ok():
     client.create_task(
