@@ -72,9 +72,7 @@ class ScaleClient:
         endpoint = f"task/{task_id}"
         return Task(self.api.get_request(endpoint), self)
 
-    def cancel_task(
-        self, task_id: str, clear_unique_id: bool = False
-    ) -> Task:
+    def cancel_task(self, task_id: str, clear_unique_id: bool = False) -> Task:
         """Cancels a task and returns the associated task.
         Raises a ScaleException if it has already been canceled.
 
@@ -93,9 +91,7 @@ class ScaleClient:
             endpoint = f"task/{task_id}/cancel"
         return Task(self.api.post_request(endpoint), self)
 
-    def audit_task(
-        self, task_id: str, accepted: bool, comments: str = None
-    ):
+    def audit_task(self, task_id: str, accepted: bool, comments: str = None):
         """Allows you to accept or reject completed tasks.
         Along with support for adding comments about the reason
         for the given audit status, mirroring our Audit UI.
@@ -112,9 +108,7 @@ class ScaleClient:
         endpoint = f"task/{task_id}/audit"
         self.api.post_request(endpoint, body=payload)
 
-    def update_task_unique_id(
-        self, task_id: str, unique_id: str
-    ) -> Task:
+    def update_task_unique_id(self, task_id: str, unique_id: str) -> Task:
         """Updates a task's unique_id and returns the associated task.
         Raises a ScaleDuplicateResource exception if unique_id
         is already in use.
@@ -158,9 +152,7 @@ class ScaleClient:
             Task
         """
         endpoint = f"task/{task_id}/setMetadata"
-        return Task(
-            self.api.post_request(endpoint, body=metadata), self
-        )
+        return Task(self.api.post_request(endpoint, body=metadata), self)
 
     def set_task_tags(self, task_id: str, tags: List[str]) -> Task:
         """Sets completely new list of tags to a task and returns the
@@ -315,9 +307,7 @@ class ScaleClient:
         batch_name: str = None,
         task_type: TaskType = None,
         status: TaskStatus = None,
-        review_status: Union[
-            List[TaskReviewStatus], TaskReviewStatus
-        ] = None,
+        review_status: Union[List[TaskReviewStatus], TaskReviewStatus] = None,
         unique_id: Union[List[str], str] = None,
         completed_after: str = None,
         completed_before: str = None,
@@ -425,9 +415,7 @@ class ScaleClient:
         batch_name: str = None,
         task_type: TaskType = None,
         status: TaskStatus = None,
-        review_status: Union[
-            List[TaskReviewStatus], TaskReviewStatus
-        ] = None,
+        review_status: Union[List[TaskReviewStatus], TaskReviewStatus] = None,
         unique_id: Union[List[str], str] = None,
         completed_after: str = None,
         completed_before: str = None,
@@ -522,9 +510,7 @@ class ScaleClient:
         batch_name: str = None,
         task_type: TaskType = None,
         status: TaskStatus = None,
-        review_status: Union[
-            List[TaskReviewStatus], TaskReviewStatus
-        ] = None,
+        review_status: Union[List[TaskReviewStatus], TaskReviewStatus] = None,
         unique_id: Union[List[str], str] = None,
         completed_after: str = None,
         completed_before: str = None,
@@ -885,9 +871,7 @@ class ScaleClient:
             Project
         """
 
-        endpoint = (
-            f"projects/{Api.quote_string(project_name)}/setParams"
-        )
+        endpoint = f"projects/{Api.quote_string(project_name)}/setParams"
         projectdata = self.api.post_request(endpoint, body=kwargs)
         return Project(projectdata, self)
 
@@ -906,9 +890,7 @@ class ScaleClient:
 
         endpoint = "files/upload"
         files = {"file": file}
-        filedata = self.api.post_request(
-            endpoint, files=files, data=kwargs
-        )
+        filedata = self.api.post_request(endpoint, files=files, data=kwargs)
         return File(filedata, self)
 
     def import_file(self, file_url: str, **kwargs) -> File:
@@ -967,9 +949,7 @@ class ScaleClient:
         """
         endpoint = f"evaluation_tasks/{task_type.value}"
 
-        evaluation_task_data = self.api.post_request(
-            endpoint, body=kwargs
-        )
+        evaluation_task_data = self.api.post_request(endpoint, body=kwargs)
         return EvaluationTask(evaluation_task_data, self)
 
     def create_training_task(
@@ -1004,9 +984,7 @@ class ScaleClient:
         """
         endpoint = f"training_tasks/{task_type.value}"
 
-        training_task_data = self.api.post_request(
-            endpoint, body=kwargs
-        )
+        training_task_data = self.api.post_request(endpoint, body=kwargs)
         return TrainingTask(training_task_data, self)
 
     def list_teammates(self) -> List[Teammate]:
@@ -1078,7 +1056,9 @@ class ScaleClient:
         assignments = {}
         for email, assigned_projects in raw_assignments.items():
             assignments[email] = StudioLabelerAssignment(
-                assigned_projects, email, self
+                assigned_projects,
+                email,
+                self,
             )
         return assignments
 
@@ -1104,7 +1084,9 @@ class ScaleClient:
         assignments = {}
         for email, assigned_projects in raw_assignments.items():
             assignments[email] = StudioLabelerAssignment(
-                assigned_projects, email, self
+                assigned_projects,
+                email,
+                self,
             )
         return assignments
 
@@ -1130,13 +1112,13 @@ class ScaleClient:
         assignments = {}
         for email, assigned_projects in raw_assignments.items():
             assignments[email] = StudioLabelerAssignment(
-                assigned_projects, email, self
+                assigned_projects,
+                email,
+                self,
             )
         return assignments
 
-    def list_project_groups(
-        self, project: str
-    ) -> List[StudioProjectGroup]:
+    def list_project_groups(self, project: str) -> List[StudioProjectGroup]:
         """List all labeler groups for the specified project.
         Args:
             project (str):
@@ -1169,7 +1151,8 @@ class ScaleClient:
         endpoint = f"studio/projects/{Api.quote_string(project)}/groups"
         payload = {"emails": emails, "name": project_group}
         return StudioProjectGroup(
-            self.api.post_request(endpoint, payload), self
+            self.api.post_request(endpoint, payload),
+            self,
         )
 
     def update_project_group(
@@ -1202,7 +1185,8 @@ class ScaleClient:
             "remove_emails": remove_emails,
         }
         return StudioProjectGroup(
-            self.api.put_request(endpoint, payload), self
+            self.api.put_request(endpoint, payload),
+            self,
         )
 
     def list_studio_batches(self) -> List[StudioBatch]:
@@ -1232,9 +1216,7 @@ class ScaleClient:
         """
         endpoint = f"studio/batches/{Api.quote_string(batch_name)}"
         payload = {"groups": project_groups}
-        return StudioBatch(
-            self.api.put_request(endpoint, payload), self
-        )
+        return StudioBatch(self.api.put_request(endpoint, payload), self)
 
     def set_studio_batches_priorities(
         self, batch_names: List[str]
@@ -1247,7 +1229,10 @@ class ScaleClient:
             List[StudioBatch]
         """
         batches_names = list(
-            map(lambda batch_name: {"name": batch_name}, batch_names)
+            map(
+                lambda batch_name: {"name": batch_name},
+                batch_names,
+            )
         )
         endpoint = "studio/batches/set_priorities"
         payload = {"batches": batches_names}
