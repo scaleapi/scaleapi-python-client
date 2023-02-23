@@ -361,7 +361,7 @@ __ https://docs.scale.com/reference/deleting-tags
     
     # delete a list of tags on a task object
     task = client.get_task('30553edd0b6a93f8f05f0fee')
-    tags_to_delete = ["tag1","tag2"]
+    tags_to_delete = ["tag1", "tag2"]
     task.delete_tags(tags_to_delete)
 
 Batches
