@@ -346,7 +346,7 @@ __ https://docs.scale.com/reference/adding-tags
     tags_to_add = ["tag4", "tag5"]
     task.add_tags(tags_to_add)
 
-Delete A Task's Tags
+Delete Tags from A Task
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Delete ``tags`` from a given task. Check out `Scale's API documentation`__ for more information.
