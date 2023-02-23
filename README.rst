@@ -328,7 +328,7 @@ __ https://docs.scale.com/reference/setting-tags
     new_tags = ["tag1", "tag2", "tag3"]
     task.set_tags(new_tags)
 
-Add A Task's Tags
+Add Tags to A Task
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Add ``tags`` to a given task. Check out `Scale's API documentation`__ for more information.
