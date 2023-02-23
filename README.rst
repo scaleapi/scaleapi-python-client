@@ -349,7 +349,7 @@ __ https://docs.scale.com/reference/adding-tags
 Delete A Task's Tags
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Delete ``tags`` to a given task. Check out `Scale's API documentation`__ for more information.
+Delete ``tags`` from a given task. Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference/deleting-tags
 
