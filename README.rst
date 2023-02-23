@@ -313,7 +313,7 @@ __ https://docs.scale.com/reference/set-metadata
 Set A Task's Tags
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Set a given task's ``tags``. Check out `Scale's API documentation`__ for more information.
+Set a given task's ``tags``. This will replace all existing tags on a task. Check out `Scale's API documentation`__ for more information.
 
 __ https://docs.scale.com/reference/setting-tags
 
