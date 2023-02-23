@@ -343,7 +343,7 @@ __ https://docs.scale.com/reference/adding-tags
 
     # add a list of tags on a task object
     task = client.get_task('30553edd0b6a93f8f05f0fee')
-    tags_to_add = ["tag4","tag5"]
+    tags_to_add = ["tag4", "tag5"]
     task.add_tags(tags_to_add)
 
 Delete A Task's Tags
