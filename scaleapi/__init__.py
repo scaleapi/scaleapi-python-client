@@ -50,7 +50,9 @@ class ScaleClient:
 
     def __init__(self, api_key, source=None, api_instance_url=None):
         self.api = Api(
-            api_key, user_agent_extension=source, api_instance_url=api_instance_url
+            api_key,
+            user_agent_extension=source,
+            api_instance_url=api_instance_url,
         )
 
     def get_task(self, task_id: str) -> Task:
@@ -147,6 +149,49 @@ class ScaleClient:
         """
         endpoint = f"task/{task_id}/setMetadata"
         return Task(self.api.post_request(endpoint, body=metadata), self)
+
+    def set_task_tags(self, task_id: str, tags: List[str]) -> Task:
+        """Sets completely new list of tags to a task and returns the
+        associated task.
+        Args:
+            task_id (str):
+                Task id
+            tags (List[str]):
+                List of new tags to set
+        Returns:
+            Task
+        """
+        endpoint = f"task/{task_id}/tags"
+        return Task(self.api.post_request(endpoint, body=tags), self)
+
+    def add_task_tags(self, task_id: str, tags: List[str]) -> Task:
+        """Adds a list of tags to a task and returns the
+        associated task.
+        Args:
+            task_id (str):
+                Task id
+            tags (List[str]):
+                List of tags to add.
+                Already present tags will be ignored.
+        Returns:
+            Task
+        """
+        endpoint = f"task/{task_id}/tags"
+        return Task(self.api.put_request(endpoint, body=tags), self)
+
+    def delete_task_tags(self, task_id: str, tags: List[str]) -> Task:
+        """Deletes a list of tags from a task and returns the
+        associated task.
+        Args:
+            task_id (str):
+                Task id
+            tags (List[str]):
+                List of tags to delete. Nonpresent tags will be ignored.
+        Returns:
+            Task
+        """
+        endpoint = f"task/{task_id}/tags"
+        return Task(self.api.delete_request(endpoint, body=tags), self)
 
     def tasks(self, **kwargs) -> Tasklist:
         """Returns a list of your tasks.
@@ -949,7 +994,11 @@ class ScaleClient:
         teammate_list = self.api.get_request(endpoint)
         return [Teammate(teammate, self) for teammate in teammate_list]
 
-    def invite_teammates(self, emails: List[str], role: TeammateRole) -> List[Teammate]:
+    def invite_teammates(
+        self,
+        emails: List[str],
+        role: TeammateRole,
+    ) -> List[Teammate]:
         """Invites a list of emails to your team.
 
         Args:
@@ -989,7 +1038,9 @@ class ScaleClient:
         teammate_list = self.api.post_request(endpoint, payload)
         return [Teammate(teammate, self) for teammate in teammate_list]
 
-    def list_studio_assignments(self) -> Dict[str, StudioLabelerAssignment]:
+    def list_studio_assignments(
+        self,
+    ) -> Dict[str, StudioLabelerAssignment]:
         """Returns a dictionary where the keys are user emails and the
         values are projects the user is assigned to.
 
@@ -999,8 +1050,12 @@ class ScaleClient:
         endpoint = "studio/assignments"
         raw_assignments = self.api.get_request(endpoint)
         assignments = {}
-        for (email, assigned_projects) in raw_assignments.items():
-            assignments[email] = StudioLabelerAssignment(assigned_projects, email, self)
+        for email, assigned_projects in raw_assignments.items():
+            assignments[email] = StudioLabelerAssignment(
+                assigned_projects,
+                email,
+                self,
+            )
         return assignments
 
     def add_studio_assignments(
@@ -1023,8 +1078,12 @@ class ScaleClient:
         }
         raw_assignments = self.api.post_request(endpoint, payload)
         assignments = {}
-        for (email, assigned_projects) in raw_assignments.items():
-            assignments[email] = StudioLabelerAssignment(assigned_projects, email, self)
+        for email, assigned_projects in raw_assignments.items():
+            assignments[email] = StudioLabelerAssignment(
+                assigned_projects,
+                email,
+                self,
+            )
         return assignments
 
     def remove_studio_assignments(
@@ -1047,8 +1106,12 @@ class ScaleClient:
         }
         raw_assignments = self.api.post_request(endpoint, payload)
         assignments = {}
-        for (email, assigned_projects) in raw_assignments.items():
-            assignments[email] = StudioLabelerAssignment(assigned_projects, email, self)
+        for email, assigned_projects in raw_assignments.items():
+            assignments[email] = StudioLabelerAssignment(
+                assigned_projects,
+                email,
+                self,
+            )
         return assignments
 
     def list_project_groups(self, project: str) -> List[StudioProjectGroup]:
@@ -1083,7 +1146,10 @@ class ScaleClient:
         """
         endpoint = f"studio/projects/{Api.quote_string(project)}/groups"
         payload = {"emails": emails, "name": project_group}
-        return StudioProjectGroup(self.api.post_request(endpoint, payload), self)
+        return StudioProjectGroup(
+            self.api.post_request(endpoint, payload),
+            self,
+        )
 
     def update_project_group(
         self,
@@ -1110,8 +1176,14 @@ class ScaleClient:
             f"studio/projects/{Api.quote_string(project)}"
             f"/groups/{Api.quote_string(project_group)}"
         )
-        payload = {"add_emails": add_emails, "remove_emails": remove_emails}
-        return StudioProjectGroup(self.api.put_request(endpoint, payload), self)
+        payload = {
+            "add_emails": add_emails,
+            "remove_emails": remove_emails,
+        }
+        return StudioProjectGroup(
+            self.api.put_request(endpoint, payload),
+            self,
+        )
 
     def list_studio_batches(self) -> List[StudioBatch]:
         """Returns a list with all pending studio batches,
@@ -1152,7 +1224,12 @@ class ScaleClient:
         Returns:
             List[StudioBatch]
         """
-        batches_names = list(map(lambda batch_name: {"name": batch_name}, batch_names))
+        batches_names = list(
+            map(
+                lambda batch_name: {"name": batch_name},
+                batch_names,
+            )
+        )
         endpoint = "studio/batches/set_priorities"
         payload = {"batches": batches_names}
         batches = self.api.post_request(endpoint, payload)

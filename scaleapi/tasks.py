@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import List
 
 
 class TaskType(Enum):
@@ -103,3 +104,15 @@ class Task:
     def set_metadata(self, metadata: dict):
         """Sets the metadata of a task"""
         self._client.set_task_metadata(self.id, metadata)
+
+    def set_tags(self, tags: List[str]):
+        """Sets tags of a task"""
+        self._client.set_task_tags(self.id, tags)
+
+    def add_tags(self, tags: List[str]):
+        """Adds tags for a task"""
+        self._client.add_task_tags(self.id, tags)
+
+    def delete_tags(self, tags: List[str]):
+        """Sets tags for a task"""
+        self._client.delete_task_tags(self.id, tags)

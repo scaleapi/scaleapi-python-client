@@ -310,6 +310,60 @@ __ https://docs.scale.com/reference/set-metadata
     new_metadata = {'myKey': 'myValue'}
     task.set_metadata(new_metadata)
 
+Set A Task's Tags
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Set a given task's ``tags``. This will replace all existing tags on a task. Check out `Scale's API documentation`__ for more information.
+
+__ https://docs.scale.com/reference/setting-tags
+
+.. code-block :: python
+
+    # set a list of tags on a task by specifying task id
+    new_tags = ["tag1", "tag2", "tag3"]
+    task = client.set_task_tags('30553edd0b6a93f8f05f0fee', new_tags)
+
+    # set a list of tags on a task object
+    task = client.get_task('30553edd0b6a93f8f05f0fee')
+    new_tags = ["tag1", "tag2", "tag3"]
+    task.set_tags(new_tags)
+
+Add Tags to A Task
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Add ``tags`` to a given task. Check out `Scale's API documentation`__ for more information.
+
+__ https://docs.scale.com/reference/adding-tags
+
+.. code-block :: python
+
+    # add a list of tags on a task by specifying task id
+    tags_to_add = ["tag4", "tag5"]
+    task = client.add_task_tags('30553edd0b6a93f8f05f0fee', tags_to_add)
+
+    # add a list of tags on a task object
+    task = client.get_task('30553edd0b6a93f8f05f0fee')
+    tags_to_add = ["tag4", "tag5"]
+    task.add_tags(tags_to_add)
+
+Delete Tags from A Task
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Delete ``tags`` from a given task. Check out `Scale's API documentation`__ for more information.
+
+__ https://docs.scale.com/reference/deleting-tags
+
+.. code-block :: python
+
+    # delete a list of tags on a task by specifying task id
+    tags_to_delete = ["tag1", "tag2"]
+    task = client.delete_task_tags('30553edd0b6a93f8f05f0fee', tags_to_delete)
+    
+    # delete a list of tags on a task object
+    task = client.get_task('30553edd0b6a93f8f05f0fee')
+    tags_to_delete = ["tag1", "tag2"]
+    task.delete_tags(tags_to_delete)
+
 Batches
 _______
 
