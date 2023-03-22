@@ -1279,4 +1279,3 @@ class ScaleClient:
         )
         projectdata = self.api.post_request(endpoint, body=payload)
         return Project(projectdata, self)
-
