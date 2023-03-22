@@ -1,4 +1,4 @@
-from typing import IO, Dict, Generator, Generic, List, Optional, TypeVar, Union
+from typing import IO, Dict, Generator, Generic, List, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
 from scaleapi.evaluation_tasks import EvaluationTask
@@ -1255,8 +1255,8 @@ class ScaleClient:
         """You can set ontologies on a project.
         Ontologies will be referenced by the tasks of a project.
         Projects keep a history of the ontologies they were set with.
-        The ontology can be composed of a list of strings or OntologyChoice objects.
-        Ontology choices and their subchoices must be unique throughout the ontology.
+        The ontology can be a list of strings or objects.
+        choices and their subchoices must be unique throughout the ontology.
         https://docs.scale.com/reference#project-update-ontology
 
         Args:
@@ -1279,3 +1279,4 @@ class ScaleClient:
         )
         projectdata = self.api.post_request(endpoint, body=payload)
         return Project(projectdata, self)
+
