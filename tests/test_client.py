@@ -510,6 +510,7 @@ def test_list_studio_batches():
     batches = client.list_studio_batches()
     assert len(batches) > 0
 
+
 def test_list_quality_labelers():
     quality_labelers = client.list_quality_labelers()
     assert isinstance(quality_labelers, dict)
