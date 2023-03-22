@@ -1256,7 +1256,7 @@ class ScaleClient:
         Ontologies will be referenced by the tasks of a project.
         Projects keep a history of the ontologies they were set with.
         The ontology can be a list of strings or objects.
-        choices and their subchoices must be unique throughout the ontology.
+        choices and their subchoices must be unique throughout the.
         https://docs.scale.com/reference#project-update-ontology
 
         Args:
