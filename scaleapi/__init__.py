@@ -1246,89 +1246,36 @@ class ScaleClient:
         batches = self.api.post_request(endpoint)
         return [StudioBatch(batch, self) for batch in batches]
 
-
     def update_ontology(
-            self,
-            project_name: str,
-            project_ontology: List[Union[str, object]],
-            ontology_name: str,
-        ) -> Project:
-            """You can set ontologies on a project.
-            Ontologies will be referenced by the tasks of a project.
-            Projects keep a history of the ontologies they were set with.
-            The ontology can be composed of a list of strings or OntologyChoice objects.
-            Ontology choices and their subchoices must be unique throughout the ontology.
-            https://docs.scale.com/reference#project-update-ontology
-    
-            Args:
-                project_name (str):
-                    Project's name.
-    
-                ontology (List[Union[str, object]]):
-                    A list of strings or OntologyChoice objects to be set.
-    
-                name (str):
-                    Name identifying the version of the ontology.
-            Returns:
-                Project
-            """
-    
-            endpoint = f"projects/{Api.quote_string(project_name)}/setOntology"
-            payload = dict(
-                ontology=project_ontology,
-                name=ontology_name,
-            )
-            projectdata = self.api.post_request(endpoint, body=payload)
-            return Project(projectdata, self)
-
-    def test_list_quality_labelers(
         self,
-        quality_task_ids: Optional[List[str]] = None,
-        labeler_emails: Optional[List[str]] = None,
-        next_token: Optional[str] = None,
-        limit: Optional[int] = None,
-    ) -> Tasklist:
-        """Returns a list of tasks filtered by quality task IDs, labeler emails, and limit.
-        Returns up to the specified limit at a time, to get more, use the next_token param passed back.
+        project_name: str,
+        project_ontology: List[Union[str, object]],
+        ontology_name: str,
+    ) -> Project:
+        """You can set ontologies on a project.
+        Ontologies will be referenced by the tasks of a project.
+        Projects keep a history of the ontologies they were set with.
+        The ontology can be composed of a list of strings or OntologyChoice objects.
+        Ontology choices and their subchoices must be unique throughout the ontology.
+        https://docs.scale.com/reference#project-update-ontology
 
         Args:
-            quality_task_ids (List[str], optional):
-                List of quality task IDs to filter tasks by.
-            
-            labeler_emails (List[str], optional):
-                List of labeler email addresses to filter tasks by.
-            
-            next_token (str, optional):
-                Can be used to fetch the next page of tasks.
-            
-            limit (int, optional):
-                Determines the page size (1-100).
+            project_name (str):
+                Project's name.
 
+            ontology (List[Union[str, object]]):
+                A list of strings or OntologyChoice objects to be set.
+
+            name (str):
+                Name identifying the version of the ontology.
         Returns:
-            Tasklist: A list of tasks that match the provided filters.
+            Project
         """
-        params = {}
 
-        if quality_task_ids:
-            params["quality_task_ids"] = ",".join(quality_task_ids)
-        
-        if labeler_emails:
-            params["labeler_emails"] = ",".join(labeler_emails)
-
-        if next_token:
-            params["next_token"] = next_token
-
-        if limit:
-            params["limit"] = limit
-
-        response = self.api.get_request("tasks", params=params)
-
-        docs = [Task(json, self) for json in response["docs"]]
-        return Tasklist(
-            docs,
-            response["total"],
-            response["limit"],
-            response["offset"],
-            response["has_more"],
-            response.get("next_token"),
+        endpoint = f"projects/{Api.quote_string(project_name)}/setOntology"
+        payload = dict(
+            ontology=project_ontology,
+            name=ontology_name,
         )
+        projectdata = self.api.post_request(endpoint, body=payload)
+        return Project(projectdata, self)
