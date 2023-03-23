@@ -1291,17 +1291,17 @@ class ScaleClient:
 
         Args:
             quality_task_ids (List[str]):
-                An array of training scenario IDs that the returned training attempts.
+                arr of training scenario IDs  returned training att.
             labeler_emails (List[str]):
-                An array of email addresses of the labelers who completed the training attempts.
+                arr of email of the lblrs who completed training att.
             next_token (str):
-                A token used to retrieve the next page of results if there are more.
+                tokn to retrieve next page of results if there are more.
             limit (int):
                 Number of Training Attempts to return per request.
 
         Returns:
             Dict[str, Union[str, List[str]]]:
-                A dict containing a list of training attempts matching labeler.
+                A dict of list of training att matching labeler.
         """
         endpoint = "quality/labelers"
         params = {}
