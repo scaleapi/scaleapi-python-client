@@ -537,7 +537,9 @@ Update Ontology
 ^^^^^^^^^^^^^^^
 Creates a new version of the Project Ontology. Check out `Scale's API documentation`__ for more information.
 __ https://docs.scale.com/reference#project-update-ontology
+
 .. code-block :: python
+    
     data = client.update_ontology(
         project_name="test_project",
         project_ontology=[
