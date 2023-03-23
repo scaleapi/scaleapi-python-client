@@ -534,7 +534,7 @@ __ https://docs.scale.com/reference#project-update-parameters
     )
 
 Update Ontology
-^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 Creates a new version of the Project Ontology. Check out `Scale's API documentation`__ for more information.
 __ https://docs.scale.com/reference#project-update-ontology
 .. code-block :: python
@@ -550,7 +550,7 @@ __ https://docs.scale.com/reference#project-update-ontology
         ],
         ontology_name="test_ontology",
     )
-    
+
 Files
 ________
 
