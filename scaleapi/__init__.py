@@ -1282,8 +1282,8 @@ class ScaleClient:
 
     def get_labeler_attempts(
         self,
-        quality_task_ids: List[str] = [],
-        labeler_emails: List[str] = [],
+        quality_task_ids: List[str] = None,
+        labeler_emails: List[str] = None,
         next_token: str = "",
         limit: int = 0,
     ) -> Dict[str, Union[str, List[str]]]:
@@ -1313,4 +1313,4 @@ class ScaleClient:
             params["next_token"] = next_token
         if limit:
             params["limit"] = limit
-        return self.get_request(endpoint, params=params)
+        return self.api.get_request(endpoint, params=params)
