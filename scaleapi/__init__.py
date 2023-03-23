@@ -1,4 +1,4 @@
-from typing import IO, Dict, Generator, Generic, List, TypeVar, Union
+from typing import IO, Dict, Generator, Generic, List, Optional, Any, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
 from scaleapi.evaluation_tasks import EvaluationTask
@@ -1279,3 +1279,37 @@ class ScaleClient:
         )
         projectdata = self.api.post_request(endpoint, body=payload)
         return Project(projectdata, self)
+
+    def get_labeler_attempts(
+        self,
+        quality_task_ids: Optional[List[str]] = None, 
+        labeler_emails: Optional[List[str]] = None, 
+        next_token: Optional[str] = None, 
+        limit: Optional[int] = None) -> Dict[str, Any]:
+        """Retrieves a list of training attempts by labelers.
+
+        Args:
+            quality_task_ids (Optional[List[str]]):
+                An array of training scenario IDs that the returned training attempts.
+            labeler_emails (Optional[List[str]]):
+                An array of email addresses of the labelers who completed the training attempts.
+            next_token (Optional[str]):
+                A token used to retrieve the next page of results if there are more.
+            limit (Optional[int]):
+                Number of Training Attempts to return per request.
+
+        Returns:
+            Dict[str, Any]:
+                A dict containing a list of training attempts matching labeler.
+        """
+        endpoint = "quality/labelers"
+        params = {}
+        if quality_task_ids:
+            params["quality_task_ids"] = quality_task_ids
+        if labeler_emails:
+            params["labeler_emails"] = labeler_emails
+        if next_token:
+            params["next_token"] = next_token
+        if limit:
+            params["limit"] = limit
+        return self.get_request(endpoint, params=params)
