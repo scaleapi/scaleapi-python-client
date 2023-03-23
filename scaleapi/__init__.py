@@ -1282,10 +1282,11 @@ class ScaleClient:
 
     def get_labeler_attempts(
         self,
-        quality_task_ids: Optional[List[str]] = None, 
-        labeler_emails: Optional[List[str]] = None, 
-        next_token: Optional[str] = None, 
-        limit: Optional[int] = None) -> Dict[str, Any]:
+        quality_task_ids: Optional[List[str]] = None,
+        labeler_emails: Optional[List[str]] = None,
+        next_token: Optional[str] = None,
+        limit: Optional[int] = None,
+    ) -> Dict[str, Any]:
         """Retrieves a list of training attempts by labelers.
 
         Args:
