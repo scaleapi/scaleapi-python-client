@@ -760,7 +760,7 @@ Retrieves a list of training attempts by labelers.
 
 .. code-block:: python
 
-    client.list_training_attempts(
+    client.get_labeler_attempts(
         quality_task_ids: Optional[List[str]] = None,
         labeler_emails: Optional[List[str]] = None,
         next_token: Optional[str] = None,
@@ -898,21 +898,6 @@ Returns a List of StudioBatch objects in the new order.
 .. code-block:: python
 
     reset_studio_batch_prioprity = client.reset_studio_batches_priorities()
-
-Grt Labeler Training Attempts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Retrieves a list of training attempts by labelers.
-
-.. code-block:: python
-
-    client.get_labeler_attempts(
-    quality_task_ids: List[str] = None,
-    labeler_emails: List[str] = None,
-    next_token: str = "",
-    limit: int = 0,
-    ) -> Dict[str, Union[str, List[str]]]:
-
 
 Error handling
 ______________
