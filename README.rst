@@ -193,7 +193,7 @@ __ https://docs.scale.com/reference#list-multiple-tasks
 
     # For retrieving results as a Task list
     task_list = list(tasks)
-    print(f"{len(task_list))} tasks retrieved")
+    print(f"{len(task_list)} tasks retrieved")
 
 Get Tasks Count
 ^^^^^^^^^^^^^^^
