@@ -796,11 +796,14 @@ class ScaleClient:
                 Project parameters to be specified.
                 i.e. `{'instruction':'Please label the kittens'}`
             rapid (bool):
-                Whether the project being created is a Scale Rapid project
+                Whether the project being created is a
+                Scale Rapid project
             studio (bool):
-                Whether the project being created is a Scale Studio project
+                Whether the project being created is a
+                 Scale Studio project
             datasetId (str):
-                Link this project to an existing Nucleus dataset. All tasks annotated in this project will
+                Link this project to an existing Nucleus dataset.
+                All tasks annotated in this project will
                 be synced to the given dataset.
 
         Returns:
