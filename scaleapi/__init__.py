@@ -782,7 +782,7 @@ class ScaleClient:
         params: Dict = None,
         rapid: bool = False,
         studio: bool = False,
-        datasetId: Optional[str] = None,
+        dataset_id: Optional[str] = None,
     ) -> Project:
         """Creates a new project.
         https://docs.scale.com/reference#project-creation
@@ -801,7 +801,7 @@ class ScaleClient:
             studio (bool):
                 Whether the project being created is a
                  Scale Studio project
-            datasetId (str):
+            dataset_id (str):
                 Link this project to an existing Nucleus dataset.
                 All tasks annotated in this project will
                 be synced to the given dataset.
@@ -816,7 +816,7 @@ class ScaleClient:
             params=params,
             rapid=rapid,
             studio=studio,
-            datasetId=datasetId,
+            datasetId=dataset_id,
         )
         projectdata = self.api.post_request(endpoint, body=payload)
         return Project(projectdata, self)
