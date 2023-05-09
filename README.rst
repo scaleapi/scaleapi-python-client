@@ -42,6 +42,24 @@ _____
 
     client = scaleapi.ScaleClient("YOUR_API_KEY_HERE")
 
+If you need to use a proxy to connect Scale API, you can feed ``proxies``, ``cert`` and ``verify`` attributes of the python ``requests`` package during the client initialization.
+Proxy support is available with SDK version 2.14.0 and beyond.
+
+`Documentation of Proxies usage in requests package`__
+
+__ https://requests.readthedocs.io/en/latest/user/advanced/#proxies
+
+.. code-block:: python
+
+    proxies = { 'https': 'http://10.10.1.10:1080' }
+
+    client = scaleapi.ScaleClient(
+                api_key="YOUR_API_KEY_HERE",
+                proxies=proxies,
+                cert='/path/client.cert',
+                verify=True
+            )
+
 Tasks
 _____
 
@@ -358,7 +376,7 @@ __ https://docs.scale.com/reference/deleting-tags
     # delete a list of tags on a task by specifying task id
     tags_to_delete = ["tag1", "tag2"]
     task = client.delete_task_tags('30553edd0b6a93f8f05f0fee', tags_to_delete)
-    
+
     # delete a list of tags on a task object
     task = client.get_task('30553edd0b6a93f8f05f0fee')
     tags_to_delete = ["tag1", "tag2"]
@@ -600,7 +618,7 @@ The attribute can be passed to the task payloads, in the ``attachment`` paramete
       ...
       ...
   )
-  
+
 Manage Teammates
 ________________
 
@@ -628,9 +646,9 @@ Returns all teammates in a List of Teammate objects.
 .. code-block:: python
 
     from scaleapi import TeammateRole
-    
+
     teammates = client.invite_teammates(['email1@example.com', 'email2@example.com'], TeammateRole.Member)
-    
+
 Update Teammate Role
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -641,7 +659,7 @@ Returns all teammates in a List of Teammate objects.
 .. code-block python
 
     from scaleapi import TeammateRole
-    
+
     teammates = client.update_teammates_role(['email1@example.com', 'email2@example.com'], TeammateRole.Manager)
 
 Example Scripts
@@ -738,7 +756,7 @@ Manage project assignments for your labelers.
 List All Assignments
 ^^^^^^^^^^^^^^^^^^^^
 
-Lists all your Scale team members and the projects they are assigned to. 
+Lists all your Scale team members and the projects they are assigned to.
 Returns a dictionary of all teammate assignments with keys as 'emails' of each teammate, and values as a list of project names the teammate are assigned to.
 
 .. code-block:: python
@@ -772,7 +790,7 @@ Returns a dictionary of all teammate assignments with keys as 'emails' of each t
 .. code-block:: python
 
     assignments = client.remove_studio_assignments(['email1@example.com', 'email2@example.com'], ['project 1', 'project 2'])
-    
+
 Studio Project Groups (For Scale Studio Only)
 _____________________________________________
 
@@ -784,7 +802,7 @@ List Studio Project Groups
 Returns all labeler groups for the specified project.
 
 .. code-block:: python
-    
+
     list_project_group = client.list_project_groups('project_name')
 
 Add Studio Project Group
@@ -803,7 +821,7 @@ Returns the created StudioProjectGroup object.
 Update Studio Project Group
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Assign or remove teammates from a project group. 
+Assign or remove teammates from a project group.
 
 Returns the updated StudioProjectGroup object.
 
@@ -812,7 +830,7 @@ Returns the updated StudioProjectGroup object.
     updated_project_group = client.update_project_group(
         'project_name', 'project_group_name', ['emails_to_add'], ['emails_to_remove']
     )
-    
+
 Studio Batches (For Scale Studio Only)
 _______________________________________
 
@@ -835,7 +853,7 @@ Sets labeler group assignment for the specified batch.
 Returns a StudioBatch object for the specified batch.
 
 .. code-block:: python
-    
+
     assigned_studio_batch = client.assign_studio_batches('batch_name', ['project_group_name'])
 
 Set Studio Batches Priority

@@ -19,7 +19,15 @@ HTTP_RETRY_ALLOWED_METHODS = frozenset({"GET", "POST", "DELETE"})
 class Api:
     """Internal Api reference for handling http operations"""
 
-    def __init__(self, api_key, user_agent_extension=None, api_instance_url=None):
+    def __init__(
+        self,
+        api_key,
+        user_agent_extension=None,
+        api_instance_url=None,
+        verify=None,
+        proxies=None,
+        cert=None,
+    ):
         if api_key == "" or api_key is None:
             raise ScaleException("Please provide a valid API Key.")
 
@@ -35,6 +43,10 @@ class Api:
         }
         self.base_api_url = api_instance_url or SCALE_API_BASE_URL_V1
 
+        self.verify = verify
+        self.proxies = proxies
+        self.cert = cert
+
     @staticmethod
     def _http_request(
         method,
@@ -45,6 +57,9 @@ class Api:
         body=None,
         files=None,
         data=None,
+        verify=None,
+        proxies=None,
+        cert=None,
     ) -> Response:
         https = requests.Session()
         retry_strategy = Retry(
@@ -57,6 +72,11 @@ class Api:
 
         adapter = HTTPAdapter(max_retries=retry_strategy)
         https.mount("https://", adapter)
+
+        https.cert = cert if cert else None
+        https.verify = verify if verify else True
+        if proxies:
+            https.proxies.update(proxies)
 
         try:
             params = params or {}
@@ -102,7 +122,19 @@ class Api:
 
         url = f"{self.base_api_url}/{endpoint}"
 
-        res = self._http_request(method, url, headers, auth, params, body, files, data)
+        res = self._http_request(
+            method,
+            url,
+            headers,
+            auth,
+            params,
+            body,
+            files,
+            data,
+            verify=self.verify,
+            proxies=self.proxies,
+            cert=self.cert,
+        )
 
         json = None
         if res.status_code == 200:
