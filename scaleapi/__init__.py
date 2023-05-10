@@ -1,4 +1,4 @@
-from typing import IO, Dict, Generator, Generic, List, TypeVar, Union
+from typing import IO, Dict, Generator, Generic, List, Optional, TypeVar, Union
 
 from scaleapi.batches import Batch, BatchStatus
 from scaleapi.evaluation_tasks import EvaluationTask
@@ -793,6 +793,7 @@ class ScaleClient:
         params: Dict = None,
         rapid: bool = False,
         studio: bool = False,
+        dataset_id: Optional[str] = None,
     ) -> Project:
         """Creates a new project.
         https://docs.scale.com/reference#project-creation
@@ -800,13 +801,21 @@ class ScaleClient:
         Args:
             project_name (str):
                 Project name
-
             task_type (TaskType):
                 Task Type i.e. `TaskType.ImageAnnotation`
-
             params (Dict):
-                Project parameters to be specificed.
+                Project parameters to be specified.
                 i.e. `{'instruction':'Please label the kittens'}`
+            rapid (bool):
+                Whether the project being created is a
+                Scale Rapid project
+            studio (bool):
+                Whether the project being created is a
+                 Scale Studio project
+            dataset_id (str):
+                Link this project to an existing Nucleus dataset.
+                All tasks annotated in this project will
+                be synced to the given dataset.
 
         Returns:
             Project: [description]
@@ -818,6 +827,7 @@ class ScaleClient:
             params=params,
             rapid=rapid,
             studio=studio,
+            datasetId=dataset_id,
         )
         projectdata = self.api.post_request(endpoint, body=payload)
         return Project(projectdata, self)
