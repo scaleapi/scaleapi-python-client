@@ -551,6 +551,27 @@ __ https://docs.scale.com/reference#project-update-parameters
         instruction="update: Please label all the stuff",
     )
 
+Update Ontology
+^^^^^^^^^^^^^^^
+Creates a new version of the Project Ontology. Check out `Scale's API documentation`__ for more information.
+
+__ https://docs.scale.com/reference#project-update-ontology
+
+.. code-block :: python
+
+    data = client.update_ontology(
+        project_name="test_project",
+        project_ontology=[
+            "Road",
+            {
+                "choice": "Vehicle",
+                "description": "a means of carrying or transporting material",
+                "subchoices": ["Car", "Truck", "Train", "Motorcycle"]
+            },
+        ],
+        ontology_name="test_ontology",
+    )
+
 Files
 ________
 
@@ -749,6 +770,22 @@ Create a training task.
     client.create_training_task(TaskType, ...task parameters...)
 
 Studio Assignments (For Scale Studio only)
+
+List Training Attempts
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Retrieves a list of training attempts by labelers.
+
+.. code-block:: python
+
+    client.get_labeler_attempts(
+        quality_task_ids: Optional[List[str]] = None,
+        labeler_emails: Optional[List[str]] = None,
+        next_token: Optional[str] = None,
+        limit: Optional[int] = None,
+    )
+
+
 __________________________________________
 
 Manage project assignments for your labelers.
@@ -879,7 +916,6 @@ Returns a List of StudioBatch objects in the new order.
 .. code-block:: python
 
     reset_studio_batch_prioprity = client.reset_studio_batches_priorities()
-
 
 Error handling
 ______________

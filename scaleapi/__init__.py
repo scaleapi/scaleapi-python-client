@@ -1266,3 +1266,72 @@ class ScaleClient:
         endpoint = "studio/batches/reset_priorities"
         batches = self.api.post_request(endpoint)
         return [StudioBatch(batch, self) for batch in batches]
+
+    def update_ontology(
+        self,
+        project_name: str,
+        project_ontology: List[Union[str, object]],
+        ontology_name: str,
+    ) -> Project:
+        """You can set ontologies on a project.
+        Ontologies will be referenced by the tasks of a project.
+        Projects keep a history of the ontologies they were set with.
+        The ontology can be a list of strings or objects.
+        choices and their subchoices must be unique throughout the.
+        https://docs.scale.com/reference#project-update-ontology
+
+        Args:
+            project_name (str):
+                Project's name.
+
+            ontology (List[Union[str, object]]):
+                A list of strings or OntologyChoice objects to be set.
+
+            name (str):
+                Name identifying the version of the ontology.
+        Returns:
+            Project
+        """
+
+        endpoint = f"projects/{Api.quote_string(project_name)}/setOntology"
+        payload = dict(
+            ontology=project_ontology,
+            name=ontology_name,
+        )
+        projectdata = self.api.post_request(endpoint, body=payload)
+        return Project(projectdata, self)
+
+    def get_labeler_attempts(
+        self,
+        quality_task_ids: List[str] = None,
+        labeler_emails: List[str] = None,
+        next_token: str = "",
+        limit: int = 0,
+    ) -> Dict[str, Union[str, List[str]]]:
+        """Retrieves a list of training attempts by labelers.
+
+        Args:
+            quality_task_ids (List[str]):
+                arr of training scenario IDs  returned training att.
+            labeler_emails (List[str]):
+                arr of email of the lblrs who completed training att.
+            next_token (str):
+                tokn to retrieve next page of results if there are more.
+            limit (int):
+                Number of Training Attempts to return per request.
+
+        Returns:
+            Dict[str, Union[str, List[str]]]:
+                A dict of list of training att matching labeler.
+        """
+        endpoint = "quality/labelers"
+        params = {}
+        if quality_task_ids:
+            params["quality_task_ids"] = quality_task_ids
+        if labeler_emails:
+            params["labeler_emails"] = labeler_emails
+        if next_token:
+            params["next_token"] = next_token
+        if limit:
+            params["limit"] = limit
+        return self.api.get_request(endpoint, params=params)
