@@ -48,11 +48,22 @@ class Batchlist(Paginator[Batch]):
 class ScaleClient:
     """Main class serves as an interface for Scale API"""
 
-    def __init__(self, api_key, source=None, api_instance_url=None):
+    def __init__(
+        self,
+        api_key,
+        source=None,
+        api_instance_url=None,
+        verify=None,
+        proxies=None,
+        cert=None,
+    ):
         self.api = Api(
             api_key,
             user_agent_extension=source,
             api_instance_url=api_instance_url,
+            verify=verify,
+            proxies=proxies,
+            cert=cert,
         )
 
     def get_task(self, task_id: str) -> Task:
