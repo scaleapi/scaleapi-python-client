@@ -152,8 +152,8 @@ class Api:
             #   status=409,
             #   redirect_location=None)
             if retry_history != ():
-                # See if the first retry was a 500 error
-                if retry_history[0][3] == 500:
+                # See if the first retry was a 500 or 503 error
+                if retry_history[0][3] >= 500:
                     uuid = body["unique_id"]
                     newUrl = f"{self.base_api_url}/tasks?unique_id={uuid}"
                     # grab task from api
