@@ -713,8 +713,7 @@ class ScaleClient:
         allowed_kwargs = {
             "start_time",
             "end_time",
-            "exclude_archived"
-            "status",
+            "exclude_archived" "status",
             "project",
             "limit",
             "offset",
@@ -743,7 +742,7 @@ class ScaleClient:
         batch_status: BatchStatus = None,
         created_after: str = None,
         created_before: str = None,
-        exclude_archived: bool = False
+        exclude_archived: bool = False,
     ) -> Generator[Batch, None, None]:
         """`Generator` method to yield all batches with the given
         parameters.
