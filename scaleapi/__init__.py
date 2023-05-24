@@ -713,7 +713,8 @@ class ScaleClient:
         allowed_kwargs = {
             "start_time",
             "end_time",
-            "exclude_archived" "status",
+            "exclude_archived",
+            "status",
             "project",
             "limit",
             "offset",
