@@ -783,6 +783,7 @@ class ScaleClient:
                 "end_time": created_before,
                 "project": project_name,
                 "offset": offset,
+                "exclude_archived": exclude_archived,
             }
 
             if exclude_archived:
