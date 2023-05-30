@@ -29,6 +29,7 @@ class TaskType(Enum):
     VideoBoxAnnotation = "videoboxannotation"
     VideoPlaybackAnnotation = "videoplaybackannotation"
     VideoCuboidAnnotation = "videocuboidannotation"
+    SensorFusion = "sensorfusion"
 
 
 class TaskReviewStatus(Enum):
