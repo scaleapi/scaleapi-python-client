@@ -786,9 +786,6 @@ class ScaleClient:
                 "exclude_archived": exclude_archived,
             }
 
-            if exclude_archived:
-                batches_args["exclude_archived"] = True
-
             if batch_status:
                 batches_args["status"] = batch_status.value
 
