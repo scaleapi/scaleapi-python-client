@@ -451,7 +451,7 @@ The older ``param_dict`` attribute is now replaced with a method ``batch.as_dict
 List Batches
 ^^^^^^^^^^^^
 
-Retrieve a list of Batches. Optional parameters are ``project_name``, ``batch_status``, ``created_after`` and ``created_before``.
+Retrieve a list of Batches. Optional parameters are ``project_name``, ``batch_status``, ``exclude_archived``, ``created_after`` and ``created_before``.
 
 ``get_batches()`` is a **generator** method and yields ``Batch`` objects.
 
