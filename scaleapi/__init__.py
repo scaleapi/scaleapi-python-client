@@ -689,6 +689,9 @@ class ScaleClient:
                 The maximum value of `created_at` in UTC timezone
                 ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
 
+            exclude_archived (bool):
+                A flag to exclude archived batches if True
+
             status (str):
                 Status to filter batches by
 
@@ -710,6 +713,7 @@ class ScaleClient:
         allowed_kwargs = {
             "start_time",
             "end_time",
+            "exclude_archived",
             "status",
             "project",
             "limit",
@@ -739,6 +743,7 @@ class ScaleClient:
         batch_status: BatchStatus = None,
         created_after: str = None,
         created_before: str = None,
+        exclude_archived: bool = False,
     ) -> Generator[Batch, None, None]:
         """`Generator` method to yield all batches with the given
         parameters.
@@ -761,6 +766,9 @@ class ScaleClient:
                 The maximum value of `created_at` in UTC timezone
                 ISO format: 'YYYY-MM-DD HH:MM:SS.mmmmmm'
 
+            exclude_archived (bool):
+                A flag to exclude archived batches if True
+
         Yields:
             Generator[Batch]:
                 Yields Batch, can be iterated.
@@ -775,6 +783,7 @@ class ScaleClient:
                 "end_time": created_before,
                 "project": project_name,
                 "offset": offset,
+                "exclude_archived": exclude_archived,
             }
 
             if batch_status:
