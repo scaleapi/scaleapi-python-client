@@ -407,6 +407,19 @@ def test_get_tasks():
     ):
         assert task.id in task_ids
 
+def test_get_tasks_returns_attachment():
+    batch = create_a_batch()
+    tasks = []
+    for _ in range(1):
+        tasks.append(make_a_task(batch=batch.name))
+    for task in client.get_tasks(
+        project_name=TEST_PROJECT_NAME,
+        batch_name=batch.name,
+        include_attachment_url=True,
+    ):
+        assert task.as_dict()['attachmentS3Downloads']
+
+
 
 def test_get_tasks_count():
     tasks_count = client.tasks(project=TEST_PROJECT_NAME).total
