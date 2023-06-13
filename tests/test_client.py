@@ -418,7 +418,7 @@ def test_get_tasks_returns_attachment():
         batch_name=batch.name,
         include_attachment_url=True,
     ):
-        assert task.as_dict()['attachmentS3Downloads']
+        assert task.as_dict()["attachmentS3Downloads"]
 
 
 def test_get_tasks_count():
