@@ -269,6 +269,10 @@ class ScaleClient:
             limit (int):
                 Determines the page size (1-100)
 
+            include_attachment_url (bool):
+                If true, returns a pre-signed s3 url for the
+                attachment used to create the task.
+
             next_token (str):
                 Can be use to fetch the next page of tasks
         """
@@ -288,6 +292,7 @@ class ScaleClient:
             "updated_before",
             "updated_after",
             "unique_id",
+            "include_attachment_url",
         }
 
         for key in kwargs:
@@ -323,6 +328,7 @@ class ScaleClient:
         created_after: str = None,
         created_before: str = None,
         tags: Union[List[str], str] = None,
+        include_attachment_url: bool = True,
     ) -> Generator[Task, None, None]:
         """Retrieve all tasks as a `generator` method, with the
         given parameters. This methods handles pagination of
@@ -382,6 +388,11 @@ class ScaleClient:
                 The tags of a task; multiple tags can be
                 specified as a list.
 
+            include_attachment_url (bool):
+                If true, returns a pre-signed s3 url for the
+                attachment used to create the task.
+
+
         Yields:
             Generator[Task]:
                 Yields Task objects, can be iterated.
@@ -404,6 +415,7 @@ class ScaleClient:
             created_after,
             created_before,
             tags,
+            include_attachment_url,
         )
 
         while has_more:
@@ -431,6 +443,7 @@ class ScaleClient:
         created_after: str = None,
         created_before: str = None,
         tags: Union[List[str], str] = None,
+        include_attachment_url: bool = True,
     ) -> int:
         """Returns number of tasks with given filters.
 
@@ -485,6 +498,10 @@ class ScaleClient:
                 The tags of a task; multiple tags can be
                 specified as a list.
 
+            include_attachment_url (bool):
+                If true, returns a pre-signed s3 url for the
+                attachment used to create the task.
+
         Returns:
             int:
                 Returns number of tasks
@@ -504,6 +521,7 @@ class ScaleClient:
             created_after,
             created_before,
             tags,
+            include_attachment_url,
         )
 
         tasks_args["limit"] = 1
@@ -526,6 +544,7 @@ class ScaleClient:
         created_after: str = None,
         created_before: str = None,
         tags: Union[List[str], str] = None,
+        include_attachment_url: bool = True,
     ):
         """Generates args for /tasks endpoint."""
         tasks_args = {
@@ -539,6 +558,7 @@ class ScaleClient:
             "updated_before": updated_before,
             "updated_after": updated_after,
             "unique_id": unique_id,
+            "include_attachment_url": include_attachment_url,
         }
 
         if status:
