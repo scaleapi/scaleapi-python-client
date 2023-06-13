@@ -407,6 +407,7 @@ def test_get_tasks():
     ):
         assert task.id in task_ids
 
+
 def test_get_tasks_returns_attachment():
     batch = create_a_batch()
     tasks = []
@@ -418,7 +419,6 @@ def test_get_tasks_returns_attachment():
         include_attachment_url=True,
     ):
         assert task.as_dict()['attachmentS3Downloads']
-
 
 
 def test_get_tasks_count():
