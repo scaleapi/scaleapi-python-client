@@ -77,6 +77,7 @@ class Api:
         https.verify = verify if verify else True
         if proxies:
             https.proxies.update(proxies)
+
         try:
             params = params or {}
             body = body or None
@@ -148,7 +149,7 @@ class Api:
             if retry_history and retry_history[0][3] >= 500:
                 uuid = body["unique_id"]
                 new_url = f"{self.base_api_url}/tasks?unique_id={uuid}"
-        
+
                 # Perform a GET request to retrieve task data
                 new_res = self._http_request("GET", new_url, headers=headers, auth=auth)
 
@@ -186,6 +187,7 @@ class Api:
             files=files,
             data=data,
         )
+
     def delete_request(self, endpoint, params=None, body=None):
         """Generic DELETE Request Wrapper"""
         return self._api_request(
@@ -196,6 +198,7 @@ class Api:
             params=params,
             body=body,
         )
+
     def put_request(self, endpoint, body=None, params=None):
         """Generic PUT Request Wrapper"""
         return self._api_request(
