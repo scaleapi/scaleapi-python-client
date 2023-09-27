@@ -136,13 +136,13 @@ class Api:
                     if new_res_data["docs"]:
                         json = new_res_data["docs"][0]
                     else:
-                        self._raise_on_response(new_res)
+                        self._raise_on_respose(new_res)
                 else:
-                    self._raise_on_response(new_res)
+                    self._raise_on_respose(new_res)
             else:
-                self._raise_on_response(res)
+                self._raise_on_respose(res)
         else:
-            self._raise_on_response(res)
+            self._raise_on_respose(res)
 
         return json
 
