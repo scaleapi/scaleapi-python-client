@@ -1,2 +1,2 @@
-__version__ = "2.14.4"
+__version__ = "2.15.0"
 __package_name__ = "scaleapi"
