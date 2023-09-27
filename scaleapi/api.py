@@ -17,8 +17,8 @@ HTTP_RETRY_ALLOWED_METHODS = frozenset({"GET", "POST", "DELETE"})
 
 
 class Api:
-
     """Internal Api reference for handling http operations"""
+
     def __init__(
         self,
         api_key,
@@ -30,7 +30,7 @@ class Api:
     ):
         if api_key == "" or api_key is None:
             raise ScaleException("Please provide a valid API Key.")
-        
+
         self.api_key = api_key
 
         self._auth = (self.api_key, "")
@@ -95,7 +95,7 @@ class Api:
             return res
         except Exception as err:
             raise ScaleException(err) from err
-        
+
     @staticmethod
     def _raise_on_respose(res: Response):
         try:
@@ -105,7 +105,7 @@ class Api:
 
         exception = ExceptionMap.get(res.status_code, ScaleException)
         raise exception(message, res.status_code)
-    
+
     def _api_request(
         self,
         method,
@@ -172,7 +172,7 @@ class Api:
         return self._api_request(
             "GET", endpoint, headers=self._headers, auth=self._auth, params=params
         )
-    
+
     def post_request(self, endpoint, body=None, files=None, data=None):
         """Generic POST Request Wrapper"""
         return self._api_request(
@@ -206,7 +206,7 @@ class Api:
             auth=self._auth,
             params=params,
         )
-    
+
     @staticmethod
     def _generate_useragent(extension: str = None) -> str:
         """Generates UserAgent parameter with module, Python
@@ -231,7 +231,7 @@ class Api:
             )
         )
         return user_agent
-    
+
     @staticmethod
     def quote_string(text: str) -> str:
         """Project and Batch names can be a part of URL, which causes
