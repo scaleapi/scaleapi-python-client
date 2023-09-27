@@ -214,14 +214,17 @@ class Api:
     def _generate_useragent(extension: str = None) -> str:
         """Generates UserAgent parameter with module, Python
         and OS details
+
         Args:
             extension (str, optional): Option to extend UserAgent
             with source system
+
         Returns:
             str: Generated UserAgent parameter with platform versions
         """
         python_version = platform.python_version()
         os_platform = platform.platform()
+
         user_agent = " ".join(
             filter(
                 None,
