@@ -1,20 +1,27 @@
 import platform
 import urllib.parse
+
 import requests
 from requests.adapters import HTTPAdapter, Response, Retry
+
 from ._version import __package_name__, __version__
 from .exceptions import ExceptionMap, ScaleException
+
 SCALE_API_BASE_URL_V1 = "https://api.scale.com/v1"
+
 # Parameters for HTTP retry
 HTTP_TOTAL_RETRIES = 3  # Number of total retries
 HTTP_RETRY_BACKOFF_FACTOR = 2  # Wait 1, 2, 4 seconds between retries
 HTTP_STATUS_FORCE_LIST = [408, 429] + list(range(500, 531))
 HTTP_RETRY_ALLOWED_METHODS = frozenset({"GET", "POST", "DELETE"})
+
+
 class Api:
+
     """Internal Api reference for handling http operations"""
     def __init__(
         self,
-        api_key, 
+        api_key,
         user_agent_extension=None,
         api_instance_url=None,
         verify=None,
@@ -23,7 +30,9 @@ class Api:
     ):
         if api_key == "" or api_key is None:
             raise ScaleException("Please provide a valid API Key.")
+        
         self.api_key = api_key
+
         self._auth = (self.api_key, "")
         self._headers = {
             "Content-Type": "application/json",
@@ -33,9 +42,11 @@ class Api:
             "User-Agent": self._generate_useragent(user_agent_extension),
         }
         self.base_api_url = api_instance_url or SCALE_API_BASE_URL_V1
+
         self.verify = verify
         self.proxies = proxies
         self.cert = cert
+
     @staticmethod
     def _http_request(
         method,
@@ -58,8 +69,10 @@ class Api:
             allowed_methods=HTTP_RETRY_ALLOWED_METHODS,
             raise_on_status=False,
         )
+
         adapter = HTTPAdapter(max_retries=retry_strategy)
         https.mount("https://", adapter)
+
         https.cert = cert if cert else None
         https.verify = verify if verify else True
         if proxies:
@@ -67,6 +80,7 @@ class Api:
         try:
             params = params or {}
             body = body or None
+
             res = https.request(
                 method=method,
                 url=url,
@@ -77,17 +91,21 @@ class Api:
                 files=files,
                 data=data,
             )
+
             return res
         except Exception as err:
             raise ScaleException(err) from err
+        
     @staticmethod
     def _raise_on_respose(res: Response):
         try:
             message = res.json().get("error", res.text)
         except ValueError:
             message = res.text
+
         exception = ExceptionMap.get(res.status_code, ScaleException)
         raise exception(message, res.status_code)
+    
     def _api_request(
         self,
         method,
@@ -100,7 +118,9 @@ class Api:
         data=None,
     ):
         """Generic HTTP request method with error handling."""
+
         url = f"{self.base_api_url}/{endpoint}"
+
         res = self._http_request(
             method,
             url,
@@ -114,6 +134,7 @@ class Api:
             proxies=self.proxies,
             cert=self.cert,
         )
+
         json = None
         if res.status_code == 200:
             try:
@@ -151,6 +172,7 @@ class Api:
         return self._api_request(
             "GET", endpoint, headers=self._headers, auth=self._auth, params=params
         )
+    
     def post_request(self, endpoint, body=None, files=None, data=None):
         """Generic POST Request Wrapper"""
         return self._api_request(
@@ -184,6 +206,7 @@ class Api:
             auth=self._auth,
             params=params,
         )
+    
     @staticmethod
     def _generate_useragent(extension: str = None) -> str:
         """Generates UserAgent parameter with module, Python
@@ -208,14 +231,18 @@ class Api:
             )
         )
         return user_agent
+    
     @staticmethod
     def quote_string(text: str) -> str:
         """Project and Batch names can be a part of URL, which causes
         an error in case of a special character used.
         Quotation assures the right object to be retrieved from API.
+
         `quote_string('a bc/def')` -> `a%20bc%2Fdef`
+
         Args:
             text (str): Input text to be quoted
+
         Returns:
             str: Quoted text in return
         """
