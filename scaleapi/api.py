@@ -145,6 +145,12 @@ class Api:
                 return json
         elif res.status_code == 409 and "task" in endpoint and body.get("unique_id"):
             retry_history = res.raw.retries.history
+            # Example RequestHistory tuple
+            # RequestHistory(method='POST',
+            #   url='/v1/task/imageannotation',
+            #   error=None,
+            #   status=409,
+            #   redirect_location=None)
 
             if retry_history and retry_history[0][3] >= 500:
                 uuid = body["unique_id"]
@@ -165,7 +171,6 @@ class Api:
                 self._raise_on_respose(res)
         else:
             self._raise_on_respose(res)
-
         return json
 
     def get_request(self, endpoint, params=None):
