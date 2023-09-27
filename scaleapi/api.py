@@ -151,16 +151,22 @@ class Api:
             #   error=None,
             #   status=409,
             #   redirect_location=None)
-            if retry_history != ():
-                # See if the first retry was a 500 or 503 error
-                if retry_history[0][3] >= 500:
-                    uuid = body["unique_id"]
-                    newUrl = f"{self.base_api_url}/tasks?unique_id={uuid}"
-                    # grab task from api
-                    newRes = self._http_request(
-                        "GET", newUrl, headers=headers, auth=auth
-                    )
-                    json = newRes.json()["docs"][0]
+
+            if retry_history and retry_history[0][3] >= 500:
+                uuid = body["unique_id"]
+                new_url = f"{self.base_api_url}/tasks?unique_id={uuid}"
+
+                # Perform a GET request to retrieve task data
+                new_res = self._http_request("GET", new_url, headers=headers, auth=auth)
+
+                if new_res.status_code == 200:
+                    new_res_data = new_res.json()
+                    if new_res_data["docs"]:
+                        json = new_res_data["docs"][0]
+                    else:
+                        self._raise_on_respose(new_res)
+                else:
+                    self._raise_on_respose(new_res)
             else:
                 self._raise_on_respose(res)
         else:
