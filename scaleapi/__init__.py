@@ -272,7 +272,7 @@ class ScaleClient:
             include_attachment_url (bool):
                 If true, returns a pre-signed s3 url for the
                 attachment used to create the task.
-            
+
             limited_response (bool):
                 If true, returns limited task response.
 
@@ -296,7 +296,7 @@ class ScaleClient:
             "updated_after",
             "unique_id",
             "include_attachment_url",
-            "limited_response"
+            "limited_response",
         }
 
         for key in kwargs:
@@ -396,13 +396,13 @@ class ScaleClient:
             include_attachment_url (bool):
                 If true, returns a pre-signed s3 url for the
                 attachment used to create the task.
-            
+
             limited_response (bool):
                 If true, returns limited task response.
 
 
         Yields:
-            Generator[Task]: 
+            Generator[Task]:
                 Yields Task objects, can be iterated.
         """
 
@@ -553,7 +553,7 @@ class ScaleClient:
         created_before: str = None,
         tags: Union[List[str], str] = None,
         include_attachment_url: bool = True,
-        limited_response: bool = None
+        limited_response: bool = None,
     ):
         """Generates args for /tasks endpoint."""
         tasks_args = {
