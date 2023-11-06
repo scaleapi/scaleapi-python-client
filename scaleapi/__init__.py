@@ -275,7 +275,7 @@ class ScaleClient:
 
             limited_response (bool):
                 If true, returns task response of the following fields:
-                _id, status, metadata, project, otherVersion.
+                task_id, status, metadata, project, otherVersion.
 
             next_token (str):
                 Can be use to fetch the next page of tasks
@@ -400,7 +400,7 @@ class ScaleClient:
 
             limited_response (bool):
                 If true, returns task response of the following fields:
-                _id, status, metadata, project, otherVersion.
+                task_id, status, metadata, project, otherVersion.
 
 
         Yields:

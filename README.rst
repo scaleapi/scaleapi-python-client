@@ -171,7 +171,7 @@ Accessing ``task.params`` child objects directly at task level is **deprecated**
     task.params["geometries"]   # task.geometries is DEPRECATED
     task.params["attachment"]   # task.attachment is DEPRECATED
 
-If you use the ``limited_response = True`` filter in ``get_tasks()``, you will receive the following attributes: ``_id``, ``status``, ``metadata``, ``project``, ``otherVersion``.
+If you use the ``limited_response = True`` filter in ``get_tasks()``, you will only receive the following attributes: ``task_id``, ``status``, ``metadata``, ``project`` and ``otherVersion``.
 
 Retrieve List of Tasks
 ^^^^^^^^^^^^^^^^^^^^^^
