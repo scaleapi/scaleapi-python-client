@@ -274,7 +274,8 @@ class ScaleClient:
                 attachment used to create the task.
 
             limited_response (bool):
-                If true, returns limited task response.
+                If true, returns limited task response of the following fields: 
+                _id, status, metadata, project, otherVersion.
 
             next_token (str):
                 Can be use to fetch the next page of tasks
@@ -398,7 +399,8 @@ class ScaleClient:
                 attachment used to create the task.
 
             limited_response (bool):
-                If true, returns limited task response.
+                If true, returns limited task response of the following fields: 
+                _id, status, metadata, project, otherVersion.
 
 
         Yields:
