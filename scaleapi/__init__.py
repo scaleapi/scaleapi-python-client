@@ -274,7 +274,7 @@ class ScaleClient:
                 attachment used to create the task.
 
             limited_response (bool):
-                If true, returns limited task response of the following fields: 
+                If true, returns limited task response of the following fields:
                 _id, status, metadata, project, otherVersion.
 
             next_token (str):
@@ -399,7 +399,7 @@ class ScaleClient:
                 attachment used to create the task.
 
             limited_response (bool):
-                If true, returns limited task response of the following fields: 
+                If true, returns limited task response of the following fields:
                 _id, status, metadata, project, otherVersion.
 
 
