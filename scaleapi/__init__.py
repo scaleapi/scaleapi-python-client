@@ -273,6 +273,10 @@ class ScaleClient:
                 If true, returns a pre-signed s3 url for the
                 attachment used to create the task.
 
+            limited_response (bool):
+                If true, returns task response of the following fields:
+                task_id, status, metadata, project, otherVersion.
+
             next_token (str):
                 Can be use to fetch the next page of tasks
         """
@@ -293,6 +297,7 @@ class ScaleClient:
             "updated_after",
             "unique_id",
             "include_attachment_url",
+            "limited_response",
         }
 
         for key in kwargs:
@@ -329,6 +334,7 @@ class ScaleClient:
         created_before: str = None,
         tags: Union[List[str], str] = None,
         include_attachment_url: bool = True,
+        limited_response: bool = None,
     ) -> Generator[Task, None, None]:
         """Retrieve all tasks as a `generator` method, with the
         given parameters. This methods handles pagination of
@@ -392,6 +398,10 @@ class ScaleClient:
                 If true, returns a pre-signed s3 url for the
                 attachment used to create the task.
 
+            limited_response (bool):
+                If true, returns task response of the following fields:
+                task_id, status, metadata, project, otherVersion.
+
 
         Yields:
             Generator[Task]:
@@ -416,6 +426,7 @@ class ScaleClient:
             created_before,
             tags,
             include_attachment_url,
+            limited_response,
         )
 
         while has_more:
@@ -424,7 +435,6 @@ class ScaleClient:
             tasks = self.tasks(**tasks_args)
             for task in tasks.docs:
                 yield task
-
             next_token = tasks.next_token
             has_more = tasks.has_more
 
@@ -545,6 +555,7 @@ class ScaleClient:
         created_before: str = None,
         tags: Union[List[str], str] = None,
         include_attachment_url: bool = True,
+        limited_response: bool = None,
     ):
         """Generates args for /tasks endpoint."""
         tasks_args = {
@@ -563,6 +574,8 @@ class ScaleClient:
 
         if status:
             tasks_args["status"] = status.value
+        if limited_response:
+            tasks_args["limited_response"] = limited_response
         if task_type:
             tasks_args["type"] = task_type.value
         if review_status:

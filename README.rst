@@ -171,12 +171,14 @@ Accessing ``task.params`` child objects directly at task level is **deprecated**
     task.params["geometries"]   # task.geometries is DEPRECATED
     task.params["attachment"]   # task.attachment is DEPRECATED
 
+If you use the ``limited_response = True`` filter in ``get_tasks()``, you will only receive the following attributes: ``task_id``, ``status``, ``metadata``, ``project`` and ``otherVersion``.
+
 Retrieve List of Tasks
 ^^^^^^^^^^^^^^^^^^^^^^
 
 Retrieve a list of `Task` objects, with filters for: ``project_name``, ``batch_name``, ``type``, ``status``,
 ``review_status``, ``unique_id``, ``completed_after``, ``completed_before``, ``updated_after``, ``updated_before``,
-``created_after``, ``created_before`` and ``tags``.
+``created_after``, ``created_before``, ``tags`` and ``limited_response``.
 
 ``get_tasks()`` is a **generator** method and yields ``Task`` objects.
 
