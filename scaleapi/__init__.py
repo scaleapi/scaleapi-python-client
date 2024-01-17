@@ -954,7 +954,7 @@ class ScaleClient:
         projectdata = self.api.post_request(endpoint, body=kwargs)
         return Project(projectdata, self)
 
-    def get_project_template(self, project_name: str) -> Dict:
+    def get_project_template(self, project_name: str) -> TaskTemplate:
         """Gets the task template of a project if a template exists.
         Throws an error if the project task-type does not support Task Templates.
         Currently only TextCollection and Chat task types support Task Templates.
@@ -964,7 +964,7 @@ class ScaleClient:
                 Project's name
 
         Returns:
-            Template | None
+            TaskTemplate
         """
         endpoint = f"projects/{Api.quote_string(project_name)}/taskTemplates"
         template = self.api.get_request(endpoint)
