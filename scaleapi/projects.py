@@ -21,9 +21,11 @@ class TaskTemplate:
         return f"TaskTemplate({self._json})"
 
     def get_template_variables(self):
+        """Returns template variables dictionary"""
         return self.template_variables
 
     def as_dict(self):
+        """Returns task template object as JSON dictionary"""
         return self._json
 
 

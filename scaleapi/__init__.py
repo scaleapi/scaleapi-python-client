@@ -619,7 +619,7 @@ class ScaleClient:
         callback: str = "",
         calibration_batch: bool = False,
         self_label_batch: bool = False,
-        metadata: Dict = {},
+        metadata: Dict = None,
     ) -> Batch:
         """Create a new Batch within a project.
         https://docs.scale.com/reference#batch-creation
@@ -653,7 +653,7 @@ class ScaleClient:
             calibration_batch=calibration_batch,
             self_label_batch=self_label_batch,
             callback=callback,
-            metadata=metadata,
+            metadata=metadata or {},
         )
         batchdata = self.api.post_request(endpoint, body=payload)
         return Batch(batchdata, self)
