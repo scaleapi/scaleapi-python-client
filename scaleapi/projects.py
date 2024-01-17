@@ -1,15 +1,16 @@
 class TaskTemplate:
     """Task Template Object."""
+
     def __init__(self, json, client):
         self._json = json
         self._client = client
-        self.id = json['id']
-        self.project = json['project']
-        self.version = json['version']
-        self.created_at = json['created_at']
-        self.updated_at = json['updated_at']
-        self.template_variables = json['template_variables']
-    
+        self.id = json["id"]
+        self.project = json["project"]
+        self.version = json["version"]
+        self.created_at = json["created_at"]
+        self.updated_at = json["updated_at"]
+        self.template_variables = json["template_variables"]
+
     def __hash__(self):
         return hash(self.id)
 
@@ -18,12 +19,13 @@ class TaskTemplate:
 
     def __repr__(self):
         return f"TaskTemplate({self._json})"
-    
+
     def get_template_variables(self):
         return self.template_variables
-    
+
     def as_dict(self):
         return self._json
+
 
 class Project:
     """Project class, containing Project information."""
@@ -51,7 +53,7 @@ class Project:
 
     def __repr__(self):
         return f"Project({self._json})"
-    
+
     def get_template(self) -> TaskTemplate:
         """Returns TaskTemplate. Only works for Chat and TextCollection type."""
         return self._client.get_project_template(self.name)

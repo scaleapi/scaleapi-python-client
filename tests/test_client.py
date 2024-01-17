@@ -392,7 +392,7 @@ def create_a_batch():
         callback="http://www.example.com/callback",
         batch_name=str(uuid.uuid4()),
         project=TEST_PROJECT_NAME,
-        metadata={'some_key': 'some_value'},
+        metadata={"some_key": "some_value"},
     )
 
 
@@ -433,14 +433,14 @@ def test_get_batch_status():
     assert batch2.status == BatchStatus.InProgress.value
 
 
-
 def test_get_batch():
     batch = create_a_batch()
     batch2 = client.get_batch(batch.name)
     assert batch.name == batch2.name
     assert batch2.status == BatchStatus.InProgress.value
     # test metadata
-    assert batch2.metadata['some_key'] == 'some_value'
+    assert batch2.metadata["some_key"] == "some_value"
+
 
 def test_batches():
     batches = []
@@ -461,10 +461,11 @@ def test_get_batches():
     all_batches = list(client.get_batches(project_name=TEST_PROJECT_NAME))
     assert total_batches == len(all_batches)
 
+
 def test_set_batch_metadata():
     batch = create_a_batch()
-    batch = client.set_batch_metadata(batch.name, {'new_key': 'new_value'})
-    assert batch.metadata['new_key'] == 'new_value'
+    batch = client.set_batch_metadata(batch.name, {"new_key": "new_value"})
+    assert batch.metadata["new_key"] == "new_value"
 
 
 def test_files_upload():
@@ -504,7 +505,9 @@ STUDIO_TEST_PROJECT = "python-sdk-studio-test"
 try:
     project = client.get_project(STUDIO_TEST_PROJECT)
 except ScaleResourceNotFound:
-    client.create_project(project_name=STUDIO_TEST_PROJECT, task_type=TaskType.ImageAnnotation)
+    client.create_project(
+        project_name=STUDIO_TEST_PROJECT, task_type=TaskType.ImageAnnotation
+    )
 STUDIO_BATCH_TEST_NAME = f"studio-test-batch-{current_timestamp}"
 
 

@@ -834,13 +834,13 @@ class ScaleClient:
 
     def set_batch_metadata(self, batch_name: str, metadata: Dict) -> Batch:
         """Sets metadata for a TaskBatch.
-        
+
         Args:
             batch_name (str):
                 Batch name
             metadata (Dict):
                 Metadata to set for TaskBatch
-        
+
         Returns:
             Batch
         """
@@ -953,23 +953,22 @@ class ScaleClient:
         endpoint = f"projects/{Api.quote_string(project_name)}/setParams"
         projectdata = self.api.post_request(endpoint, body=kwargs)
         return Project(projectdata, self)
-    
+
     def get_project_template(self, project_name: str) -> Dict:
         """Gets the task template of a project if a template exists.
         Throws an error if the project task-type does not support Task Templates.
         Currently only TextCollection and Chat task types support Task Templates.
-        
+
         Args:
             project_name (str):
                 Project's name
-            
+
         Returns:
             Template | None
         """
         endpoint = f"projects/{Api.quote_string(project_name)}/taskTemplates"
         template = self.api.get_request(endpoint)
         return TaskTemplate(template, self)
-
 
     def upload_file(self, file: IO, **kwargs) -> File:
         """Upload file.
