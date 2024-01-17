@@ -4,7 +4,7 @@ from scaleapi.batches import Batch, BatchStatus
 from scaleapi.evaluation_tasks import EvaluationTask
 from scaleapi.exceptions import ScaleInvalidRequest
 from scaleapi.files import File
-from scaleapi.projects import Project
+from scaleapi.projects import Project, TaskTemplate
 from scaleapi.training_tasks import TrainingTask
 
 from ._version import __version__  # noqa: F401
@@ -619,6 +619,7 @@ class ScaleClient:
         callback: str = "",
         calibration_batch: bool = False,
         self_label_batch: bool = False,
+        metadata: Dict = {},
     ) -> Batch:
         """Create a new Batch within a project.
         https://docs.scale.com/reference#batch-creation
@@ -639,6 +640,8 @@ class ScaleClient:
                 Only applicable for self serve projects.
                 Create a self_label batch by setting
                 the self_label_batch flag to true.
+            metadata (Dict):
+                Optional metadata to be stored at the TaskBatch level
 
         Returns:
             Batch: Created batch object
@@ -650,6 +653,7 @@ class ScaleClient:
             calibration_batch=calibration_batch,
             self_label_batch=self_label_batch,
             callback=callback,
+            metadata=metadata,
         )
         batchdata = self.api.post_request(endpoint, body=payload)
         return Batch(batchdata, self)
@@ -828,6 +832,22 @@ class ScaleClient:
             offset += batches.limit
             has_more = batches.has_more
 
+    def set_batch_metadata(self, batch_name: str, metadata: Dict) -> Batch:
+        """Sets metadata for a TaskBatch.
+        
+        Args:
+            batch_name (str):
+                Batch name
+            metadata (Dict):
+                Metadata to set for TaskBatch
+        
+        Returns:
+            Batch
+        """
+        endpoint = f"batches/{Api.quote_string(batch_name)}/setMetadata"
+        batchdata = self.api.post_request(endpoint, body=metadata)
+        return Batch(batchdata, self)
+
     def create_project(
         self,
         project_name: str,
@@ -933,6 +953,23 @@ class ScaleClient:
         endpoint = f"projects/{Api.quote_string(project_name)}/setParams"
         projectdata = self.api.post_request(endpoint, body=kwargs)
         return Project(projectdata, self)
+    
+    def get_project_template(self, project_name: str) -> Dict:
+        """Gets the task template of a project if a template exists.
+        Throws an error if the project task-type does not support Task Templates.
+        Currently only TextCollection and Chat task types support Task Templates.
+        
+        Args:
+            project_name (str):
+                Project's name
+            
+        Returns:
+            Template | None
+        """
+        endpoint = f"projects/{Api.quote_string(project_name)}/taskTemplates"
+        template = self.api.get_request(endpoint)
+        return TaskTemplate(template, self)
+
 
     def upload_file(self, file: IO, **kwargs) -> File:
         """Upload file.
