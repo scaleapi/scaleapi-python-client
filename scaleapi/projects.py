@@ -55,7 +55,8 @@ class Project:
         return f"Project({self._json})"
 
     def get_template(self) -> TaskTemplate:
-        """Returns TaskTemplate. Only works for Chat and TextCollection type."""
+        """Returns TaskTemplate.
+        Only works for Chat and TextCollection type."""
         return self._client.get_project_template(self.name)
 
     def as_dict(self):

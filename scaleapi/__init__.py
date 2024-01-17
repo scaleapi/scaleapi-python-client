@@ -956,8 +956,9 @@ class ScaleClient:
 
     def get_project_template(self, project_name: str) -> TaskTemplate:
         """Gets the task template of a project if a template exists.
-        Throws an error if the project task-type does not support Task Templates.
-        Currently only TextCollection and Chat task types support Task Templates.
+        Throws an error if the project task-type does not support
+        Task Templates. Currently only TextCollection and Chat task
+        types support Task Templates.
 
         Args:
             project_name (str):
