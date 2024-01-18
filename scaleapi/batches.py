@@ -19,6 +19,7 @@ class Batch:
         self.project = json["project"]
         self.created_at = json["created_at"]
         self.project = json["project"]
+        self.metadata = json["metadata"]
 
         self.tasks_pending = None
         self.tasks_completed = None
