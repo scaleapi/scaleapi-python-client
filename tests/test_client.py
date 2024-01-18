@@ -499,6 +499,7 @@ def test_invite_teammates():
         old_teammates
     )  # needs to sleep for teammates list to be updated
 
+
 # deprecated studio tests
 # STUDIO_TEST_PROJECT = "python-sdk-studio-test"
 
