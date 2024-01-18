@@ -499,24 +499,24 @@ def test_invite_teammates():
         old_teammates
     )  # needs to sleep for teammates list to be updated
 
+# deprecated studio tests
+# STUDIO_TEST_PROJECT = "python-sdk-studio-test"
 
-STUDIO_TEST_PROJECT = "python-sdk-studio-test"
-
-try:
-    project = client.get_project(STUDIO_TEST_PROJECT)
-except ScaleResourceNotFound:
-    client.create_project(
-        project_name=STUDIO_TEST_PROJECT, task_type=TaskType.ImageAnnotation
-    )
-STUDIO_BATCH_TEST_NAME = f"studio-test-batch-{current_timestamp}"
+# try:
+#     project = client.get_project(STUDIO_TEST_PROJECT)
+# except ScaleResourceNotFound:
+#     client.create_project(
+#         project_name=STUDIO_TEST_PROJECT, task_type=TaskType.ImageAnnotation
+#     )
+# STUDIO_BATCH_TEST_NAME = f"studio-test-batch-{current_timestamp}"
 
 
-def test_list_studio_batches():
-    # Create a test project if it does not already exist
+# def test_list_studio_batches():
+#     # Create a test project if it does not already exist
 
-    # Create a test batch
-    client.create_batch(STUDIO_TEST_PROJECT, STUDIO_BATCH_TEST_NAME)
+#     # Create a test batch
+#     client.create_batch(STUDIO_TEST_PROJECT, STUDIO_BATCH_TEST_NAME)
 
-    # Check that the batch is returned by the list_studio_batches method
-    batches = client.list_studio_batches()
-    assert len(batches) > 0
+#     # Check that the batch is returned by the list_studio_batches method
+#     batches = client.list_studio_batches()
+#     assert len(batches) > 0
