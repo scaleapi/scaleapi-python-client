@@ -14,7 +14,7 @@ class TaskTemplate:
         return hash(self.id)
 
     def __str__(self):
-        return f"TaskTemplate(id={self.id}, project={self.project})"
+        return f"TaskTemplate(id={self.id})"
 
     def __repr__(self):
         return f"TaskTemplate({self._json})"
