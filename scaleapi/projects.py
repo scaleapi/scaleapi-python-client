@@ -5,7 +5,6 @@ class TaskTemplate:
         self._json = json
         self._client = client
         self.id = json["id"]
-        self.project = json["project"]
         self.version = json["version"]
         self.created_at = json["created_at"]
         self.updated_at = json["updated_at"]
