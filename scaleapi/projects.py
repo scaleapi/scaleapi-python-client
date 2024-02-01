@@ -5,7 +5,6 @@ class TaskTemplate:
         self._json = json
         self._client = client
         self.id = json["id"]
-        self.project = json["project"]
         self.version = json["version"]
         self.created_at = json["created_at"]
         self.updated_at = json["updated_at"]
@@ -15,7 +14,7 @@ class TaskTemplate:
         return hash(self.id)
 
     def __str__(self):
-        return f"TaskTemplate(id={self.id}, project={self.project})"
+        return f"TaskTemplate(id={self.id})"
 
     def __repr__(self):
         return f"TaskTemplate({self._json})"
