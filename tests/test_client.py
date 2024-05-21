@@ -495,7 +495,10 @@ def test_list_teammates():
 
 # def test_invite_teammates():
 #     old_teammates = client.list_teammates()
-#     new_teammates = client.invite_teammates([TEST_USER], TeammateRole.Member)
+#     new_teammates = client.invite_teammates(
+#         [TEST_USER],
+#         TeammateRole.Member,
+#     )
 #     assert len(new_teammates) >= len(
 #         old_teammates
 #     )  # needs to sleep for teammates list to be updated
