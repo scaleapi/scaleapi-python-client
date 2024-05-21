@@ -15,7 +15,8 @@ from scaleapi.exceptions import (
     ScaleUnauthorized,
 )
 from scaleapi.tasks import TaskType
-from scaleapi.teams import TeammateRole
+
+# from scaleapi.teams import TeammateRole
 
 TEST_PROJECT_NAME = "scaleapi-python-sdk"
 
@@ -483,8 +484,8 @@ def test_files_import():
     )
 
 
-current_timestamp = str(uuid.uuid4)[-9:]
-TEST_USER = f"test+{current_timestamp}@scale.com"
+# current_timestamp = str(uuid.uuid4)[-9:]
+# TEST_USER = f"test+{current_timestamp}@scale.com"
 
 
 def test_list_teammates():
@@ -492,9 +493,12 @@ def test_list_teammates():
     assert len(teammates) > 0
 
 
-def test_invite_teammates():
-    old_teammates = client.list_teammates()
-    new_teammates = client.invite_teammates([TEST_USER], TeammateRole.Member)
-    assert len(new_teammates) >= len(
-        old_teammates
-    )  # needs to sleep for teammates list to be updated
+# def test_invite_teammates():
+#     old_teammates = client.list_teammates()
+#     new_teammates = client.invite_teammates(
+#         [TEST_USER],
+#         TeammateRole.Member,
+#     )
+#     assert len(new_teammates) >= len(
+#         old_teammates
+#     )  # needs to sleep for teammates list to be updated

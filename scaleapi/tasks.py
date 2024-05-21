@@ -31,6 +31,7 @@ class TaskType(Enum):
     VideoCuboidAnnotation = "videocuboidannotation"
     SensorFusion = "sensorfusion"
     Chat = "chat"
+    ChatExperimental = "chatexperimental"
 
 
 class TaskReviewStatus(Enum):
