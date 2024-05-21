@@ -15,6 +15,7 @@ from scaleapi.exceptions import (
     ScaleUnauthorized,
 )
 from scaleapi.tasks import TaskType
+
 # from scaleapi.teams import TeammateRole
 
 TEST_PROJECT_NAME = "scaleapi-python-sdk"
