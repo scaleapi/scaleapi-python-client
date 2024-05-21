@@ -15,7 +15,7 @@ from scaleapi.exceptions import (
     ScaleUnauthorized,
 )
 from scaleapi.tasks import TaskType
-from scaleapi.teams import TeammateRole
+# from scaleapi.teams import TeammateRole
 
 TEST_PROJECT_NAME = "scaleapi-python-sdk"
 
@@ -483,8 +483,8 @@ def test_files_import():
     )
 
 
-current_timestamp = str(uuid.uuid4)[-9:]
-TEST_USER = f"test+{current_timestamp}@scale.com"
+# current_timestamp = str(uuid.uuid4)[-9:]
+# TEST_USER = f"test+{current_timestamp}@scale.com"
 
 
 def test_list_teammates():
