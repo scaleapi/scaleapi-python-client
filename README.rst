@@ -178,7 +178,7 @@ Retrieve List of Tasks
 
 Retrieve a list of `Task` objects, with filters for: ``project_name``, ``batch_name``, ``type``, ``status``,
 ``review_status``, ``unique_id``, ``completed_after``, ``completed_before``, ``updated_after``, ``updated_before``,
-``created_after``, ``created_before``, ``tags`` and ``limited_response``.
+``created_after``, ``created_before``, ``tags``, ``limited_response`` and ``limit``.
 
 ``get_tasks()`` is a **generator** method and yields ``Task`` objects.
 

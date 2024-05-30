@@ -406,6 +406,7 @@ def test_get_tasks():
     for task in client.get_tasks(
         project_name=TEST_PROJECT_NAME,
         batch_name=batch.name,
+        limit=1,
     ):
         assert task.id in task_ids
 

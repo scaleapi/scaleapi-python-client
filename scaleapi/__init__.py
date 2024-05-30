@@ -335,6 +335,7 @@ class ScaleClient:
         tags: Union[List[str], str] = None,
         include_attachment_url: bool = True,
         limited_response: bool = None,
+        limit: int = None,
     ) -> Generator[Task, None, None]:
         """Retrieve all tasks as a `generator` method, with the
         given parameters. This methods handles pagination of
@@ -402,6 +403,9 @@ class ScaleClient:
                 If true, returns task response of the following fields:
                 task_id, status, metadata, project, otherVersion.
 
+            limit (int):
+                Determines the task count per request (1-100)
+                For large sized tasks, use a smaller limit
 
         Yields:
             Generator[Task]:
@@ -428,6 +432,9 @@ class ScaleClient:
             include_attachment_url,
             limited_response,
         )
+
+        if limit:
+            tasks_args["limit"] = limit
 
         while has_more:
             tasks_args["next_token"] = next_token
