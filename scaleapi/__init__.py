@@ -402,7 +402,7 @@ class ScaleClient:
             limited_response (bool):
                 If true, returns task response of the following fields:
                 task_id, status, metadata, project, otherVersion.
-            
+
             limit (int):
                 Determines the task count per request (1-100)
                 For large sized tasks, use a smaller limit
