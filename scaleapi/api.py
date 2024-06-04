@@ -144,7 +144,10 @@ class Api:
                 # Some endpoints only return 'OK' message without JSON
                 return json
         elif res.status_code == 409 and "task" in endpoint and body.get("unique_id"):
-            retry_history = res.raw.retries.history
+            retry_history = None
+            if "retries" in res.raw and "history" in res.raw.retries:
+                retry_history = res.raw.retries.history
+
             # Example RequestHistory tuple
             # RequestHistory(method='POST',
             #   url='/v1/task/imageannotation',
@@ -184,9 +187,9 @@ class Api:
         return self._api_request(
             "POST",
             endpoint,
-            headers=self._headers
-            if files is None
-            else self._headers_multipart_form_data,
+            headers=(
+                self._headers if files is None else self._headers_multipart_form_data
+            ),
             auth=self._auth,
             body=body,
             files=files,
