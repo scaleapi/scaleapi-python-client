@@ -32,6 +32,7 @@ class TaskType(Enum):
     SensorFusion = "sensorfusion"
     Chat = "chat"
     ChatExperimental = "chatexperimental"
+    ChatLite = "chatlite"
 
 
 class TaskReviewStatus(Enum):
