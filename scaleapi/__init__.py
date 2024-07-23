@@ -320,7 +320,7 @@ class ScaleClient:
 
     def get_tasks(
         self,
-        project_name: str,
+        project_name: str = None,
         batch_name: str = None,
         task_type: TaskType = None,
         status: TaskStatus = None,
@@ -548,7 +548,7 @@ class ScaleClient:
 
     @staticmethod
     def _process_tasks_endpoint_args(
-        project_name: str,
+        project_name: str = None,
         batch_name: str = None,
         task_type: TaskType = None,
         status: TaskStatus = None,
