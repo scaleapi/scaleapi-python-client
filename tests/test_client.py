@@ -503,3 +503,19 @@ def test_list_teammates():
 #     assert len(new_teammates) >= len(
 #         old_teammates
 #     )  # needs to sleep for teammates list to be updated
+
+def test_get_tasks_without_project_name():
+    tasks = client.get_tasks()
+    assert isinstance(tasks, list)
+
+def test_get_tasks_with_optional_project_name():
+    tasks = client.get_tasks(project_name=None)
+    assert isinstance(tasks, list)
+    
+def test_process_tasks_endpoint_args_without_project_name():
+    args = client._process_tasks_endpoint_args()
+    assert args["project_name"] is None
+
+def test_process_tasks_endpoint_args_with_optional_project_name():
+    args = client._process_tasks_endpoint_args(project_name=None)
+    assert args["project_name"] is None
