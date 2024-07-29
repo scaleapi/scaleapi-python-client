@@ -413,11 +413,11 @@ class ScaleClient:
         """
 
         if not project_name and not batch_name:
-            raise ValueError("Either project_name or batch_name must be provided")
-
+            raise ValueError("At least one of project_name or batch_name must be provided.")
+    
         next_token = None
         has_more = True
-
+    
         tasks_args = self._process_tasks_endpoint_args(
             project_name,
             batch_name,
@@ -435,13 +435,13 @@ class ScaleClient:
             include_attachment_url,
             limited_response,
         )
-
+    
         if limit:
             tasks_args["limit"] = limit
-
+    
         while has_more:
             tasks_args["next_token"] = next_token
-
+    
             tasks = self.tasks(**tasks_args)
             for task in tasks.docs:
                 yield task
@@ -568,6 +568,9 @@ class ScaleClient:
         limited_response: bool = None,
     ):
         """Generates args for /tasks endpoint."""
+        if not project_name and not batch_name:
+            raise ValueError("At least one of project_name or batch_name must be provided.")
+    
         tasks_args = {
             "start_time": created_after,
             "end_time": created_before,
@@ -581,7 +584,7 @@ class ScaleClient:
             "unique_id": unique_id,
             "include_attachment_url": include_attachment_url,
         }
-
+    
         if status:
             tasks_args["status"] = status.value
         if limited_response:
@@ -593,9 +596,9 @@ class ScaleClient:
                 value = ",".join(map(lambda x: x.value, review_status))
             else:
                 value = review_status.value
-
+    
             tasks_args["customer_review_status"] = value
-
+    
         return tasks_args
 
     def create_task(self, task_type: TaskType, **kwargs) -> Task:
