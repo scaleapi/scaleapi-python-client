@@ -412,6 +412,9 @@ class ScaleClient:
                 Yields Task objects, can be iterated.
         """
 
+        if not project_name and not batch_name:
+            raise ValueError("Either project_name or batch_name must be provided")
+
         next_token = None
         has_more = True
 
