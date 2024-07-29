@@ -504,9 +504,11 @@ def test_list_teammates():
 #         old_teammates
 #     )  # needs to sleep for teammates list to be updated
 
+
 def test_get_tasks_without_project_name():
     with pytest.raises(ValueError):
         list(client.get_tasks())
+
 
 def test_get_tasks_with_optional_project_name():
     batch = create_a_batch()
@@ -521,10 +523,14 @@ def test_get_tasks_with_optional_project_name():
     ):
         assert task.id in task_ids
 
+
 def test_process_tasks_endpoint_args_with_optional_project_name():
-    args = client._process_tasks_endpoint_args(project_name=None, batch_name="test_batch")
+    args = client._process_tasks_endpoint_args(
+        project_name=None, batch_name="test_batch"
+    )
     assert args["project"] is None
     assert args["batch"] == "test_batch"
+
 
 def test_get_tasks_with_batch_name():
     batch = create_a_batch()
@@ -537,6 +543,7 @@ def test_get_tasks_with_batch_name():
         limit=1,
     ):
         assert task.id in task_ids
+
 
 def test_process_tasks_endpoint_args_with_batch_name():
     args = client._process_tasks_endpoint_args(batch_name="test_batch")
