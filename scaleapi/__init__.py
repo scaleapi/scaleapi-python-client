@@ -345,7 +345,7 @@ class ScaleClient:
         `task_list = list(get_tasks(...))`
 
         Args:
-            project_name (str):
+            project_name (str, optional):
                 Project Name
 
             batch_name (str, optional):
