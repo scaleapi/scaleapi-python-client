@@ -541,4 +541,3 @@ def test_get_tasks_with_batch_name():
         limit=1,
     ):
         assert task.id in task_ids
-        
