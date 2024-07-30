@@ -320,7 +320,7 @@ class ScaleClient:
 
     def get_tasks(
         self,
-        project_name: str,
+        project_name: str = None,
         batch_name: str = None,
         task_type: TaskType = None,
         status: TaskStatus = None,
@@ -345,7 +345,7 @@ class ScaleClient:
         `task_list = list(get_tasks(...))`
 
         Args:
-            project_name (str):
+            project_name (str, optional):
                 Project Name
 
             batch_name (str, optional):
@@ -411,6 +411,11 @@ class ScaleClient:
             Generator[Task]:
                 Yields Task objects, can be iterated.
         """
+
+        if not project_name and not batch_name:
+            raise ValueError(
+                "At least one of project_name or batch_name must be provided."
+            )
 
         next_token = None
         has_more = True
@@ -548,7 +553,7 @@ class ScaleClient:
 
     @staticmethod
     def _process_tasks_endpoint_args(
-        project_name: str,
+        project_name: str = None,
         batch_name: str = None,
         task_type: TaskType = None,
         status: TaskStatus = None,
@@ -565,6 +570,11 @@ class ScaleClient:
         limited_response: bool = None,
     ):
         """Generates args for /tasks endpoint."""
+        if not project_name and not batch_name:
+            raise ValueError(
+                "At least one of project_name or batch_name must be provided."
+            )
+
         tasks_args = {
             "start_time": created_after,
             "end_time": created_before,

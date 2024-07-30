@@ -503,3 +503,41 @@ def test_list_teammates():
 #     assert len(new_teammates) >= len(
 #         old_teammates
 #     )  # needs to sleep for teammates list to be updated
+
+
+def test_get_tasks_without_project_name():
+    with pytest.raises(ValueError):
+        list(client.get_tasks())
+
+
+def test_get_tasks_with_optional_project_name():
+    batch = create_a_batch()
+    tasks = []
+    for _ in range(3):
+        tasks.append(make_a_task(batch=batch.name))
+    task_ids = {task.id for task in tasks}
+    for task in client.get_tasks(
+        project_name=None,
+        batch_name=batch.name,
+        limit=1,
+    ):
+        assert task.id in task_ids
+
+
+def test_process_tasks_endpoint_args_with_optional_project_name():
+    args = client._process_tasks_endpoint_args(batch_name="test_batch")
+    assert args["project"] is None
+    assert args["batch"] == "test_batch"
+
+
+def test_get_tasks_with_batch_name():
+    batch = create_a_batch()
+    tasks = []
+    for _ in range(3):
+        tasks.append(make_a_task(batch=batch.name))
+    task_ids = {task.id for task in tasks}
+    for task in client.get_tasks(
+        batch_name=batch.name,
+        limit=1,
+    ):
+        assert task.id in task_ids
