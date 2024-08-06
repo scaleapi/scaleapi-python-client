@@ -34,6 +34,7 @@ class TaskType(Enum):
     ChatExperimental = "chatexperimental"
     ChatLite = "chatlite"
     MultiChat = "multichat"
+    MultiStage = "multistage"
 
 
 class TaskReviewStatus(Enum):
