@@ -452,7 +452,7 @@ class ScaleClient:
 
     def get_tasks_count(
         self,
-        project_name: str,
+        project_name: str = None,
         batch_name: str = None,
         task_type: TaskType = None,
         status: TaskStatus = None,
@@ -470,7 +470,7 @@ class ScaleClient:
         """Returns number of tasks with given filters.
 
         Args:
-            project_name (str):
+            project_name (str, optional):
                 Project Name
 
             batch_name (str, optional):
@@ -528,6 +528,11 @@ class ScaleClient:
             int:
                 Returns number of tasks
         """
+
+        if not project_name and not batch_name:
+            raise ValueError(
+                "At least one of project_name or batch_name must be provided."
+            )
 
         tasks_args = self._process_tasks_endpoint_args(
             project_name,

@@ -417,6 +417,13 @@ def test_get_tasks_count():
     assert tasks_count == get_tasks_count
 
 
+def test_get_tasks_count_with_only_batch():
+    batch = create_a_batch()
+    tasks_count = client.tasks(batch=batch.name).total
+    get_tasks_count = client.get_tasks_count(batch_name=batch.name)
+    assert tasks_count == get_tasks_count
+
+
 def test_finalize_batch():
     batch = create_a_batch()
     batch = client.finalize_batch(batch.name)
