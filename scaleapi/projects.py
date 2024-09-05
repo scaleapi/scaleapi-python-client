@@ -9,8 +9,8 @@ class TaskTemplate:
         self.created_at = json["created_at"]
         self.updated_at = json["updated_at"]
         self.template_variables = json["template_variables"]
-        self.response_schema = json.get('response_schema', None)
-        self.auto_onboard_enabled = json.get('auto_onboard_enabled', False)
+        self.response_schema = json.get("response_schema", None)
+        self.auto_onboard_enabled = json.get("auto_onboard_enabled", False)
 
     def __hash__(self):
         return hash(self.id)
