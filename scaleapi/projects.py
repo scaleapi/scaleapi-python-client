@@ -30,7 +30,7 @@ class TaskTemplate:
         return self.auto_onboard_enabled
 
     def get_response_schema(self):
-        """Returns response schema dictionary if enabled for your account"""
+        """Returns response schema if enabled for your account"""
         return self.response_schema
 
     def as_dict(self):
