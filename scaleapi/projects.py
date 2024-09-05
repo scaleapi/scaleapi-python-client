@@ -9,6 +9,8 @@ class TaskTemplate:
         self.created_at = json["created_at"]
         self.updated_at = json["updated_at"]
         self.template_variables = json["template_variables"]
+        self.response_schema = json.get('response_schema', None)
+        self.auto_onboard_enabled = json.get('auto_onboard_enabled', False)
 
     def __hash__(self):
         return hash(self.id)
@@ -22,6 +24,14 @@ class TaskTemplate:
     def get_template_variables(self):
         """Returns template variables dictionary"""
         return self.template_variables
+
+    def is_auto_onboardable(self):
+        """Returns boolean value whether project is auto onboardable"""
+        return self.auto_onboard_enabled
+
+    def get_response_schema(self):
+        """Returns response schema dictionary if enabled for your account"""
+        return self.response_schema
 
     def as_dict(self):
         """Returns task template object as JSON dictionary"""
