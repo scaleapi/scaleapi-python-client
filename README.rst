@@ -68,7 +68,7 @@ about the json response (task_id, status, params, response, etc.).
 
 Any parameter available in `Scale's API documentation`__ can be passed as an argument option with the corresponding type.
 
-__ https://docs.scale.com/reference#tasks-object-overview
+__ https://scale.com/docs/api-reference/data-engine-reference#tasks-object-overview
 
 The following endpoints for tasks are available:
 
@@ -83,7 +83,7 @@ This method can be used for any Scale supported task type using the following fo
 
 Passing in the applicable values into the function definition. The applicable fields and further information for each task type can be found in `Scale's API documentation`__.
 
-__ https://docs.scale.com/reference
+__ https://scale.com/docs/api-reference
 
 .. code-block:: python
 
@@ -117,7 +117,7 @@ Retrieve a task
 
 Retrieve a task given its id. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#retrieve-tasks
+__ https://scale.com/docs/api-reference/tasks#retrieve-a-task
 
 .. code-block :: python
 
@@ -192,7 +192,7 @@ statement, which returns a list of Tasks by loading them into the memory.
 
 Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#list-multiple-tasks
+__ https://scale.com/docs/api-reference/tasks#retrieve-multiple-tasks
 
 .. code-block :: python
 
@@ -242,7 +242,7 @@ Cancel Task
 
 Cancel a task given its id if work has not started on the task (task status is ``Queued`` in the UI). Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#cancel-task
+__ https://scale.com/docs/api-reference/tasks#cancel-task
 
 .. code-block :: python
 
@@ -285,7 +285,7 @@ Update A Task's Unique Id
 
 Update a given task's unique_id. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference/update-task-unique-id
+__ https://scale.com/docs/api-reference/tasks#update-unique_id
 
 .. code-block :: python
 
@@ -301,7 +301,7 @@ Clear A Task's Unique Id
 
 Clear a given task's unique_id. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference/delete-task-unique-id
+__ https://scale.com/docs/api-reference/tasks#delete-unique_id
 
 .. code-block :: python
 
@@ -317,7 +317,7 @@ Set A Task's Metadata
 
 Set a given task's ``metadata``. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference/set-metadata
+__ https://scale.com/docs/api-reference/tasks#set-task-metadata
 
 .. code-block :: python
 
@@ -335,7 +335,7 @@ Set A Task's Tags
 
 Set a given task's ``tags``. This will replace all existing tags on a task. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference/setting-tags
+__ https://scale.com/docs/api-reference/tasks#set-task-tag
 
 .. code-block :: python
 
@@ -353,7 +353,7 @@ Add Tags to A Task
 
 Add ``tags`` to a given task. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference/adding-tags
+__ https://scale.com/docs/api-reference/tasks#delete-task-tag
 
 .. code-block :: python
 
@@ -371,7 +371,7 @@ Delete Tags from A Task
 
 Delete ``tags`` from a given task. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference/deleting-tags
+__ https://scale.com/docs/api-reference/tasks#delete-task-tag
 
 .. code-block :: python
 
@@ -392,7 +392,7 @@ Create Batch
 
 Create a new Batch. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#batch-creation
+__ https://scale.com/docs/api-reference/batches#create-a-batch
 
 .. code-block:: python
 
@@ -411,7 +411,7 @@ Finalize Batch
 
 Finalize a Batch. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#batch-finalization
+__ https://scale.com/docs/api-reference/batches#finalize-batch
 
 .. code-block:: python
 
@@ -426,7 +426,7 @@ Check Batch Status
 
 Get the status of a Batch. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#batch-status
+__ https://scale.com/docs/api-reference/batches#batch-status
 
 .. code-block:: python
 
@@ -442,7 +442,7 @@ Retrieve A Batch
 
 Retrieve a single Batch. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#batch-retrieval
+__ https://scale.com/docs/api-reference/batches#batch-retrieval
 
 .. code-block:: python
 
@@ -465,7 +465,7 @@ When wrapped in a ``list(...)`` statement, it returns a list of Batches by loadi
 
 Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#batch-list
+__ https://scale.com/docs/api-reference/batches#list-all-batches
 
 .. code-block :: python
 
@@ -493,7 +493,7 @@ Create Project
 
 Create a new Project. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#project-creation
+__ https://scale.com/docs/api-reference/projects#create-project
 
 .. code-block:: python
 
@@ -514,7 +514,7 @@ Retrieve Project
 
 Retrieve a single Project. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#project-retrieval
+__ https://scale.com/docs/api-reference/projects#project-retrieval
 
 .. code-block:: python
 
@@ -528,7 +528,7 @@ List Projects
 This function does not take any arguments. Retrieve a list of every Project.
 Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#batch-list
+__ https://scale.com/docs/api-reference/projects#list-all-projects
 
 .. code-block :: python
 
@@ -543,7 +543,7 @@ Update Project
 
 Creates a new version of the Project. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#project-update-parameters
+__ https://scale.com/docs/api-reference/projects#update-project-parameters
 
 .. code-block :: python
 
@@ -564,7 +564,7 @@ Upload Files
 
 Upload a file. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#file-upload-1
+__ https://scale.com/docs/api-reference/file-endpoints#file-upload
 
 .. code-block:: python
 
@@ -596,7 +596,7 @@ Import Files
 
 Import a file from a URL. Check out `Scale's API documentation`__ for more information.
 
-__ https://docs.scale.com/reference#file-import-1
+__ https://scale.com/docs/api-reference/file-endpoints#file-import
 
 .. code-block:: python
 
@@ -626,7 +626,7 @@ ________________
 
 Manage the members of your Scale team via API. Check out `Scale Team API Documentation`__ for more information.
 
-__ https://docs.scale.com/reference/teams-overview
+__ https://scale.com/docs/team-getting-started
 
 List Teammates
 ^^^^^^^^^^^^^^
@@ -689,7 +689,7 @@ Create an evaluation task.
 
 Passing in the applicable values into the function definition. The applicable fields are the same as for create_task. Applicable fields for each task type can be found in `Scale's API documentation`__. Additionally an expected_response is required. An optional initial_response can be provided if it's for a review phase evaluation task.
 
-__ https://docs.scale.com/reference
+__ https://scale.com/docs/api-reference
 
 .. code-block:: python
 
@@ -899,7 +899,7 @@ as a `ScaleException` parent type and child exceptions:
 - ``ScaleServiceUnavailable``: 503 - Server Timeout From Request Queueing -- Try again later.
 - ``ScaleTimeoutError``: 504 - Server Timeout Error -- Try again later.
 
-Check out `Scale's API documentation <https://docs.scale.com/reference#errors>`_ for more details.
+Check out `Scale's API documentation <https://scale.com/docs/api-reference/errors>`_ for more details.
 
 For example:
 
