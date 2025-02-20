@@ -921,13 +921,28 @@ If your project is using V2 API, you can use the ``.v2`` API client and also ``v
 
 __ https://docs.genai.scale.com/get-started/quickstart
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-**get_task** | **GET** /v2/task | Get a Task
-**get_tasks** | **GET** /v2/tasks | Get Multiple Tasks
-**get_deliveries** | **GET** /v2/deliveries | List All Deliveries
-**get_delivery** | **GET** /v2/delivery | Get Tasks in a Delivery
-**get_annotation** | **GET** /v2/annotation | Get an Annotation
+.. list-table::
+   :widths: 25 25 50
+   :header-rows: 1
+
+   * - Method
+     - HTTP request
+     - Description
+   * - **get_task**
+     - **GET** /v2/task
+     - Get a Task
+   * - **get_tasks**
+     - **GET** /v2/tasks
+     - Get Multiple Tasks
+   * - **get_deliveries**
+     - **GET** /v2/deliveries
+     - List All Deliveries
+   * - **get_delivery**
+     - **GET** /v2/delivery
+     - Get Tasks in a Delivery
+   * - **get_annotation**
+     - **GET** /v2/annotation
+     - Get an Annotation
 
 For example:
 
