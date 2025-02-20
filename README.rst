@@ -913,10 +913,11 @@ For example:
         print(err.code)  # 400
         print(err.message)  # Parameter is invalid, reason: "attachments" is required
 
+
 V2 API
 ______
 
-If your project is using V2 API, you can use the ``.v2`` API client and also ``v2_get_tasks()`` to retrieve tasks in the V2 API format.
+If your project is using V2 API, you can use the ``.v2`` API client and also ``v2_get_tasks()`` to retrieve tasks in the V2 API format. See our `V2 API documentation`__.
 
 __ https://docs.genai.scale.com/get-started/quickstart
 
@@ -928,7 +929,9 @@ Method | HTTP request | Description
 **get_delivery** | **GET** /v2/delivery | Get Tasks in a Delivery
 **get_annotation** | **GET** /v2/annotation | Get an Annotation
 
-.. code-block :: python
+For example:
+
+.. code-block:: python
 
     # Get a task with the V2 format
     task = client.v2.get_task('30553edd0b6a93f8f05f0fee')
