@@ -1,0 +1,15 @@
+{
+  "generatorName": "python",
+  "packageName": "scaleapi.api_client.v2",
+  "inputSpec": "https://api.scale.com/v2/openapi",
+  "outputDir": "./",
+  "globalProperties": {
+    "models": "",
+    "apis": "v2",
+    "apiTests": false,
+    "modelTests": false,
+    "apiDocs": false,
+    "modelDocs": false,
+    "supportingFiles": "api_client.py,configuration.py,exceptions.py,models.py,rest.py,serializer.py,serializers.py,api_response.py,__init__.py"
+  }
+}

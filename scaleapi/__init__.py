@@ -1,5 +1,12 @@
+from datetime import datetime
 from typing import IO, Dict, Generator, Generic, List, Optional, TypeVar, Union
 
+from pydantic import Field, StrictStr
+from typing_extensions import Annotated
+
+from scaleapi.api_client.v2 import ApiClient, Configuration, ExpandableEnumTask, Option
+from scaleapi.api_client.v2 import Task as V2Task
+from scaleapi.api_client.v2 import V2Api
 from scaleapi.batches import Batch, BatchStatus
 from scaleapi.evaluation_tasks import EvaluationTask
 from scaleapi.exceptions import ScaleInvalidRequest
@@ -66,6 +73,11 @@ class ScaleClient:
             cert=cert,
         )
 
+        configuration = Configuration(access_token=api_key)
+        api_client = ApiClient(configuration)
+        api_client.user_agent = Api._generate_useragent(source)
+        self.v2 = V2Api(api_client)
+
     def get_task(self, task_id: str) -> Task:
         """Fetches a task.
         Returns the associated task.
@@ -111,7 +123,7 @@ class ScaleClient:
                 for the audit status
         """
 
-        payload = dict(accepted=accepted, comments=comments)
+        payload = {"accepted": accepted, "comments": comments}
         endpoint = f"task/{task_id}/audit"
         self.api.post_request(endpoint, body=payload)
 
@@ -129,7 +141,7 @@ class ScaleClient:
         Returns:
             Task
         """
-        payload = dict(unique_id=unique_id)
+        payload = {"unique_id": unique_id}
         endpoint = f"task/{task_id}/unique_id"
         return Task(self.api.post_request(endpoint, body=payload), self)
 
@@ -318,6 +330,83 @@ class ScaleClient:
             response.get("next_token"),
         )
 
+    def v2_get_tasks(
+        self,
+        project_id: Optional[StrictStr] = None,
+        project_name: Optional[StrictStr] = None,
+        batch_id: Optional[StrictStr] = None,
+        batch_name: Optional[StrictStr] = None,
+        status: Optional[TaskStatus] = None,
+        completed_after: Optional[datetime] = None,
+        completed_before: Optional[datetime] = None,
+        limit: Optional[Annotated[int, Field(le=100, strict=True, ge=1)]] = None,
+        expand: Optional[List[ExpandableEnumTask]] = None,
+        opts: Optional[List[Option]] = None,
+    ) -> Generator[V2Task, None, None]:
+        """Retrieve all tasks as a `generator` method, with the
+        given parameters. This methods handles pagination of
+        v2.get_tasks() method.
+
+        In order to retrieve results as a list, please use:
+        `task_list = list(v2_get_tasks(...))`
+
+        :param project_id: Scale's unique identifier for the
+            project.
+        :type project_id: str
+        :param project_name: The name of the project.
+        :type project_name: str
+        :param batch_id: Scale's unique identifier for the
+            batch.
+        :type batch_id: str
+        :param batch_name: The name of the batch.
+        :type batch_name: str
+        :param status: The current status of the task, indicating
+            whether it is pending, completed, error, or canceled.
+        :type status: TaskStatus
+        :param completed_after: Tasks with a `completed_at` after
+            the given date will be returned. A timestamp formatted
+            as an ISO 8601 date-time string.
+        :type completed_after: datetime
+        :param completed_before: Tasks with a `completed_at` before
+            the given date will be returned. A timestamp formatted
+            as an ISO 8601 date-time string.
+        :type completed_before: datetime
+        :param limit: Limit the number of entities returned.
+        :type limit: int
+        :param expand: List of fields to
+            [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumTask]
+        :param opts: List of properties to include in the task response.
+        :type opts: List[Option]
+
+        Yields:
+            Generator[V2Task]:
+                Yields Task objects, can be iterated.
+        """
+
+        tasks_args = {
+            "project_id": project_id,
+            "project_name": project_name,
+            "batch_id": batch_id,
+            "batch_name": batch_name,
+            "status": status,
+            "completed_after": completed_after,
+            "completed_before": completed_before,
+            "limit": limit,
+            "expand": expand,
+            "opts": opts,
+        }
+
+        next_token = None
+        has_more = True
+
+        while has_more:
+            tasks_args["next_token"] = next_token
+            tasks = self.v2.get_tasks(**tasks_args)
+            yield from tasks.tasks
+            next_token = tasks.next_token
+            has_more = tasks.next_token is not None
+
     def get_tasks(
         self,
         project_name: str = None,
@@ -445,8 +534,7 @@ class ScaleClient:
             tasks_args["next_token"] = next_token
 
             tasks = self.tasks(**tasks_args)
-            for task in tasks.docs:
-                yield task
+            yield from tasks.docs
             next_token = tasks.next_token
             has_more = tasks.has_more
 
@@ -669,14 +757,14 @@ class ScaleClient:
             Batch: Created batch object
         """
         endpoint = "batches"
-        payload = dict(
-            project=project,
-            name=batch_name,
-            calibration_batch=calibration_batch,
-            self_label_batch=self_label_batch,
-            callback=callback,
-            metadata=metadata or {},
-        )
+        payload = {
+            "project": project,
+            "name": batch_name,
+            "calibration_batch": calibration_batch,
+            "self_label_batch": self_label_batch,
+            "callback": callback,
+            "metadata": metadata or {},
+        }
         batchdata = self.api.post_request(endpoint, body=payload)
         return Batch(batchdata, self)
 
@@ -849,8 +937,7 @@ class ScaleClient:
                 batches_args["status"] = batch_status.value
 
             batches = self.batches(**batches_args)
-            for batch in batches.docs:
-                yield batch
+            yield from batches.docs
             offset += batches.limit
             has_more = batches.has_more
 
@@ -905,14 +992,14 @@ class ScaleClient:
             Project: [description]
         """
         endpoint = "projects"
-        payload = dict(
-            type=task_type.value,
-            name=project_name,
-            params=params,
-            rapid=rapid,
-            studio=studio,
-            datasetId=dataset_id,
-        )
+        payload = {
+            "type": task_type.value,
+            "name": project_name,
+            "params": params,
+            "rapid": rapid,
+            "studio": studio,
+            "datasetId": dataset_id,
+        }
         projectdata = self.api.post_request(endpoint, body=payload)
         return Project(projectdata, self)
 
@@ -1025,7 +1112,7 @@ class ScaleClient:
         """
 
         endpoint = "files/import"
-        payload = dict(file_url=file_url, **kwargs)
+        payload = {"file_url": file_url, **kwargs}
         filedata = self.api.post_request(endpoint, body=payload)
         return File(filedata, self)
 

@@ -5,3 +5,7 @@ isort>=5.7.0
 pytest>=6.2.2
 pylint>=2.7.2
 twine>=3.4.1
+urllib3>=1.26.0
+python_dateutil>=2.8.2
+pydantic>=2
+typing-extensions>=4.7.1
