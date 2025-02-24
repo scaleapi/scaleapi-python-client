@@ -12,23 +12,27 @@ $ git clone git@github.com:scaleapi/scaleapi-python-client.git
 
 If you use a virtual environment (via venv or conda), please activate it before installing the following packages.
 
-_Python SDK v2+ supports only Python 3.6+_
+_Python SDK v2+ supports only Python 3.8+_
 
 ```bash
 $ pip install -r docs/dev_requirements.txt
 ```
+
 ### 3. Setup pre-commit
 
 Assure pre-commit<sup>[1]</sup> is installed:
+
 ```bash
 $ pre-commit --version
 # pre-commit 2.11.1
 ```
 
 Configure pre-commit for the repo:
+
 ```bash
 pre-commit install
 ```
+
 Now `pre-commit` will run automatically on `git commit`!
 
 ### 4. (Optional) VS Code Settings
@@ -41,15 +45,14 @@ If you want to make those settings only apply to current workspace (not VS Code 
 - Auto-formats python files on save according to `black`
 
 Append following lines to the json file:
+
 ```json
-"python.linting.enabled": true,
-"python.linting.pylintEnabled": true,
-"python.linting.flake8Enabled": true,
-"python.formatting.provider": "black",
-"[python]": {
+  "pylint.enabled": true,
+  "flake8.enabled": true,
+  "[python]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "ms-python.python"
-    },
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
 ```
 
 In Python SDK we follow [Google's Python Docstring Guide](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings) for comments and docstring of modules, functions and classes. [Python Docstring Generator](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring) is a useful VS Code extension that helps to generate docstrings.
@@ -95,10 +98,23 @@ tests/test_client.py::test_transcription_ok PASSED                             [
 .........
 ```
 
-#### 7. Deployment and Publishing of a new version
+#### 7. Updating auto-generated v2 client
+
+The V2 API client is auto-generated from openapi.yaml using the v2_generator.json config. Run this to update the client:
+
+```bash
+$ export SCALE_API_KEY="your_key" && SCALE_API_AUTH_HEADER=$(python -c "import urllib.parse; print(urllib.parse.quote('Bearer $SCALE_API_KEY'))")
+$ openapi-generator-cli generate --auth "Authorization:$SCALE_API_AUTH_HEADER" --config v2_generator.json
+```
+
+Additionally, update the [Annotation model](../scaleapi/api_client/v2/models/annotation.py) `from_json` type discrimination if there are changes
+
+#### 8. Deployment and Publishing of a new version
 
 Please refer to [Deployment and Publishing Guide](pypi_update_guide.md) for details.
-_____
+
+---
+
 <sup>[1] pre-commit configuration is available in `.pre-commit-config.yaml`</sup>
 
 <sup>[2] Pylint configuration is available in `.pylintrc`</sup>

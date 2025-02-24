@@ -1,41 +1,48 @@
 default_language_version:
-    python: python3.6
+  python: python3.8
 default_stages: [commit]
 
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-added-large-files
-    -   id: check-yaml
-    -   id: check-case-conflict
--   repo: https://github.com/pycqa/isort
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+      - id: check-yaml
+      - id: check-case-conflict
+  - repo: https://github.com/pycqa/isort
     rev: 5.8.0
     hooks:
-    -   id: isort
+      - id: isort
         name: isort
         args: ["--profile", "black"]
--   repo: https://github.com/psf/black
+        exclude: ^scaleapi/api_client/
+  - repo: https://github.com/psf/black
     rev: 20.8b1
     hooks:
-    -   id: black
--   repo: https://github.com/PyCQA/flake8
+      - id: black
+        exclude: ^scaleapi/api_client/
+  - repo: https://github.com/PyCQA/flake8
     rev: 3.8.4
     hooks:
-    -   id: flake8
--   repo: local
+      - id: flake8
+        exclude: ^scaleapi/api_client/
+  - repo: local
     hooks:
-    -   id: pylint
+      - id: pylint
         name: pylint
         entry: pylint
         language: python
         types: [python]
         files: scaleapi/
+        exclude: ^scaleapi/api_client/
         additional_dependencies:
-        -   'pylint>=2.7.4'
-        -   'requests>=2.25.0'
-        -   'urllib3>=1.26.0'
-        -   'pytest>=6.2.2'
-        language_version: python3.6
+          - "pylint>=2.7.4"
+          - "requests>=2.25.0"
+          - "urllib3>=1.26.0"
+          - "pytest>=6.2.2"
+          - "python_dateutil>=2.8.2"
+          - "pydantic>=2"
+          - "typing-extensions>=4.7.1"
+        language_version: python3.8

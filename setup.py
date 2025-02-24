@@ -1,11 +1,14 @@
 import os.path
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import find_packages, setup
 
-install_requires = ["requests>=2.25.0", "urllib3>=1.26.0"]
+install_requires = [
+    "requests>=2.25.0",
+    "urllib3>=1.26.0",
+    "python_dateutil>=2.8.2",
+    "pydantic>=2",
+    "typing-extensions>=4.7.1",
+]
 
 
 def read(rel_path):
@@ -26,7 +29,7 @@ def get_version(rel_path):
 
 setup(
     name="scaleapi",
-    packages=["scaleapi"],
+    packages=find_packages(),
     version=get_version("scaleapi/_version.py"),
     description="The official Python client library for Scale AI, "
     "the Data Platform for AI",
@@ -42,16 +45,16 @@ setup(
         "annotation",
     ],
     install_requires=install_requires,
-    python_requires=">=3.6",
+    python_requires=">=3.8",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Natural Language :: English",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "License :: OSI Approved :: MIT License",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Libraries",

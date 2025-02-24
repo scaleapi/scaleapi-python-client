@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   build_test:
     docker:
-      - image: cimg/python:3.6
+      - image: cimg/python:3.8
     resource_class: small
     steps:
       - checkout # checkout source code to working directory
@@ -17,11 +17,11 @@ jobs:
       - run:
           name: Black Formatting Check # Only validation, without re-formatting
           command: |
-            black --check -t py36 .
+            black --check --exclude 'scaleapi/api_client/*' -t py38 .
       - run:
           name: isort Import Ordering Check # Only validation, without re-formatting
           command: |
-            isort --check-only --profile black .
+            isort --sg 'scaleapi/api_client/*' --check-only --profile black .
       - run:
           name: Flake8 Lint Check # Uses setup.cfg for configuration
           command: |
@@ -46,7 +46,7 @@ jobs:
             twine check --strict dist/*
   pypi_publish:
     docker:
-      - image: cimg/python:3.6
+      - image: cimg/python:3.8
     steps:
       - checkout # checkout source code to working directory
       - run:

@@ -1,4 +1,6 @@
 [MASTER]
+ignore-paths=
+    ^scaleapi/api_client/*
 disable=
     missing-module-docstring,
     too-few-public-methods,
