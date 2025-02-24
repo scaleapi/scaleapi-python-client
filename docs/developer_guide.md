@@ -107,7 +107,7 @@ $ export SCALE_API_KEY="your_key" && SCALE_API_AUTH_HEADER=$(python -c "import u
 $ openapi-generator-cli generate --auth "Authorization:$SCALE_API_AUTH_HEADER" --config v2_generator.json
 ```
 
-Additionally, update the Annotation model type discrimination if there are changes
+Additionally, update the [Annotation model](../scaleapi/api_client/v2/models/annotation.py) `from_json` type discrimination if there are changes
 
 #### 8. Deployment and Publishing of a new version
 

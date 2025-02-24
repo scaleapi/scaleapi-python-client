@@ -3,6 +3,7 @@
   "packageName": "scaleapi.api_client.v2",
   "inputSpec": "https://api.scale.com/v2/openapi",
   "outputDir": "./",
+  "templateDir": "./v2_templates",
   "globalProperties": {
     "models": "",
     "apis": "v2",
