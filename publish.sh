@@ -61,7 +61,7 @@ if ! python3 setup.py sdist bdist_wheel > /dev/null 2>&1; then echo "ERROR: Pack
 if ! pip show twine > /dev/null 2>&1;
 then
     echo "WARN: 'twine' package is not found, installing...";
-    pip install twine
+    pip install twine==6.0.1
 fi
 
 # Twine Validation

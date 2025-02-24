@@ -74,7 +74,7 @@ jobs:
           command: | # install env dependencies
             set -e
             pip install --upgrade pip
-            pip install twine
+            pip install twine==6.0.1
       - run:
           name: Build and Validate
           command: | # create whl, validate with twine
