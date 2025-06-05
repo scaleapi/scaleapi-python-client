@@ -25,7 +25,7 @@ from typing_extensions import Self
 
 class ErrorDetail(BaseModel):
     """
-    Details of the error on the task. Available when the task status is `error`
+    ErrorDetail
     """ # noqa: E501
     type: Optional[ErrorType] = Field(default=None, description="Type of the error")
     message: Optional[StrictStr] = Field(default=None, description="Details of the error message")

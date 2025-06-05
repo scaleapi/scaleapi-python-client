@@ -24,7 +24,7 @@ from typing_extensions import Self
 
 class Project(BaseModel):
     """
-    Represents a project.
+    Project
     """ # noqa: E501
     id: StrictStr = Field(description="A unique identifier for the project.")
     name: StrictStr = Field(description="The name of the project.")

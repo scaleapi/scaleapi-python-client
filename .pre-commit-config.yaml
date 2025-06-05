@@ -1,5 +1,5 @@
 default_language_version:
-  python: python3.8
+  python: python3.9
 default_stages: [commit]
 
 repos:
@@ -12,19 +12,19 @@ repos:
       - id: check-yaml
       - id: check-case-conflict
   - repo: https://github.com/pycqa/isort
-    rev: 5.8.0
+    rev: 5.13.2
     hooks:
       - id: isort
         name: isort
         args: ["--profile", "black"]
         exclude: ^scaleapi/api_client/
   - repo: https://github.com/psf/black
-    rev: 20.8b1
+    rev: 25.1.0
     hooks:
       - id: black
         exclude: ^scaleapi/api_client/
   - repo: https://github.com/PyCQA/flake8
-    rev: 3.8.4
+    rev: 7.2.0
     hooks:
       - id: flake8
         exclude: ^scaleapi/api_client/

@@ -22,15 +22,16 @@ from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 
-class File(BaseModel):
+class BasicFile(BaseModel):
     """
-    File
+    BasicFile
     """ # noqa: E501
     content: Optional[Union[StrictBytes, StrictStr]] = Field(default=None, description="Base-64 encoded data")
     mime_type: Optional[StrictStr] = Field(default=None, description="The MIME type of the content, such as application/json or image/png.")
     scale_url: Optional[StrictStr] = Field(default=None, description="A URL string pointing to a resource.")
     url: Optional[StrictStr] = Field(default=None, description="A URL string pointing to a resource.")
-    __properties: ClassVar[List[str]] = ["content", "mime_type", "scale_url", "url"]
+    name: Optional[StrictStr] = Field(default=None, description="The name of the file.")
+    __properties: ClassVar[List[str]] = ["content", "mime_type", "scale_url", "url", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -51,7 +52,7 @@ class File(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of File from a JSON string"""
+        """Create an instance of BasicFile from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -76,7 +77,7 @@ class File(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of File from a dict"""
+        """Create an instance of BasicFile from a dict"""
         if obj is None:
             return None
 
@@ -87,6 +88,7 @@ class File(BaseModel):
             "content": obj.get("content"),
             "mime_type": obj.get("mime_type"),
             "scale_url": obj.get("scale_url"),
-            "url": obj.get("url")
+            "url": obj.get("url"),
+            "name": obj.get("name")
         })
         return _obj

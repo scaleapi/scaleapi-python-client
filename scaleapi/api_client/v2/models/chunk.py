@@ -17,33 +17,30 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from scaleapi.api_client.v2.models.audio_file import AudioFile
-from scaleapi.api_client.v2.models.basic_file import BasicFile
-from scaleapi.api_client.v2.models.image_file import ImageFile
+from scaleapi.api_client.v2.models.chunk_text import ChunkText
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-DETAILEDFILE_ONE_OF_SCHEMAS = ["AudioFile", "BasicFile", "ImageFile"]
+CHUNK_ONE_OF_SCHEMAS = ["ChunkText"]
 
-class DetailedFile(BaseModel):
+class Chunk(BaseModel):
     """
-    DetailedFile
+    Chunk
     """
-    # data type: BasicFile
-    oneof_schema_1_validator: Optional[BasicFile] = None
-    # data type: ImageFile
-    oneof_schema_2_validator: Optional[ImageFile] = None
-    # data type: AudioFile
-    oneof_schema_3_validator: Optional[AudioFile] = None
-    actual_instance: Optional[Union[AudioFile, BasicFile, ImageFile]] = None
-    one_of_schemas: Set[str] = { "AudioFile", "BasicFile", "ImageFile" }
+    # data type: ChunkText
+    oneof_schema_1_validator: Optional[ChunkText] = None
+    actual_instance: Optional[Union[ChunkText]] = None
+    one_of_schemas: Set[str] = { "ChunkText" }
 
     model_config = ConfigDict(
         validate_assignment=True,
         protected_namespaces=(),
     )
 
+
+    discriminator_value_class_map: Dict[str, str] = {
+    }
 
     def __init__(self, *args, **kwargs) -> None:
         if args:
@@ -57,30 +54,20 @@ class DetailedFile(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_oneof(cls, v):
-        instance = DetailedFile.model_construct()
+        instance = Chunk.model_construct()
         error_messages = []
         match = 0
-        # validate data type: BasicFile
-        if not isinstance(v, BasicFile):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `BasicFile`")
-        else:
-            match += 1
-        # validate data type: ImageFile
-        if not isinstance(v, ImageFile):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `ImageFile`")
-        else:
-            match += 1
-        # validate data type: AudioFile
-        if not isinstance(v, AudioFile):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `AudioFile`")
+        # validate data type: ChunkText
+        if not isinstance(v, ChunkText):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `ChunkText`")
         else:
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in DetailedFile with oneOf schemas: AudioFile, BasicFile, ImageFile. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in Chunk with oneOf schemas: ChunkText. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in DetailedFile with oneOf schemas: AudioFile, BasicFile, ImageFile. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in Chunk with oneOf schemas: ChunkText. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -95,31 +82,19 @@ class DetailedFile(BaseModel):
         error_messages = []
         match = 0
 
-        # deserialize data into BasicFile
+        # deserialize data into ChunkText
         try:
-            instance.actual_instance = BasicFile.from_json(json_str)
-            match += 1
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
-        # deserialize data into ImageFile
-        try:
-            instance.actual_instance = ImageFile.from_json(json_str)
-            match += 1
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
-        # deserialize data into AudioFile
-        try:
-            instance.actual_instance = AudioFile.from_json(json_str)
+            instance.actual_instance = ChunkText.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into DetailedFile with oneOf schemas: AudioFile, BasicFile, ImageFile. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into Chunk with oneOf schemas: ChunkText. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into DetailedFile with oneOf schemas: AudioFile, BasicFile, ImageFile. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into Chunk with oneOf schemas: ChunkText. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -133,7 +108,7 @@ class DetailedFile(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], AudioFile, BasicFile, ImageFile]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], ChunkText]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

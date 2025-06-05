@@ -24,7 +24,7 @@ from typing_extensions import Self
 
 class Batch(BaseModel):
     """
-    Represents a batch.
+    Batch
     """ # noqa: E501
     id: StrictStr = Field(description="A unique identifier for the batch.")
     name: StrictStr = Field(description="The name of the batch.")

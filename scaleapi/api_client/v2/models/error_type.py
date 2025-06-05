@@ -30,6 +30,7 @@ class ErrorType(str, Enum):
     LANGUAGE_MISMATCH = 'LANGUAGE_MISMATCH'
     PROMPT_LENGTH_EXCEEDED = 'PROMPT_LENGTH_EXCEEDED'
     INVALID_CATEGORY = 'INVALID_CATEGORY'
+    PROMPT_INFEASIBLE = 'PROMPT_INFEASIBLE'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

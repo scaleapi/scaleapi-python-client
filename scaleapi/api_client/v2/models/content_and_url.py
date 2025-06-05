@@ -17,21 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class ModelParameters(BaseModel):
+class ContentAndUrl(BaseModel):
     """
-    ModelParameters
+    ContentAndUrl
     """ # noqa: E501
-    model: Optional[StrictStr] = Field(default=None, description="The name of the model that generated the message.")
-    temperature: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The temperature of the model that generated the message.")
-    max_completion_tokens: Optional[StrictInt] = Field(default=None, description="The maximum number of tokens the model can generate.")
-    top_p: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The top-p value of the model that generated the message.")
-    top_k: Optional[StrictInt] = Field(default=None, description="The top-k value of the model that generated the message.")
-    __properties: ClassVar[List[str]] = ["model", "temperature", "max_completion_tokens", "top_p", "top_k"]
+    content: Optional[StrictStr] = Field(default=None, description="The content of the file.")
+    url: Optional[StrictStr] = Field(default=None, description="A URL string pointing to a resource.")
+    scale_url: Optional[StrictStr] = Field(default=None, description="A URL string pointing to a resource.")
+    __properties: ClassVar[List[str]] = ["content", "url", "scale_url"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -52,7 +50,7 @@ class ModelParameters(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ModelParameters from a JSON string"""
+        """Create an instance of ContentAndUrl from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,7 +75,7 @@ class ModelParameters(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ModelParameters from a dict"""
+        """Create an instance of ContentAndUrl from a dict"""
         if obj is None:
             return None
 
@@ -85,10 +83,8 @@ class ModelParameters(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "model": obj.get("model"),
-            "temperature": obj.get("temperature"),
-            "max_completion_tokens": obj.get("max_completion_tokens"),
-            "top_p": obj.get("top_p"),
-            "top_k": obj.get("top_k")
+            "content": obj.get("content"),
+            "url": obj.get("url"),
+            "scale_url": obj.get("scale_url")
         })
         return _obj

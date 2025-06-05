@@ -19,7 +19,9 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from scaleapi.api_client.v2.models.chunk import Chunk
 from scaleapi.api_client.v2.models.detailed_file import DetailedFile
+from scaleapi.api_client.v2.models.reasoning import Reasoning
 from scaleapi.api_client.v2.models.reference_text import ReferenceText
 from typing import Optional, Set
 from typing_extensions import Self
@@ -31,7 +33,9 @@ class MessageContent(BaseModel):
     text: Optional[StrictStr] = Field(default=None, description="A plain text field.")
     reference_texts: Optional[List[ReferenceText]] = Field(default=None, description="A list of files or attachments associated with the message.")
     attachments: Optional[List[DetailedFile]] = Field(default=None, description="A list of files or attachments associated with the message.")
-    __properties: ClassVar[List[str]] = ["text", "reference_texts", "attachments"]
+    chunks: Optional[List[Chunk]] = None
+    reasoning: Optional[List[Reasoning]] = None
+    __properties: ClassVar[List[str]] = ["text", "reference_texts", "attachments", "chunks", "reasoning"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -87,6 +91,20 @@ class MessageContent(BaseModel):
                 if _item_attachments:
                     _items.append(_item_attachments.to_dict())
             _dict['attachments'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in chunks (list)
+        _items = []
+        if self.chunks:
+            for _item_chunks in self.chunks:
+                if _item_chunks:
+                    _items.append(_item_chunks.to_dict())
+            _dict['chunks'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in reasoning (list)
+        _items = []
+        if self.reasoning:
+            for _item_reasoning in self.reasoning:
+                if _item_reasoning:
+                    _items.append(_item_reasoning.to_dict())
+            _dict['reasoning'] = _items
         return _dict
 
     @classmethod
@@ -101,6 +119,8 @@ class MessageContent(BaseModel):
         _obj = cls.model_validate({
             "text": obj.get("text"),
             "reference_texts": [ReferenceText.from_dict(_item) for _item in obj["reference_texts"]] if obj.get("reference_texts") is not None else None,
-            "attachments": [DetailedFile.from_dict(_item) for _item in obj["attachments"]] if obj.get("attachments") is not None else None
+            "attachments": [DetailedFile.from_dict(_item) for _item in obj["attachments"]] if obj.get("attachments") is not None else None,
+            "chunks": [Chunk.from_dict(_item) for _item in obj["chunks"]] if obj.get("chunks") is not None else None,
+            "reasoning": [Reasoning.from_dict(_item) for _item in obj["reasoning"]] if obj.get("reasoning") is not None else None
         })
         return _obj
