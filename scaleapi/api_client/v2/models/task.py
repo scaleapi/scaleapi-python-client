@@ -23,6 +23,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from scaleapi.api_client.v2.models.error_detail import ErrorDetail
 from scaleapi.api_client.v2.models.expandable_batch import ExpandableBatch
 from scaleapi.api_client.v2.models.expandable_project import ExpandableProject
+from scaleapi.api_client.v2.models.sensitive_content_report import SensitiveContentReport
 from scaleapi.api_client.v2.models.task_status import TaskStatus
 from scaleapi.api_client.v2.models.thread import Thread
 from typing import Optional, Set
@@ -30,7 +31,7 @@ from typing_extensions import Self
 
 class Task(BaseModel):
     """
-    Represents a single task
+    Task
     """ # noqa: E501
     task_id: StrictStr = Field(description="Unique identifier for a task")
     project: ExpandableProject = Field(description="Project ID or [Project](/core-resources/project) associated with the task.")
@@ -41,7 +42,8 @@ class Task(BaseModel):
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Task metadata defined during task creation.")
     threads: Optional[List[Thread]] = Field(default=None, description="Threads associated with the task. Tasks that do not have a `status` of `completed` will have an empty `threads` array.")
     errors: Optional[List[ErrorDetail]] = Field(default=None, description="Errors associated with the task. Available when the task status is `error`")
-    __properties: ClassVar[List[str]] = ["task_id", "project", "batch", "status", "created_at", "completed_at", "metadata", "threads", "errors"]
+    sensitive_content_reports: Optional[List[SensitiveContentReport]] = Field(default=None, description="Reports of sensitive content within the task. Available when the task status is `completed`. `threads` will not exist when the task is reported.")
+    __properties: ClassVar[List[str]] = ["task_id", "project", "batch", "status", "created_at", "completed_at", "metadata", "threads", "errors", "sensitive_content_reports"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -103,6 +105,13 @@ class Task(BaseModel):
                 if _item_errors:
                     _items.append(_item_errors.to_dict())
             _dict['errors'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in sensitive_content_reports (list)
+        _items = []
+        if self.sensitive_content_reports:
+            for _item_sensitive_content_reports in self.sensitive_content_reports:
+                if _item_sensitive_content_reports:
+                    _items.append(_item_sensitive_content_reports.to_dict())
+            _dict['sensitive_content_reports'] = _items
         return _dict
 
     @classmethod
@@ -123,6 +132,7 @@ class Task(BaseModel):
             "completed_at": obj.get("completed_at"),
             "metadata": obj.get("metadata"),
             "threads": [Thread.from_dict(_item) for _item in obj["threads"]] if obj.get("threads") is not None else None,
-            "errors": [ErrorDetail.from_dict(_item) for _item in obj["errors"]] if obj.get("errors") is not None else None
+            "errors": [ErrorDetail.from_dict(_item) for _item in obj["errors"]] if obj.get("errors") is not None else None,
+            "sensitive_content_reports": [SensitiveContentReport.from_dict(_item) for _item in obj["sensitive_content_reports"]] if obj.get("sensitive_content_reports") is not None else None
         })
         return _obj

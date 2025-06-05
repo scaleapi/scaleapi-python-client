@@ -17,27 +17,24 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from scaleapi.api_client.v2.models.audio_file import AudioFile
 from scaleapi.api_client.v2.models.basic_file import BasicFile
-from scaleapi.api_client.v2.models.image_file import ImageFile
+from scaleapi.api_client.v2.models.detailed_file import DetailedFile
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-DETAILEDFILE_ONE_OF_SCHEMAS = ["AudioFile", "BasicFile", "ImageFile"]
+ANNOTATIONFILEPROPERTIESVALUE_ONE_OF_SCHEMAS = ["DetailedFile", "List[BasicFile]"]
 
-class DetailedFile(BaseModel):
+class AnnotationFilePropertiesValue(BaseModel):
     """
-    DetailedFile
+    AnnotationFilePropertiesValue
     """
-    # data type: BasicFile
-    oneof_schema_1_validator: Optional[BasicFile] = None
-    # data type: ImageFile
-    oneof_schema_2_validator: Optional[ImageFile] = None
-    # data type: AudioFile
-    oneof_schema_3_validator: Optional[AudioFile] = None
-    actual_instance: Optional[Union[AudioFile, BasicFile, ImageFile]] = None
-    one_of_schemas: Set[str] = { "AudioFile", "BasicFile", "ImageFile" }
+    # data type: DetailedFile
+    oneof_schema_1_validator: Optional[DetailedFile] = None
+    # data type: List[BasicFile]
+    oneof_schema_2_validator: Optional[List[BasicFile]] = None
+    actual_instance: Optional[Union[DetailedFile, List[BasicFile]]] = None
+    one_of_schemas: Set[str] = { "DetailedFile", "List[BasicFile]" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -57,30 +54,26 @@ class DetailedFile(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_oneof(cls, v):
-        instance = DetailedFile.model_construct()
+        instance = AnnotationFilePropertiesValue.model_construct()
         error_messages = []
         match = 0
-        # validate data type: BasicFile
-        if not isinstance(v, BasicFile):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `BasicFile`")
+        # validate data type: DetailedFile
+        if not isinstance(v, DetailedFile):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `DetailedFile`")
         else:
             match += 1
-        # validate data type: ImageFile
-        if not isinstance(v, ImageFile):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `ImageFile`")
-        else:
+        # validate data type: List[BasicFile]
+        try:
+            instance.oneof_schema_2_validator = v
             match += 1
-        # validate data type: AudioFile
-        if not isinstance(v, AudioFile):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `AudioFile`")
-        else:
-            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in DetailedFile with oneOf schemas: AudioFile, BasicFile, ImageFile. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in AnnotationFilePropertiesValue with oneOf schemas: DetailedFile, List[BasicFile]. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in DetailedFile with oneOf schemas: AudioFile, BasicFile, ImageFile. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in AnnotationFilePropertiesValue with oneOf schemas: DetailedFile, List[BasicFile]. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -95,31 +88,28 @@ class DetailedFile(BaseModel):
         error_messages = []
         match = 0
 
-        # deserialize data into BasicFile
+        # deserialize data into DetailedFile
         try:
-            instance.actual_instance = BasicFile.from_json(json_str)
+            instance.actual_instance = DetailedFile.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into ImageFile
+        # deserialize data into List[BasicFile]
         try:
-            instance.actual_instance = ImageFile.from_json(json_str)
-            match += 1
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
-        # deserialize data into AudioFile
-        try:
-            instance.actual_instance = AudioFile.from_json(json_str)
+            # validation
+            instance.oneof_schema_2_validator = json.loads(json_str)
+            # assign value to actual_instance
+            instance.actual_instance = instance.oneof_schema_2_validator
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into DetailedFile with oneOf schemas: AudioFile, BasicFile, ImageFile. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into AnnotationFilePropertiesValue with oneOf schemas: DetailedFile, List[BasicFile]. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into DetailedFile with oneOf schemas: AudioFile, BasicFile, ImageFile. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into AnnotationFilePropertiesValue with oneOf schemas: DetailedFile, List[BasicFile]. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -133,7 +123,7 @@ class DetailedFile(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], AudioFile, BasicFile, ImageFile]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], DetailedFile, List[BasicFile]]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

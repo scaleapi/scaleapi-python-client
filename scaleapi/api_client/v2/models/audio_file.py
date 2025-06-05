@@ -28,12 +28,13 @@ class AudioFile(BaseModel):
     """ # noqa: E501
     mime_type: Optional[StrictStr] = Field(default=None, description="The MIME type of the content, such as application/json or image/png.")
     scale_url: Optional[StrictStr] = Field(default=None, description="A URL string pointing to a resource.")
+    url: Optional[StrictStr] = Field(default=None, description="A URL string pointing to a resource.")
     duration: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The duration of the audio file in seconds.")
     transcript: Optional[StrictStr] = Field(default=None, description="The transcript of the audio file.")
     transcript_url: Optional[StrictStr] = Field(default=None, description="A URL string pointing to a resource.")
     transcript_start: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The start time of the transcript in seconds.")
     transcript_end: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The end time of the transcript in seconds.")
-    __properties: ClassVar[List[str]] = ["mime_type", "scale_url", "duration", "transcript", "transcript_url", "transcript_start", "transcript_end"]
+    __properties: ClassVar[List[str]] = ["mime_type", "scale_url", "url", "duration", "transcript", "transcript_url", "transcript_start", "transcript_end"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -89,6 +90,7 @@ class AudioFile(BaseModel):
         _obj = cls.model_validate({
             "mime_type": obj.get("mime_type"),
             "scale_url": obj.get("scale_url"),
+            "url": obj.get("url"),
             "duration": obj.get("duration"),
             "transcript": obj.get("transcript"),
             "transcript_url": obj.get("transcript_url"),

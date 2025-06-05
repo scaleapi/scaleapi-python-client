@@ -98,7 +98,7 @@ tests/test_client.py::test_transcription_ok PASSED                             [
 .........
 ```
 
-#### 7. Updating auto-generated v2 client
+### 7. Updating auto-generated v2 client
 
 The V2 API client is auto-generated from openapi.yaml using the v2_generator.json config. Run this to update the client:
 

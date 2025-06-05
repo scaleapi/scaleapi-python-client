@@ -17,21 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from scaleapi.api_client.v2.models.workspace_execution_data_result_status import WorkspaceExecutionDataResultStatus
 from typing import Optional, Set
 from typing_extensions import Self
 
-class ModelParameters(BaseModel):
+class WorkspaceExecutionDataResult(BaseModel):
     """
-    ModelParameters
+    WorkspaceExecutionDataResult
     """ # noqa: E501
-    model: Optional[StrictStr] = Field(default=None, description="The name of the model that generated the message.")
-    temperature: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The temperature of the model that generated the message.")
-    max_completion_tokens: Optional[StrictInt] = Field(default=None, description="The maximum number of tokens the model can generate.")
-    top_p: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The top-p value of the model that generated the message.")
-    top_k: Optional[StrictInt] = Field(default=None, description="The top-k value of the model that generated the message.")
-    __properties: ClassVar[List[str]] = ["model", "temperature", "max_completion_tokens", "top_p", "top_k"]
+    status: Optional[WorkspaceExecutionDataResultStatus] = None
+    time: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Time taken for last execution.")
+    score: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Score of the output of last execution.")
+    __properties: ClassVar[List[str]] = ["status", "time", "score"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -52,7 +51,7 @@ class ModelParameters(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ModelParameters from a JSON string"""
+        """Create an instance of WorkspaceExecutionDataResult from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,11 +72,14 @@ class ModelParameters(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of status
+        if self.status:
+            _dict['status'] = self.status.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ModelParameters from a dict"""
+        """Create an instance of WorkspaceExecutionDataResult from a dict"""
         if obj is None:
             return None
 
@@ -85,10 +87,8 @@ class ModelParameters(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "model": obj.get("model"),
-            "temperature": obj.get("temperature"),
-            "max_completion_tokens": obj.get("max_completion_tokens"),
-            "top_p": obj.get("top_p"),
-            "top_k": obj.get("top_k")
+            "status": WorkspaceExecutionDataResultStatus.from_dict(obj["status"]) if obj.get("status") is not None else None,
+            "time": obj.get("time"),
+            "score": obj.get("score")
         })
         return _obj

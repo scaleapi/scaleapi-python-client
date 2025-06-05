@@ -27,7 +27,7 @@ from typing_extensions import Self
 
 class Thread(BaseModel):
     """
-    Represents a thread of messages in a task.
+    Thread
     """ # noqa: E501
     id: StrictStr = Field(description="Unique identifier for a thread")
     turns: List[Turn] = Field(description="[Turns](/core-resources/turn) within the thread. ")
