@@ -92,5 +92,3 @@ class WorkspaceFile(BaseModel):
             "file_content": obj.get("file_content")
         })
         return _obj
-
-

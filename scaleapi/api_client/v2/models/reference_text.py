@@ -88,5 +88,3 @@ class ReferenceText(BaseModel):
             "url": obj.get("url")
         })
         return _obj
-
-

@@ -106,5 +106,3 @@ class RubricEvaluation(BaseModel):
             "percentage": obj.get("percentage")
         })
         return _obj
-
-

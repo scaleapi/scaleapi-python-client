@@ -86,5 +86,3 @@ class GetBatch500Response(BaseModel):
             "error": obj.get("error")
         })
         return _obj
-
-

@@ -86,5 +86,3 @@ class FinalizeBatchRequest(BaseModel):
             "batch_name": obj.get("batch_name")
         })
         return _obj
-
-

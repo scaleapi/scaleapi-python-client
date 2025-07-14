@@ -92,5 +92,3 @@ class ImageFile(BaseModel):
             "file_size_in_bytes": obj.get("file_size_in_bytes")
         })
         return _obj
-
-

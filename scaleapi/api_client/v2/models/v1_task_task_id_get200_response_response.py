@@ -84,5 +84,3 @@ class V1TaskTaskIdGet200ResponseResponse(BaseModel):
             "responses": obj.get("responses")
         })
         return _obj
-
-

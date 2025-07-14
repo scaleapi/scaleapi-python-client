@@ -84,5 +84,3 @@ class AnnotationTextProperties(BaseModel):
             "value": obj.get("value")
         })
         return _obj
-
-

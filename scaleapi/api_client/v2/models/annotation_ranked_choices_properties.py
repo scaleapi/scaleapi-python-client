@@ -84,5 +84,3 @@ class AnnotationRankedChoicesProperties(BaseModel):
             "value": obj.get("value")
         })
         return _obj
-
-

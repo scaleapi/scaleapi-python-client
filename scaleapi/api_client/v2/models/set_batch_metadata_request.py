@@ -90,5 +90,3 @@ class SetBatchMetadataRequest(BaseModel):
             "merge": obj.get("merge") if obj.get("merge") is not None else False
         })
         return _obj
-
-

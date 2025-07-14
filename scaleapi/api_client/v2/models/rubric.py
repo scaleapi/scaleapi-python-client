@@ -94,5 +94,3 @@ class Rubric(BaseModel):
             "max_total_score": obj.get("max_total_score")
         })
         return _obj
-
-

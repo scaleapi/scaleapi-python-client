@@ -114,5 +114,3 @@ class Turn(BaseModel):
             "rubrics": [Rubric.from_dict(_item) for _item in obj["rubrics"]] if obj.get("rubrics") is not None else None
         })
         return _obj
-
-

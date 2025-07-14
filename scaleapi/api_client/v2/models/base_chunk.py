@@ -94,5 +94,3 @@ class BaseChunk(BaseModel):
             "annotations": [Annotation.from_dict(_item) for _item in obj["annotations"]] if obj.get("annotations") is not None else None
         })
         return _obj
-
-

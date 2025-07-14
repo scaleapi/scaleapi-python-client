@@ -92,5 +92,3 @@ class AnnotationLabeledTextProperties(BaseModel):
             "value": [LabeledTextValue.from_dict(_item) for _item in obj["value"]] if obj.get("value") is not None else None
         })
         return _obj
-
-

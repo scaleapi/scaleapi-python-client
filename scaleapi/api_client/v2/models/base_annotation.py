@@ -106,5 +106,3 @@ class BaseAnnotation(BaseModel):
             "justification": obj.get("justification")
         })
         return _obj
-
-

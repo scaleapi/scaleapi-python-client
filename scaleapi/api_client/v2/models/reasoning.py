@@ -84,5 +84,3 @@ class Reasoning(BaseModel):
             "content": obj.get("content")
         })
         return _obj
-
-

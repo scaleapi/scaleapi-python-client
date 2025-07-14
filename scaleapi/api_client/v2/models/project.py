@@ -94,5 +94,3 @@ class Project(BaseModel):
             "models": obj.get("models")
         })
         return _obj
-
-

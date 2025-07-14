@@ -92,5 +92,3 @@ class GetProjectsResponse(BaseModel):
             "projects": [Project.from_dict(_item) for _item in obj["projects"]] if obj.get("projects") is not None else None
         })
         return _obj
-
-

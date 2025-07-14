@@ -136,5 +136,3 @@ class Task(BaseModel):
             "sensitive_content_reports": [SensitiveContentReport.from_dict(_item) for _item in obj["sensitive_content_reports"]] if obj.get("sensitive_content_reports") is not None else None
         })
         return _obj
-
-

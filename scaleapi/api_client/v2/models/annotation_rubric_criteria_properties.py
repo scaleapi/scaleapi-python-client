@@ -88,5 +88,3 @@ class AnnotationRubricCriteriaProperties(BaseModel):
             "value": RubricCriteriaValue.from_dict(obj["value"]) if obj.get("value") is not None else None
         })
         return _obj
-
-

@@ -126,5 +126,3 @@ class WorkspaceContainerValue(BaseModel):
             "test_stderr_output": ContentAndUrl.from_dict(obj["test_stderr_output"]) if obj.get("test_stderr_output") is not None else None
         })
         return _obj
-
-

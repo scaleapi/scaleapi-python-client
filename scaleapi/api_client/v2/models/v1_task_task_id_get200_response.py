@@ -96,5 +96,3 @@ class V1TaskTaskIdGet200Response(BaseModel):
             "response": V1TaskTaskIdGet200ResponseResponse.from_dict(obj["response"]) if obj.get("response") is not None else None
         })
         return _obj
-
-

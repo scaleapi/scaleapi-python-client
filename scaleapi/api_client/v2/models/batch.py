@@ -104,5 +104,3 @@ class Batch(BaseModel):
             "metadata": obj.get("metadata")
         })
         return _obj
-
-

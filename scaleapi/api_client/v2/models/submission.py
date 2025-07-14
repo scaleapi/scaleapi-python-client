@@ -87,5 +87,3 @@ class Submission(BaseModel):
             "contributor_id": obj.get("contributor_id")
         })
         return _obj
-
-

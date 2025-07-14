@@ -124,5 +124,3 @@ class MessageContent(BaseModel):
             "reasoning": [Reasoning.from_dict(_item) for _item in obj["reasoning"]] if obj.get("reasoning") is not None else None
         })
         return _obj
-
-

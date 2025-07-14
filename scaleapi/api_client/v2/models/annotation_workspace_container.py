@@ -115,4 +115,3 @@ class AnnotationWorkspaceContainer(BaseModel):
 from scaleapi.api_client.v2.models.annotation_metadata import AnnotationMetadata
 # TODO: Rewrite to not use raise_errors
 AnnotationWorkspaceContainer.model_rebuild(raise_errors=False)
-

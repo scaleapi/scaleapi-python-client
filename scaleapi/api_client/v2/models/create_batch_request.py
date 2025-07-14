@@ -96,5 +96,3 @@ class CreateBatchRequest(BaseModel):
             "metadata": obj.get("metadata")
         })
         return _obj
-
-

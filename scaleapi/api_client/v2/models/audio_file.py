@@ -98,5 +98,3 @@ class AudioFile(BaseModel):
             "transcript_end": obj.get("transcript_end")
         })
         return _obj
-
-

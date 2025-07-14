@@ -139,4 +139,3 @@ class ExpandableAnnotation(BaseModel):
 from scaleapi.api_client.v2.models.annotation import Annotation
 # TODO: Rewrite to not use raise_errors
 ExpandableAnnotation.model_rebuild(raise_errors=False)
-

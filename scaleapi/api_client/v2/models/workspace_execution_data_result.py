@@ -92,5 +92,3 @@ class WorkspaceExecutionDataResult(BaseModel):
             "score": obj.get("score")
         })
         return _obj
-
-

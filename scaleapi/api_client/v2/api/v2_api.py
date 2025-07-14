@@ -317,7 +317,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -595,7 +595,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -873,7 +873,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -1121,9 +1121,9 @@ class V2Api:
         # process the path parameters
         # process the query parameters
         if annotation_id is not None:
-            
+
             _query_params.append(('annotation_id', annotation_id))
-            
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -1140,7 +1140,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -1415,17 +1415,17 @@ class V2Api:
         # process the path parameters
         # process the query parameters
         if batch_id is not None:
-            
+
             _query_params.append(('batch_id', batch_id))
-            
+
         if batch_name is not None:
-            
+
             _query_params.append(('batch_name', batch_name))
-            
+
         if expand is not None:
-            
+
             _query_params.append(('expand', expand))
-            
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -1442,7 +1442,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -1808,17 +1808,17 @@ class V2Api:
         # process the path parameters
         # process the query parameters
         if project_id is not None:
-            
+
             _query_params.append(('project_id', project_id))
-            
+
         if project_name is not None:
-            
+
             _query_params.append(('project_name', project_name))
-            
+
         if status is not None:
-            
+
             _query_params.append(('status', status.value))
-            
+
         if created_after is not None:
             if isinstance(created_after, datetime):
                 _query_params.append(
@@ -1831,7 +1831,7 @@ class V2Api:
                 )
             else:
                 _query_params.append(('created_after', created_after))
-            
+
         if created_before is not None:
             if isinstance(created_before, datetime):
                 _query_params.append(
@@ -1844,7 +1844,7 @@ class V2Api:
                 )
             else:
                 _query_params.append(('created_before', created_before))
-            
+
         if completed_after is not None:
             if isinstance(completed_after, datetime):
                 _query_params.append(
@@ -1857,7 +1857,7 @@ class V2Api:
                 )
             else:
                 _query_params.append(('completed_after', completed_after))
-            
+
         if completed_before is not None:
             if isinstance(completed_before, datetime):
                 _query_params.append(
@@ -1870,19 +1870,19 @@ class V2Api:
                 )
             else:
                 _query_params.append(('completed_before', completed_before))
-            
+
         if limit is not None:
-            
+
             _query_params.append(('limit', limit))
-            
+
         if next_token is not None:
-            
+
             _query_params.append(('next_token', next_token))
-            
+
         if expand is not None:
-            
+
             _query_params.append(('expand', expand))
-            
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -1899,7 +1899,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -2200,13 +2200,13 @@ class V2Api:
         # process the path parameters
         # process the query parameters
         if project_id is not None:
-            
+
             _query_params.append(('project_id', project_id))
-            
+
         if project_name is not None:
-            
+
             _query_params.append(('project_name', project_name))
-            
+
         if delivered_after is not None:
             if isinstance(delivered_after, datetime):
                 _query_params.append(
@@ -2219,7 +2219,7 @@ class V2Api:
                 )
             else:
                 _query_params.append(('delivered_after', delivered_after))
-            
+
         if delivered_before is not None:
             if isinstance(delivered_before, datetime):
                 _query_params.append(
@@ -2232,11 +2232,11 @@ class V2Api:
                 )
             else:
                 _query_params.append(('delivered_before', delivered_before))
-            
+
         if expand is not None:
-            
+
             _query_params.append(('expand', expand))
-            
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -2253,7 +2253,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -2594,37 +2594,37 @@ class V2Api:
         # process the path parameters
         # process the query parameters
         if delivery_id is not None:
-            
+
             _query_params.append(('delivery_id', delivery_id))
-            
+
         if delivery_name is not None:
-            
+
             _query_params.append(('delivery_name', delivery_name))
-            
+
         if project_id is not None:
-            
+
             _query_params.append(('project_id', project_id))
-            
+
         if project_name is not None:
-            
+
             _query_params.append(('project_name', project_name))
-            
+
         if limit is not None:
-            
+
             _query_params.append(('limit', limit))
-            
+
         if next_token is not None:
-            
+
             _query_params.append(('next_token', next_token))
-            
+
         if expand is not None:
-            
+
             _query_params.append(('expand', expand))
-            
+
         if opts is not None:
-            
+
             _query_params.append(('opts', opts))
-            
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -2641,7 +2641,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -2902,13 +2902,13 @@ class V2Api:
         # process the path parameters
         # process the query parameters
         if project_id is not None:
-            
+
             _query_params.append(('project_id', project_id))
-            
+
         if project_name is not None:
-            
+
             _query_params.append(('project_name', project_name))
-            
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -2925,7 +2925,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -3197,7 +3197,7 @@ class V2Api:
                 )
             else:
                 _query_params.append(('created_after', created_after))
-            
+
         if created_before is not None:
             if isinstance(created_before, datetime):
                 _query_params.append(
@@ -3210,7 +3210,7 @@ class V2Api:
                 )
             else:
                 _query_params.append(('created_before', created_before))
-            
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -3227,7 +3227,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -3503,17 +3503,17 @@ class V2Api:
         # process the path parameters
         # process the query parameters
         if task_id is not None:
-            
+
             _query_params.append(('task_id', task_id))
-            
+
         if expand is not None:
-            
+
             _query_params.append(('expand', expand))
-            
+
         if opts is not None:
-            
+
             _query_params.append(('opts', opts))
-            
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -3530,7 +3530,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -3910,25 +3910,25 @@ class V2Api:
         # process the path parameters
         # process the query parameters
         if project_id is not None:
-            
+
             _query_params.append(('project_id', project_id))
-            
+
         if project_name is not None:
-            
+
             _query_params.append(('project_name', project_name))
-            
+
         if batch_id is not None:
-            
+
             _query_params.append(('batch_id', batch_id))
-            
+
         if batch_name is not None:
-            
+
             _query_params.append(('batch_name', batch_name))
-            
+
         if status is not None:
-            
+
             _query_params.append(('status', status.value))
-            
+
         if completed_after is not None:
             if isinstance(completed_after, datetime):
                 _query_params.append(
@@ -3941,7 +3941,7 @@ class V2Api:
                 )
             else:
                 _query_params.append(('completed_after', completed_after))
-            
+
         if completed_before is not None:
             if isinstance(completed_before, datetime):
                 _query_params.append(
@@ -3954,23 +3954,23 @@ class V2Api:
                 )
             else:
                 _query_params.append(('completed_before', completed_before))
-            
+
         if limit is not None:
-            
+
             _query_params.append(('limit', limit))
-            
+
         if next_token is not None:
-            
+
             _query_params.append(('next_token', next_token))
-            
+
         if expand is not None:
-            
+
             _query_params.append(('expand', expand))
-            
+
         if opts is not None:
-            
+
             _query_params.append(('opts', opts))
-            
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -3987,7 +3987,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -4265,7 +4265,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -4543,7 +4543,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -4821,7 +4821,7 @@ class V2Api:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'basicAuth', 
+            'basicAuth',
             'bearerAuth'
         ]
 
@@ -4839,5 +4839,3 @@ class V2Api:
             _host=_host,
             _request_auth=_request_auth
         )
-
-

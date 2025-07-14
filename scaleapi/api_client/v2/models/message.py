@@ -119,5 +119,3 @@ class Message(BaseModel):
             "rubric_evaluations": [RubricEvaluation.from_dict(_item) for _item in obj["rubric_evaluations"]] if obj.get("rubric_evaluations") is not None else None
         })
         return _obj
-
-

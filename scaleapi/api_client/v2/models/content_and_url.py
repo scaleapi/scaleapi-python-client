@@ -88,5 +88,3 @@ class ContentAndUrl(BaseModel):
             "scale_url": obj.get("scale_url")
         })
         return _obj
-
-
