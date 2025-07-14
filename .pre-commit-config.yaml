@@ -45,4 +45,4 @@ repos:
           - "python_dateutil>=2.8.2"
           - "pydantic>=2"
           - "typing-extensions>=4.7.1"
-        language_version: python3.8
+        language_version: python3.9

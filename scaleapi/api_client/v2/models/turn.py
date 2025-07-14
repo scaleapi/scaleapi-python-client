@@ -18,9 +18,10 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from scaleapi.api_client.v2.models.annotation import Annotation
 from scaleapi.api_client.v2.models.message import Message
+from scaleapi.api_client.v2.models.rubric import Rubric
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -31,7 +32,8 @@ class Turn(BaseModel):
     id: StrictStr = Field(description="A unique identifier for the turn.")
     messages: List[Message] = Field(description="A list of [messages](/core-resources/message) associated with this turn.")
     annotations: List[Annotation] = Field(description="Array of annotations.")
-    __properties: ClassVar[List[str]] = ["id", "messages", "annotations"]
+    rubrics: Optional[List[Rubric]] = None
+    __properties: ClassVar[List[str]] = ["id", "messages", "annotations", "rubrics"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -87,6 +89,13 @@ class Turn(BaseModel):
                 if _item_annotations:
                     _items.append(_item_annotations.to_dict())
             _dict['annotations'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in rubrics (list)
+        _items = []
+        if self.rubrics:
+            for _item_rubrics in self.rubrics:
+                if _item_rubrics:
+                    _items.append(_item_rubrics.to_dict())
+            _dict['rubrics'] = _items
         return _dict
 
     @classmethod
@@ -101,6 +110,7 @@ class Turn(BaseModel):
         _obj = cls.model_validate({
             "id": obj.get("id"),
             "messages": [Message.from_dict(_item) for _item in obj["messages"]] if obj.get("messages") is not None else None,
-            "annotations": [Annotation.from_dict(_item) for _item in obj["annotations"]] if obj.get("annotations") is not None else None
+            "annotations": [Annotation.from_dict(_item) for _item in obj["annotations"]] if obj.get("annotations") is not None else None,
+            "rubrics": [Rubric.from_dict(_item) for _item in obj["rubrics"]] if obj.get("rubrics") is not None else None
         })
         return _obj

@@ -17,23 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from scaleapi.api_client.v2.models.gen_ai_project_type import GenAIProjectType
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Project(BaseModel):
+class GetBatch500Response(BaseModel):
     """
-    Project
+    GetBatch500Response
     """ # noqa: E501
-    id: StrictStr = Field(description="A unique identifier for the project.")
-    name: StrictStr = Field(description="The name of the project.")
-    created_at: datetime = Field(description="A timestamp formatted as an ISO 8601 date-time string.")
-    types: Optional[List[GenAIProjectType]] = Field(default=None, description="List of project types associated with the project.")
-    models: Optional[List[StrictStr]] = Field(default=None, description="List of models associated with the project.")
-    __properties: ClassVar[List[str]] = ["id", "name", "created_at", "types", "models"]
+    status_code: Optional[Union[StrictFloat, StrictInt]] = None
+    error: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["status_code", "error"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -54,7 +49,7 @@ class Project(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Project from a JSON string"""
+        """Create an instance of GetBatch500Response from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -79,7 +74,7 @@ class Project(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Project from a dict"""
+        """Create an instance of GetBatch500Response from a dict"""
         if obj is None:
             return None
 
@@ -87,10 +82,7 @@ class Project(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "name": obj.get("name"),
-            "created_at": obj.get("created_at"),
-            "types": obj.get("types"),
-            "models": obj.get("models")
+            "status_code": obj.get("status_code"),
+            "error": obj.get("error")
         })
         return _obj

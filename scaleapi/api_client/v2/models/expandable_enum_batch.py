@@ -18,28 +18,17 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class AnnotationType(str, Enum):
+class ExpandableEnumBatch(str, Enum):
     """
-    AnnotationType
+    Entities that can be expanded from an ID to an object.
     """
 
     """
     allowed enum values
     """
-    INTEGER = 'integer'
-    BOOLEAN = 'boolean'
-    TEXT = 'text'
-    CATEGORY = 'category'
-    CATEGORY_MULTIPLE = 'category_multiple'
-    FILE = 'file'
-    WORKSPACE_CONTAINER = 'workspace_container'
-    RANKED_CHOICES = 'ranked_choices'
-    RANKED_GROUPS = 'ranked_groups'
-    RUBRIC_CRITERIA = 'rubric_criteria'
-    RUBRIC_RATING = 'rubric_rating'
-    LABELED_TEXT = 'labeled_text'
+    PROJECT = 'project'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AnnotationType from a JSON string"""
+        """Create an instance of ExpandableEnumBatch from a JSON string"""
         return cls(json.loads(json_str))

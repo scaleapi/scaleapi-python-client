@@ -17,27 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from scaleapi.api_client.v2.models.annotation import Annotation
-from scaleapi.api_client.v2.models.message_content import MessageContent
-from scaleapi.api_client.v2.models.message_role import MessageRole
-from scaleapi.api_client.v2.models.model_parameters import ModelParameters
-from scaleapi.api_client.v2.models.rubric_evaluation import RubricEvaluation
+from scaleapi.api_client.v2.models.criterion_evaluation import CriterionEvaluation
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Message(BaseModel):
+class RubricEvaluation(BaseModel):
     """
-    Message
+    RubricEvaluation
     """ # noqa: E501
-    role: MessageRole = Field(description="The role of the sender in the conversation (e.g., user, assistant).")
-    content: MessageContent = Field(description="The content of the message, including text and any attachments.")
-    source_id: StrictStr = Field(description="A unique identifier for the source.")
-    model_parameters: Optional[ModelParameters] = None
-    annotations: List[Annotation] = Field(description="Array of annotations.")
-    rubric_evaluations: Optional[List[RubricEvaluation]] = None
-    __properties: ClassVar[List[str]] = ["role", "content", "source_id", "model_parameters", "annotations", "rubric_evaluations"]
+    criteria_evaluations: Optional[List[CriterionEvaluation]] = None
+    annotations: Optional[List[Annotation]] = Field(default=None, description="Array of annotations.")
+    total_score: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Sum of all weighted criterion scores. e.g. (s1 * w1) + (s2 * w2) ...")
+    percentage: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Percentage of the weighted criterion score out of the maximum possible weighted score.")
+    __properties: ClassVar[List[str]] = ["criteria_evaluations", "annotations", "total_score", "percentage"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -58,7 +53,7 @@ class Message(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Message from a JSON string"""
+        """Create an instance of RubricEvaluation from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -79,12 +74,13 @@ class Message(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of content
-        if self.content:
-            _dict['content'] = self.content.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of model_parameters
-        if self.model_parameters:
-            _dict['model_parameters'] = self.model_parameters.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in criteria_evaluations (list)
+        _items = []
+        if self.criteria_evaluations:
+            for _item_criteria_evaluations in self.criteria_evaluations:
+                if _item_criteria_evaluations:
+                    _items.append(_item_criteria_evaluations.to_dict())
+            _dict['criteria_evaluations'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in annotations (list)
         _items = []
         if self.annotations:
@@ -92,18 +88,11 @@ class Message(BaseModel):
                 if _item_annotations:
                     _items.append(_item_annotations.to_dict())
             _dict['annotations'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in rubric_evaluations (list)
-        _items = []
-        if self.rubric_evaluations:
-            for _item_rubric_evaluations in self.rubric_evaluations:
-                if _item_rubric_evaluations:
-                    _items.append(_item_rubric_evaluations.to_dict())
-            _dict['rubric_evaluations'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Message from a dict"""
+        """Create an instance of RubricEvaluation from a dict"""
         if obj is None:
             return None
 
@@ -111,11 +100,9 @@ class Message(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "role": obj.get("role"),
-            "content": MessageContent.from_dict(obj["content"]) if obj.get("content") is not None else None,
-            "source_id": obj.get("source_id"),
-            "model_parameters": ModelParameters.from_dict(obj["model_parameters"]) if obj.get("model_parameters") is not None else None,
+            "criteria_evaluations": [CriterionEvaluation.from_dict(_item) for _item in obj["criteria_evaluations"]] if obj.get("criteria_evaluations") is not None else None,
             "annotations": [Annotation.from_dict(_item) for _item in obj["annotations"]] if obj.get("annotations") is not None else None,
-            "rubric_evaluations": [RubricEvaluation.from_dict(_item) for _item in obj["rubric_evaluations"]] if obj.get("rubric_evaluations") is not None else None
+            "total_score": obj.get("total_score"),
+            "percentage": obj.get("percentage")
         })
         return _obj

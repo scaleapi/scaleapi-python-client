@@ -18,28 +18,21 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class AnnotationType(str, Enum):
+class BatchStatus(str, Enum):
     """
-    AnnotationType
+    Status of the batch.
     """
 
     """
     allowed enum values
     """
-    INTEGER = 'integer'
-    BOOLEAN = 'boolean'
-    TEXT = 'text'
-    CATEGORY = 'category'
-    CATEGORY_MULTIPLE = 'category_multiple'
-    FILE = 'file'
-    WORKSPACE_CONTAINER = 'workspace_container'
-    RANKED_CHOICES = 'ranked_choices'
-    RANKED_GROUPS = 'ranked_groups'
-    RUBRIC_CRITERIA = 'rubric_criteria'
-    RUBRIC_RATING = 'rubric_rating'
-    LABELED_TEXT = 'labeled_text'
+    STAGING = 'staging'
+    IN_PROGRESS = 'in_progress'
+    COMPLETED = 'completed'
+    PAUSED = 'paused'
+    CANCELLED = 'cancelled'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AnnotationType from a JSON string"""
+        """Create an instance of BatchStatus from a JSON string"""
         return cls(json.loads(json_str))
