@@ -28,7 +28,7 @@ class SetBatchMetadataRequest(BaseModel):
     """ # noqa: E501
     batch_id: Optional[StrictStr] = Field(default=None, description="A unique identifier for the batch.")
     batch_name: Optional[StrictStr] = Field(default=None, description="The name of the batch.")
-    metadata: Dict[str, Any] = Field(description="Metadata for the batch.")
+    metadata: Dict[str, Any] = Field(description="Custom metadata for the entity.")
     merge: Optional[StrictBool] = Field(default=False, description="Whether to deep merge the provided metadata with existing metadata. If false, replaces the entire metadata object. If true, performs a deep merge and replaces existing keys with new values.")
     __properties: ClassVar[List[str]] = ["batch_id", "batch_name", "metadata", "merge"]
 

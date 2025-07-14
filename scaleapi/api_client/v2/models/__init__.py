@@ -47,6 +47,7 @@ from scaleapi.api_client.v2.models.base_annotation import BaseAnnotation
 from scaleapi.api_client.v2.models.base_chunk import BaseChunk
 from scaleapi.api_client.v2.models.basic_file import BasicFile
 from scaleapi.api_client.v2.models.batch import Batch
+from scaleapi.api_client.v2.models.batch_operation_request import BatchOperationRequest
 from scaleapi.api_client.v2.models.batch_status import BatchStatus
 from scaleapi.api_client.v2.models.cancel_batch200_response import CancelBatch200Response
 from scaleapi.api_client.v2.models.chunk import Chunk
@@ -54,7 +55,7 @@ from scaleapi.api_client.v2.models.chunk_text import ChunkText
 from scaleapi.api_client.v2.models.chunk_text_properties import ChunkTextProperties
 from scaleapi.api_client.v2.models.content_and_url import ContentAndUrl
 from scaleapi.api_client.v2.models.create_batch_request import CreateBatchRequest
-from scaleapi.api_client.v2.models.create_batch_request_project import CreateBatchRequestProject
+from scaleapi.api_client.v2.models.create_chat_task_request import CreateChatTaskRequest
 from scaleapi.api_client.v2.models.criterion_definition import CriterionDefinition
 from scaleapi.api_client.v2.models.criterion_evaluation import CriterionEvaluation
 from scaleapi.api_client.v2.models.delivery import Delivery
@@ -70,7 +71,6 @@ from scaleapi.api_client.v2.models.expandable_enum_deliveries import ExpandableE
 from scaleapi.api_client.v2.models.expandable_enum_delivery import ExpandableEnumDelivery
 from scaleapi.api_client.v2.models.expandable_enum_task import ExpandableEnumTask
 from scaleapi.api_client.v2.models.expandable_project import ExpandableProject
-from scaleapi.api_client.v2.models.finalize_batch_request import FinalizeBatchRequest
 from scaleapi.api_client.v2.models.gen_ai_project_type import GenAIProjectType
 from scaleapi.api_client.v2.models.get_batch500_response import GetBatch500Response
 from scaleapi.api_client.v2.models.get_batches_response import GetBatchesResponse
@@ -96,6 +96,7 @@ from scaleapi.api_client.v2.models.rubric_evaluation import RubricEvaluation
 from scaleapi.api_client.v2.models.rubric_rating_value import RubricRatingValue
 from scaleapi.api_client.v2.models.sensitive_content_report import SensitiveContentReport
 from scaleapi.api_client.v2.models.set_batch_metadata_request import SetBatchMetadataRequest
+from scaleapi.api_client.v2.models.set_task_metadata_request import SetTaskMetadataRequest
 from scaleapi.api_client.v2.models.submission import Submission
 from scaleapi.api_client.v2.models.task import Task
 from scaleapi.api_client.v2.models.task_status import TaskStatus

@@ -919,7 +919,7 @@ ______
 
 If your project is using V2 API, you can use the ``.v2`` API client and also ``v2_get_tasks()`` to retrieve tasks in the V2 API format. See our `V2 API documentation`__.
 
-__ https://docs.genai.scale.com/get-started/quickstart
+__ https://scale.com/docs/api-reference
 
 .. list-table::
    :widths: 25 25 50
@@ -931,9 +931,42 @@ __ https://docs.genai.scale.com/get-started/quickstart
    * - **get_task**
      - **GET** /v2/task
      - Get a Task
+   * - **create_chat_task**
+     - **POST** /v2/task
+     - Create a Chat Task
    * - **get_tasks**
      - **GET** /v2/tasks
      - Get Multiple Tasks
+   * - **get_batch**
+     - **GET** /v2/batch
+     - Get a Batch
+   * - **create_batch**
+     - **POST** /v2/batch
+     - Create a Batch
+   * - **get_batches**
+     - **GET** /v2/batches
+     - Get Multiple Batches
+   * - **finalize_batch**
+     - **POST** /v2/batch/finalize
+     - Finalize a Batch
+   * - **pause_batch**
+     - **POST** /v2/batch/pause
+     - Pause a Batch
+   * - **resume_batch**
+     - **POST** /v2/batch/resume
+     - Resume a Batch
+   * - **cancel_batch**
+     - **POST** /v2/batch/cancel
+     - Cancel a Batch
+   * - **set_batch_metadata**
+     - **POST** /v2/batch/metadata
+     - Set Batch Metadata
+   * - **get_project**
+     - **GET** /v2/project
+     - Get a Project
+   * - **get_projects**
+     - **GET** /v2/projects
+     - Get Multiple Projects
    * - **get_deliveries**
      - **GET** /v2/deliveries
      - List All Deliveries
@@ -965,6 +998,27 @@ For example:
     for task in tasks:
         # Download task or do something!
         print(task.task_id)
+
+    # Create a chat task
+    task = client.v2.create_chat_task(
+        project_name="My Chat Project",
+        template_variables={
+            "prompt": "Explain quantum computing",
+            "context": "For a general audience"
+        }
+    )
+
+    # Get a batch
+    batch = client.v2.get_batch('batch_123')
+
+    # Create a batch
+    batch = client.v2.create_batch(
+        name="My New Batch",
+        project="project_123"
+    )
+
+    # Finalize a batch
+    batch = client.v2.finalize_batch('batch_123')
 
 
 Troubleshooting

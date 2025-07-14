@@ -19,7 +19,6 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from scaleapi.api_client.v2.models.create_batch_request_project import CreateBatchRequestProject
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -28,11 +27,12 @@ class CreateBatchRequest(BaseModel):
     CreateBatchRequest
     """ # noqa: E501
     name: StrictStr = Field(description="The name of the batch.")
-    project: CreateBatchRequestProject
-    callback: Optional[StrictStr] = Field(default=None, description="Callback URL or email for the batch.")
+    project_id: Optional[StrictStr] = Field(default=None, description="A unique identifier for the project.")
+    project_name: Optional[StrictStr] = Field(default=None, description="The name of the project.")
+    callback: Optional[StrictStr] = Field(default=None, description="Callback URL or email for the entity upon completion.")
     staging_batch: Optional[StrictBool] = Field(default=False, description="Whether this is a staging batch.")
-    metadata: Optional[Dict[str, Any]] = Field(default=None, description="Metadata for the batch.")
-    __properties: ClassVar[List[str]] = ["name", "project", "callback", "staging_batch", "metadata"]
+    metadata: Optional[Dict[str, Any]] = Field(default=None, description="Custom metadata for the entity.")
+    __properties: ClassVar[List[str]] = ["name", "project_id", "project_name", "callback", "staging_batch", "metadata"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -74,9 +74,6 @@ class CreateBatchRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of project
-        if self.project:
-            _dict['project'] = self.project.to_dict()
         return _dict
 
     @classmethod
@@ -90,7 +87,8 @@ class CreateBatchRequest(BaseModel):
 
         _obj = cls.model_validate({
             "name": obj.get("name"),
-            "project": CreateBatchRequestProject.from_dict(obj["project"]) if obj.get("project") is not None else None,
+            "project_id": obj.get("project_id"),
+            "project_name": obj.get("project_name"),
             "callback": obj.get("callback"),
             "staging_batch": obj.get("staging_batch") if obj.get("staging_batch") is not None else False,
             "metadata": obj.get("metadata")

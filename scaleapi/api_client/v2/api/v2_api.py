@@ -22,14 +22,15 @@ from typing import List, Optional
 from typing_extensions import Annotated
 from scaleapi.api_client.v2.models.annotation import Annotation
 from scaleapi.api_client.v2.models.batch import Batch
+from scaleapi.api_client.v2.models.batch_operation_request import BatchOperationRequest
 from scaleapi.api_client.v2.models.batch_status import BatchStatus
 from scaleapi.api_client.v2.models.cancel_batch200_response import CancelBatch200Response
 from scaleapi.api_client.v2.models.create_batch_request import CreateBatchRequest
+from scaleapi.api_client.v2.models.create_chat_task_request import CreateChatTaskRequest
 from scaleapi.api_client.v2.models.expandable_enum_batch import ExpandableEnumBatch
 from scaleapi.api_client.v2.models.expandable_enum_deliveries import ExpandableEnumDeliveries
 from scaleapi.api_client.v2.models.expandable_enum_delivery import ExpandableEnumDelivery
 from scaleapi.api_client.v2.models.expandable_enum_task import ExpandableEnumTask
-from scaleapi.api_client.v2.models.finalize_batch_request import FinalizeBatchRequest
 from scaleapi.api_client.v2.models.get_batches_response import GetBatchesResponse
 from scaleapi.api_client.v2.models.get_delivered_tasks_response import GetDeliveredTasksResponse
 from scaleapi.api_client.v2.models.get_deliveries_response import GetDeliveriesResponse
@@ -40,6 +41,7 @@ from scaleapi.api_client.v2.models.pause_batch200_response import PauseBatch200R
 from scaleapi.api_client.v2.models.project import Project
 from scaleapi.api_client.v2.models.resume_batch200_response import ResumeBatch200Response
 from scaleapi.api_client.v2.models.set_batch_metadata_request import SetBatchMetadataRequest
+from scaleapi.api_client.v2.models.set_task_metadata_request import SetTaskMetadataRequest
 from scaleapi.api_client.v2.models.task import Task
 from scaleapi.api_client.v2.models.task_status import TaskStatus
 
@@ -64,7 +66,7 @@ class V2Api:
     @validate_call
     def cancel_batch(
         self,
-        finalize_batch_request: FinalizeBatchRequest,
+        batch_operation_request: BatchOperationRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -82,8 +84,8 @@ class V2Api:
 
         Cancel processing of a [Batch](/core-resources/batch). Unstarted tasks will be cancelled. Completed batches cannot be cancelled.
 
-        :param finalize_batch_request: (required)
-        :type finalize_batch_request: FinalizeBatchRequest
+        :param batch_operation_request: (required)
+        :type batch_operation_request: BatchOperationRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -107,7 +109,7 @@ class V2Api:
         """ # noqa: E501
 
         _param = self._cancel_batch_serialize(
-            finalize_batch_request=finalize_batch_request,
+            batch_operation_request=batch_operation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -132,7 +134,7 @@ class V2Api:
     @validate_call
     def cancel_batch_with_http_info(
         self,
-        finalize_batch_request: FinalizeBatchRequest,
+        batch_operation_request: BatchOperationRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -150,8 +152,8 @@ class V2Api:
 
         Cancel processing of a [Batch](/core-resources/batch). Unstarted tasks will be cancelled. Completed batches cannot be cancelled.
 
-        :param finalize_batch_request: (required)
-        :type finalize_batch_request: FinalizeBatchRequest
+        :param batch_operation_request: (required)
+        :type batch_operation_request: BatchOperationRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -175,7 +177,7 @@ class V2Api:
         """ # noqa: E501
 
         _param = self._cancel_batch_serialize(
-            finalize_batch_request=finalize_batch_request,
+            batch_operation_request=batch_operation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -200,7 +202,7 @@ class V2Api:
     @validate_call
     def cancel_batch_without_preload_content(
         self,
-        finalize_batch_request: FinalizeBatchRequest,
+        batch_operation_request: BatchOperationRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -218,8 +220,8 @@ class V2Api:
 
         Cancel processing of a [Batch](/core-resources/batch). Unstarted tasks will be cancelled. Completed batches cannot be cancelled.
 
-        :param finalize_batch_request: (required)
-        :type finalize_batch_request: FinalizeBatchRequest
+        :param batch_operation_request: (required)
+        :type batch_operation_request: BatchOperationRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -243,7 +245,7 @@ class V2Api:
         """ # noqa: E501
 
         _param = self._cancel_batch_serialize(
-            finalize_batch_request=finalize_batch_request,
+            batch_operation_request=batch_operation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -263,7 +265,7 @@ class V2Api:
 
     def _cancel_batch_serialize(
         self,
-        finalize_batch_request,
+        batch_operation_request,
         _request_auth,
         _content_type,
         _headers,
@@ -289,8 +291,8 @@ class V2Api:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if finalize_batch_request is not None:
-            _body_params = finalize_batch_request
+        if batch_operation_request is not None:
+            _body_params = batch_operation_request
 
 
         # set the HTTP header `Accept`
@@ -618,9 +620,9 @@ class V2Api:
 
 
     @validate_call
-    def finalize_batch(
+    def create_chat_task(
         self,
-        finalize_batch_request: FinalizeBatchRequest,
+        create_chat_task_request: CreateChatTaskRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -633,13 +635,13 @@ class V2Api:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Batch:
-        """Finalize a Batch
+    ) -> Task:
+        """Create a Chat Task
 
-        Move a [Batch](/core-resources/batch) from staging to in-progress status to begin processing tasks.
+        Create a new [Task](/core-resources/task) for GenAI projects. Uses structured task templates, not free-form instructions.
 
-        :param finalize_batch_request: (required)
-        :type finalize_batch_request: FinalizeBatchRequest
+        :param create_chat_task_request: (required)
+        :type create_chat_task_request: CreateChatTaskRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -662,8 +664,8 @@ class V2Api:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._finalize_batch_serialize(
-            finalize_batch_request=finalize_batch_request,
+        _param = self._create_chat_task_serialize(
+            create_chat_task_request=create_chat_task_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -671,7 +673,7 @@ class V2Api:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Batch",
+            '200': "Task",
             '500': "GetBatch500Response",
         }
         response_data = self.api_client.call_api(
@@ -686,9 +688,9 @@ class V2Api:
 
 
     @validate_call
-    def finalize_batch_with_http_info(
+    def create_chat_task_with_http_info(
         self,
-        finalize_batch_request: FinalizeBatchRequest,
+        create_chat_task_request: CreateChatTaskRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -701,13 +703,13 @@ class V2Api:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Batch]:
-        """Finalize a Batch
+    ) -> ApiResponse[Task]:
+        """Create a Chat Task
 
-        Move a [Batch](/core-resources/batch) from staging to in-progress status to begin processing tasks.
+        Create a new [Task](/core-resources/task) for GenAI projects. Uses structured task templates, not free-form instructions.
 
-        :param finalize_batch_request: (required)
-        :type finalize_batch_request: FinalizeBatchRequest
+        :param create_chat_task_request: (required)
+        :type create_chat_task_request: CreateChatTaskRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -730,8 +732,8 @@ class V2Api:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._finalize_batch_serialize(
-            finalize_batch_request=finalize_batch_request,
+        _param = self._create_chat_task_serialize(
+            create_chat_task_request=create_chat_task_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -739,7 +741,7 @@ class V2Api:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Batch",
+            '200': "Task",
             '500': "GetBatch500Response",
         }
         response_data = self.api_client.call_api(
@@ -754,9 +756,9 @@ class V2Api:
 
 
     @validate_call
-    def finalize_batch_without_preload_content(
+    def create_chat_task_without_preload_content(
         self,
-        finalize_batch_request: FinalizeBatchRequest,
+        create_chat_task_request: CreateChatTaskRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -770,12 +772,12 @@ class V2Api:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Finalize a Batch
+        """Create a Chat Task
 
-        Move a [Batch](/core-resources/batch) from staging to in-progress status to begin processing tasks.
+        Create a new [Task](/core-resources/task) for GenAI projects. Uses structured task templates, not free-form instructions.
 
-        :param finalize_batch_request: (required)
-        :type finalize_batch_request: FinalizeBatchRequest
+        :param create_chat_task_request: (required)
+        :type create_chat_task_request: CreateChatTaskRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -798,8 +800,8 @@ class V2Api:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._finalize_batch_serialize(
-            finalize_batch_request=finalize_batch_request,
+        _param = self._create_chat_task_serialize(
+            create_chat_task_request=create_chat_task_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -807,7 +809,7 @@ class V2Api:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Batch",
+            '200': "Task",
             '500': "GetBatch500Response",
         }
         response_data = self.api_client.call_api(
@@ -817,9 +819,9 @@ class V2Api:
         return response_data.response
 
 
-    def _finalize_batch_serialize(
+    def _create_chat_task_serialize(
         self,
-        finalize_batch_request,
+        create_chat_task_request,
         _request_auth,
         _content_type,
         _headers,
@@ -845,8 +847,286 @@ class V2Api:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if finalize_batch_request is not None:
-            _body_params = finalize_batch_request
+        if create_chat_task_request is not None:
+            _body_params = create_chat_task_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'basicAuth',
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/v2/task/chat',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def finalize_batch(
+        self,
+        batch_operation_request: BatchOperationRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> Batch:
+        """Finalize a Batch
+
+        Move a [Batch](/core-resources/batch) from staging to in-progress status to begin processing tasks.
+
+        :param batch_operation_request: (required)
+        :type batch_operation_request: BatchOperationRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._finalize_batch_serialize(
+            batch_operation_request=batch_operation_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Batch",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def finalize_batch_with_http_info(
+        self,
+        batch_operation_request: BatchOperationRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[Batch]:
+        """Finalize a Batch
+
+        Move a [Batch](/core-resources/batch) from staging to in-progress status to begin processing tasks.
+
+        :param batch_operation_request: (required)
+        :type batch_operation_request: BatchOperationRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._finalize_batch_serialize(
+            batch_operation_request=batch_operation_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Batch",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def finalize_batch_without_preload_content(
+        self,
+        batch_operation_request: BatchOperationRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Finalize a Batch
+
+        Move a [Batch](/core-resources/batch) from staging to in-progress status to begin processing tasks.
+
+        :param batch_operation_request: (required)
+        :type batch_operation_request: BatchOperationRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._finalize_batch_serialize(
+            batch_operation_request=batch_operation_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Batch",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _finalize_batch_serialize(
+        self,
+        batch_operation_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if batch_operation_request is not None:
+            _body_params = batch_operation_request
 
 
         # set the HTTP header `Accept`
@@ -4012,7 +4292,7 @@ class V2Api:
     @validate_call
     def pause_batch(
         self,
-        finalize_batch_request: FinalizeBatchRequest,
+        batch_operation_request: BatchOperationRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4030,8 +4310,8 @@ class V2Api:
 
         Pause processing of an in-progress [Batch](/core-resources/batch). Only unstarted tasks will be paused.
 
-        :param finalize_batch_request: (required)
-        :type finalize_batch_request: FinalizeBatchRequest
+        :param batch_operation_request: (required)
+        :type batch_operation_request: BatchOperationRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4055,7 +4335,7 @@ class V2Api:
         """ # noqa: E501
 
         _param = self._pause_batch_serialize(
-            finalize_batch_request=finalize_batch_request,
+            batch_operation_request=batch_operation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4080,7 +4360,7 @@ class V2Api:
     @validate_call
     def pause_batch_with_http_info(
         self,
-        finalize_batch_request: FinalizeBatchRequest,
+        batch_operation_request: BatchOperationRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4098,8 +4378,8 @@ class V2Api:
 
         Pause processing of an in-progress [Batch](/core-resources/batch). Only unstarted tasks will be paused.
 
-        :param finalize_batch_request: (required)
-        :type finalize_batch_request: FinalizeBatchRequest
+        :param batch_operation_request: (required)
+        :type batch_operation_request: BatchOperationRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4123,7 +4403,7 @@ class V2Api:
         """ # noqa: E501
 
         _param = self._pause_batch_serialize(
-            finalize_batch_request=finalize_batch_request,
+            batch_operation_request=batch_operation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4148,7 +4428,7 @@ class V2Api:
     @validate_call
     def pause_batch_without_preload_content(
         self,
-        finalize_batch_request: FinalizeBatchRequest,
+        batch_operation_request: BatchOperationRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4166,8 +4446,8 @@ class V2Api:
 
         Pause processing of an in-progress [Batch](/core-resources/batch). Only unstarted tasks will be paused.
 
-        :param finalize_batch_request: (required)
-        :type finalize_batch_request: FinalizeBatchRequest
+        :param batch_operation_request: (required)
+        :type batch_operation_request: BatchOperationRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4191,7 +4471,7 @@ class V2Api:
         """ # noqa: E501
 
         _param = self._pause_batch_serialize(
-            finalize_batch_request=finalize_batch_request,
+            batch_operation_request=batch_operation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4211,7 +4491,7 @@ class V2Api:
 
     def _pause_batch_serialize(
         self,
-        finalize_batch_request,
+        batch_operation_request,
         _request_auth,
         _content_type,
         _headers,
@@ -4237,8 +4517,8 @@ class V2Api:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if finalize_batch_request is not None:
-            _body_params = finalize_batch_request
+        if batch_operation_request is not None:
+            _body_params = batch_operation_request
 
 
         # set the HTTP header `Accept`
@@ -4290,7 +4570,7 @@ class V2Api:
     @validate_call
     def resume_batch(
         self,
-        finalize_batch_request: FinalizeBatchRequest,
+        batch_operation_request: BatchOperationRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4308,8 +4588,8 @@ class V2Api:
 
         Resume processing of a paused [Batch](/core-resources/batch). Previously paused tasks will be resumed.
 
-        :param finalize_batch_request: (required)
-        :type finalize_batch_request: FinalizeBatchRequest
+        :param batch_operation_request: (required)
+        :type batch_operation_request: BatchOperationRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4333,7 +4613,7 @@ class V2Api:
         """ # noqa: E501
 
         _param = self._resume_batch_serialize(
-            finalize_batch_request=finalize_batch_request,
+            batch_operation_request=batch_operation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4358,7 +4638,7 @@ class V2Api:
     @validate_call
     def resume_batch_with_http_info(
         self,
-        finalize_batch_request: FinalizeBatchRequest,
+        batch_operation_request: BatchOperationRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4376,8 +4656,8 @@ class V2Api:
 
         Resume processing of a paused [Batch](/core-resources/batch). Previously paused tasks will be resumed.
 
-        :param finalize_batch_request: (required)
-        :type finalize_batch_request: FinalizeBatchRequest
+        :param batch_operation_request: (required)
+        :type batch_operation_request: BatchOperationRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4401,7 +4681,7 @@ class V2Api:
         """ # noqa: E501
 
         _param = self._resume_batch_serialize(
-            finalize_batch_request=finalize_batch_request,
+            batch_operation_request=batch_operation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4426,7 +4706,7 @@ class V2Api:
     @validate_call
     def resume_batch_without_preload_content(
         self,
-        finalize_batch_request: FinalizeBatchRequest,
+        batch_operation_request: BatchOperationRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4444,8 +4724,8 @@ class V2Api:
 
         Resume processing of a paused [Batch](/core-resources/batch). Previously paused tasks will be resumed.
 
-        :param finalize_batch_request: (required)
-        :type finalize_batch_request: FinalizeBatchRequest
+        :param batch_operation_request: (required)
+        :type batch_operation_request: BatchOperationRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4469,7 +4749,7 @@ class V2Api:
         """ # noqa: E501
 
         _param = self._resume_batch_serialize(
-            finalize_batch_request=finalize_batch_request,
+            batch_operation_request=batch_operation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4489,7 +4769,7 @@ class V2Api:
 
     def _resume_batch_serialize(
         self,
-        finalize_batch_request,
+        batch_operation_request,
         _request_auth,
         _content_type,
         _headers,
@@ -4515,8 +4795,8 @@ class V2Api:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if finalize_batch_request is not None:
-            _body_params = finalize_batch_request
+        if batch_operation_request is not None:
+            _body_params = batch_operation_request
 
 
         # set the HTTP header `Accept`
@@ -4828,6 +5108,284 @@ class V2Api:
         return self.api_client.param_serialize(
             method='POST',
             resource_path='/v2/batch/metadata',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def set_task_metadata(
+        self,
+        set_task_metadata_request: SetTaskMetadataRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> Task:
+        """Set Task Metadata
+
+        Update the metadata for a [Task](/core-resources/task).
+
+        :param set_task_metadata_request: (required)
+        :type set_task_metadata_request: SetTaskMetadataRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._set_task_metadata_serialize(
+            set_task_metadata_request=set_task_metadata_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Task",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def set_task_metadata_with_http_info(
+        self,
+        set_task_metadata_request: SetTaskMetadataRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[Task]:
+        """Set Task Metadata
+
+        Update the metadata for a [Task](/core-resources/task).
+
+        :param set_task_metadata_request: (required)
+        :type set_task_metadata_request: SetTaskMetadataRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._set_task_metadata_serialize(
+            set_task_metadata_request=set_task_metadata_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Task",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def set_task_metadata_without_preload_content(
+        self,
+        set_task_metadata_request: SetTaskMetadataRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Set Task Metadata
+
+        Update the metadata for a [Task](/core-resources/task).
+
+        :param set_task_metadata_request: (required)
+        :type set_task_metadata_request: SetTaskMetadataRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._set_task_metadata_serialize(
+            set_task_metadata_request=set_task_metadata_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Task",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _set_task_metadata_serialize(
+        self,
+        set_task_metadata_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if set_task_metadata_request is not None:
+            _body_params = set_task_metadata_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'basicAuth',
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/v2/task/metadata',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
