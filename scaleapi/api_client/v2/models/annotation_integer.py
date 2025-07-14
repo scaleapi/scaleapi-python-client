@@ -35,9 +35,10 @@ class AnnotationInteger(BaseModel):
     not_applicable: Optional[StrictBool] = Field(default=None, description="This is set when the annotation is not applicable in the context.")
     cannot_assess: Optional[StrictBool] = Field(default=None, description="This is set when the annotation cannot be assessed in the context.")
     metadata: Optional[AnnotationMetadata] = None
+    justification: Optional[StrictStr] = Field(default=None, description="A plain text field.")
     value: Optional[StrictInt] = Field(default=None, description="Integer type annotation value.")
     possible_values: Optional[List[StrictInt]] = Field(default=None, description="The possible values for this annotation.")
-    __properties: ClassVar[List[str]] = ["id", "key", "type", "title", "description", "labels", "not_applicable", "cannot_assess", "metadata", "value", "possible_values"]
+    __properties: ClassVar[List[str]] = ["id", "key", "type", "title", "description", "labels", "not_applicable", "cannot_assess", "metadata", "justification", "value", "possible_values"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -103,6 +104,7 @@ class AnnotationInteger(BaseModel):
             "not_applicable": obj.get("not_applicable"),
             "cannot_assess": obj.get("cannot_assess"),
             "metadata": AnnotationMetadata.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None,
+            "justification": obj.get("justification"),
             "value": obj.get("value"),
             "possible_values": obj.get("possible_values")
         })
@@ -111,3 +113,4 @@ class AnnotationInteger(BaseModel):
 from scaleapi.api_client.v2.models.annotation_metadata import AnnotationMetadata
 # TODO: Rewrite to not use raise_errors
 AnnotationInteger.model_rebuild(raise_errors=False)
+

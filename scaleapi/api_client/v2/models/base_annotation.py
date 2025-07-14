@@ -36,7 +36,8 @@ class BaseAnnotation(BaseModel):
     not_applicable: Optional[StrictBool] = Field(default=None, description="This is set when the annotation is not applicable in the context.")
     cannot_assess: Optional[StrictBool] = Field(default=None, description="This is set when the annotation cannot be assessed in the context.")
     metadata: Optional[AnnotationMetadata] = None
-    __properties: ClassVar[List[str]] = ["id", "key", "type", "title", "description", "labels", "not_applicable", "cannot_assess", "metadata"]
+    justification: Optional[StrictStr] = Field(default=None, description="A plain text field.")
+    __properties: ClassVar[List[str]] = ["id", "key", "type", "title", "description", "labels", "not_applicable", "cannot_assess", "metadata", "justification"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -101,6 +102,9 @@ class BaseAnnotation(BaseModel):
             "labels": obj.get("labels"),
             "not_applicable": obj.get("not_applicable"),
             "cannot_assess": obj.get("cannot_assess"),
-            "metadata": AnnotationMetadata.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None
+            "metadata": AnnotationMetadata.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None,
+            "justification": obj.get("justification")
         })
         return _obj
+
+

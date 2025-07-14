@@ -35,8 +35,9 @@ class AnnotationText(BaseModel):
     not_applicable: Optional[StrictBool] = Field(default=None, description="This is set when the annotation is not applicable in the context.")
     cannot_assess: Optional[StrictBool] = Field(default=None, description="This is set when the annotation cannot be assessed in the context.")
     metadata: Optional[AnnotationMetadata] = None
+    justification: Optional[StrictStr] = Field(default=None, description="A plain text field.")
     value: Optional[StrictStr] = Field(default=None, description="String type annotation value.")
-    __properties: ClassVar[List[str]] = ["id", "key", "type", "title", "description", "labels", "not_applicable", "cannot_assess", "metadata", "value"]
+    __properties: ClassVar[List[str]] = ["id", "key", "type", "title", "description", "labels", "not_applicable", "cannot_assess", "metadata", "justification", "value"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -102,6 +103,7 @@ class AnnotationText(BaseModel):
             "not_applicable": obj.get("not_applicable"),
             "cannot_assess": obj.get("cannot_assess"),
             "metadata": AnnotationMetadata.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None,
+            "justification": obj.get("justification"),
             "value": obj.get("value")
         })
         return _obj
@@ -109,3 +111,4 @@ class AnnotationText(BaseModel):
 from scaleapi.api_client.v2.models.annotation_metadata import AnnotationMetadata
 # TODO: Rewrite to not use raise_errors
 AnnotationText.model_rebuild(raise_errors=False)
+

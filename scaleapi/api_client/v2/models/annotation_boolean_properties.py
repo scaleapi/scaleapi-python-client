@@ -86,3 +86,5 @@ class AnnotationBooleanProperties(BaseModel):
             "possible_values": obj.get("possible_values")
         })
         return _obj
+
+

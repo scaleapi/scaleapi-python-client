@@ -91,3 +91,4 @@ class AnnotationMetadata(BaseModel):
 from scaleapi.api_client.v2.models.expandable_annotation import ExpandableAnnotation
 # TODO: Rewrite to not use raise_errors
 AnnotationMetadata.model_rebuild(raise_errors=False)
+

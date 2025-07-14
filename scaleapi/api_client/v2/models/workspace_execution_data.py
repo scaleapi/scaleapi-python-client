@@ -90,3 +90,5 @@ class WorkspaceExecutionData(BaseModel):
             "result": WorkspaceExecutionDataResult.from_dict(obj["result"]) if obj.get("result") is not None else None
         })
         return _obj
+
+

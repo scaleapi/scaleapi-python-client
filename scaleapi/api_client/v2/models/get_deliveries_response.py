@@ -92,3 +92,5 @@ class GetDeliveriesResponse(BaseModel):
             "deliveries": [Delivery.from_dict(_item) for _item in obj["deliveries"]] if obj.get("deliveries") is not None else None
         })
         return _obj
+
+

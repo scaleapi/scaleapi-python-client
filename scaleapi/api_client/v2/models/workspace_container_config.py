@@ -96,3 +96,5 @@ class WorkspaceContainerConfig(BaseModel):
             "workspace_image_version": obj.get("workspace_image_version")
         })
         return _obj
+
+

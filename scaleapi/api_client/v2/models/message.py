@@ -23,6 +23,7 @@ from scaleapi.api_client.v2.models.annotation import Annotation
 from scaleapi.api_client.v2.models.message_content import MessageContent
 from scaleapi.api_client.v2.models.message_role import MessageRole
 from scaleapi.api_client.v2.models.model_parameters import ModelParameters
+from scaleapi.api_client.v2.models.rubric_evaluation import RubricEvaluation
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -35,7 +36,8 @@ class Message(BaseModel):
     source_id: StrictStr = Field(description="A unique identifier for the source.")
     model_parameters: Optional[ModelParameters] = None
     annotations: List[Annotation] = Field(description="Array of annotations.")
-    __properties: ClassVar[List[str]] = ["role", "content", "source_id", "model_parameters", "annotations"]
+    rubric_evaluations: Optional[List[RubricEvaluation]] = None
+    __properties: ClassVar[List[str]] = ["role", "content", "source_id", "model_parameters", "annotations", "rubric_evaluations"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -90,6 +92,13 @@ class Message(BaseModel):
                 if _item_annotations:
                     _items.append(_item_annotations.to_dict())
             _dict['annotations'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in rubric_evaluations (list)
+        _items = []
+        if self.rubric_evaluations:
+            for _item_rubric_evaluations in self.rubric_evaluations:
+                if _item_rubric_evaluations:
+                    _items.append(_item_rubric_evaluations.to_dict())
+            _dict['rubric_evaluations'] = _items
         return _dict
 
     @classmethod
@@ -106,6 +115,9 @@ class Message(BaseModel):
             "content": MessageContent.from_dict(obj["content"]) if obj.get("content") is not None else None,
             "source_id": obj.get("source_id"),
             "model_parameters": ModelParameters.from_dict(obj["model_parameters"]) if obj.get("model_parameters") is not None else None,
-            "annotations": [Annotation.from_dict(_item) for _item in obj["annotations"]] if obj.get("annotations") is not None else None
+            "annotations": [Annotation.from_dict(_item) for _item in obj["annotations"]] if obj.get("annotations") is not None else None,
+            "rubric_evaluations": [RubricEvaluation.from_dict(_item) for _item in obj["rubric_evaluations"]] if obj.get("rubric_evaluations") is not None else None
         })
         return _obj
+
+

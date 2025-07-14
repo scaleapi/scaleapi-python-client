@@ -17,16 +17,16 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
 class Reasoning(BaseModel):
     """
-    The reasoning for the content of a message.
+    Reasoning
     """ # noqa: E501
-    content: Optional[StrictStr] = None
+    content: Optional[StrictStr] = Field(default=None, description="The reasoning for the content of a message.")
     __properties: ClassVar[List[str]] = ["content"]
 
     model_config = ConfigDict(
@@ -84,3 +84,5 @@ class Reasoning(BaseModel):
             "content": obj.get("content")
         })
         return _obj
+
+
