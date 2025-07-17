@@ -274,6 +274,9 @@ if HAS_TEST_API_KEY:  # noqa: C901
         pause_request = BatchOperationRequest(batch_id=batch_id)
         client.v2.pause_batch(batch_operation_request=pause_request)
 
+        # Wait for status to update
+        time.sleep(2)
+
         # Resume the batch
         resume_request = BatchOperationRequest(batch_id=batch_id)
         client.v2.resume_batch(batch_operation_request=resume_request)

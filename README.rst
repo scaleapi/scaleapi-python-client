@@ -919,7 +919,7 @@ ______
 
 If your project is using V2 API, you can use the ``.v2`` API client and also ``v2_get_tasks()`` to retrieve tasks in the V2 API format. See our `V2 API documentation`__.
 
-__ https://scale.com/docs/api-reference
+__ https://docs.genai.scale.com/get-started/quickstart
 
 .. list-table::
    :widths: 25 25 50
