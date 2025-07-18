@@ -17,27 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from scaleapi.api_client.v2.models.batch_status import BatchStatus
-from scaleapi.api_client.v2.models.expandable_project import ExpandableProject
+from scaleapi.api_client.v2.models.batch import Batch
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Batch(BaseModel):
+class PauseBatch200Response(BaseModel):
     """
-    Batch
+    PauseBatch200Response
     """ # noqa: E501
-    id: StrictStr = Field(description="A unique identifier for the batch.")
-    name: StrictStr = Field(description="The name of the batch.")
-    project: ExpandableProject = Field(description="Project ID or [Project](/core-resources/project) associated with the batch.")
-    created_at: datetime = Field(description="A timestamp formatted as an ISO 8601 date-time string.")
-    completed_at: Optional[datetime] = Field(default=None, description="A timestamp formatted as an ISO 8601 date-time string.")
-    status: BatchStatus
-    callback: Optional[StrictStr] = Field(default=None, description="Callback URL or email for the entity upon completion.")
-    metadata: Dict[str, Any] = Field(description="Custom metadata for the entity.")
-    __properties: ClassVar[List[str]] = ["id", "name", "project", "created_at", "completed_at", "status", "callback", "metadata"]
+    batch: Optional[Batch] = None
+    message: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["batch", "message"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -58,7 +50,7 @@ class Batch(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Batch from a JSON string"""
+        """Create an instance of PauseBatch200Response from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -79,14 +71,14 @@ class Batch(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of project
-        if self.project:
-            _dict['project'] = self.project.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of batch
+        if self.batch:
+            _dict['batch'] = self.batch.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Batch from a dict"""
+        """Create an instance of PauseBatch200Response from a dict"""
         if obj is None:
             return None
 
@@ -94,13 +86,7 @@ class Batch(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "name": obj.get("name"),
-            "project": ExpandableProject.from_dict(obj["project"]) if obj.get("project") is not None else None,
-            "created_at": obj.get("created_at"),
-            "completed_at": obj.get("completed_at"),
-            "status": obj.get("status"),
-            "callback": obj.get("callback"),
-            "metadata": obj.get("metadata")
+            "batch": Batch.from_dict(obj["batch"]) if obj.get("batch") is not None else None,
+            "message": obj.get("message")
         })
         return _obj

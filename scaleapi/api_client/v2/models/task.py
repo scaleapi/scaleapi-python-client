@@ -39,7 +39,7 @@ class Task(BaseModel):
     status: TaskStatus = Field(description="Current status of the task.")
     created_at: datetime = Field(description="A timestamp formatted as an ISO 8601 date-time string.")
     completed_at: Optional[datetime] = Field(default=None, description="A timestamp formatted as an ISO 8601 date-time string.")
-    metadata: Optional[Dict[str, Any]] = Field(default=None, description="Task metadata defined during task creation.")
+    metadata: Optional[Dict[str, Any]] = Field(default=None, description="Custom metadata for the entity.")
     threads: Optional[List[Thread]] = Field(default=None, description="Threads associated with the task. Tasks that do not have a `status` of `completed` will have an empty `threads` array.")
     errors: Optional[List[ErrorDetail]] = Field(default=None, description="Errors associated with the task. Available when the task status is `error`")
     sensitive_content_reports: Optional[List[SensitiveContentReport]] = Field(default=None, description="Reports of sensitive content within the task. Available when the task status is `completed`. `threads` will not exist when the task is reported.")

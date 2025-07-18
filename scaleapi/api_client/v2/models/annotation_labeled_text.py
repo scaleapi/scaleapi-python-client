@@ -19,12 +19,13 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from scaleapi.api_client.v2.models.labeled_text_value import LabeledTextValue
 from typing import Optional, Set
 from typing_extensions import Self
 
-class AnnotationCategory(BaseModel):
+class AnnotationLabeledText(BaseModel):
     """
-    AnnotationCategory
+    A labeled text annotation.
     """ # noqa: E501
     id: StrictStr = Field(description="Unique identifier for an annotation.")
     key: StrictStr = Field(description="Key for the annotation.")
@@ -36,9 +37,8 @@ class AnnotationCategory(BaseModel):
     cannot_assess: Optional[StrictBool] = Field(default=None, description="This is set when the annotation cannot be assessed in the context.")
     metadata: Optional[AnnotationMetadata] = None
     justification: Optional[StrictStr] = Field(default=None, description="A plain text field.")
-    value: Optional[StrictStr] = Field(default=None, description="Single-select category annotation.")
-    possible_values: Optional[List[StrictStr]] = Field(default=None, description="The possible values for this annotation.")
-    __properties: ClassVar[List[str]] = ["id", "key", "type", "title", "description", "labels", "not_applicable", "cannot_assess", "metadata", "justification", "value", "possible_values"]
+    value: Optional[List[LabeledTextValue]] = None
+    __properties: ClassVar[List[str]] = ["id", "key", "type", "title", "description", "labels", "not_applicable", "cannot_assess", "metadata", "justification", "value"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -59,7 +59,7 @@ class AnnotationCategory(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AnnotationCategory from a JSON string"""
+        """Create an instance of AnnotationLabeledText from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -83,11 +83,18 @@ class AnnotationCategory(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of metadata
         if self.metadata:
             _dict['metadata'] = self.metadata.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in value (list)
+        _items = []
+        if self.value:
+            for _item_value in self.value:
+                if _item_value:
+                    _items.append(_item_value.to_dict())
+            _dict['value'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AnnotationCategory from a dict"""
+        """Create an instance of AnnotationLabeledText from a dict"""
         if obj is None:
             return None
 
@@ -105,11 +112,10 @@ class AnnotationCategory(BaseModel):
             "cannot_assess": obj.get("cannot_assess"),
             "metadata": AnnotationMetadata.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None,
             "justification": obj.get("justification"),
-            "value": obj.get("value"),
-            "possible_values": obj.get("possible_values")
+            "value": [LabeledTextValue.from_dict(_item) for _item in obj["value"]] if obj.get("value") is not None else None
         })
         return _obj
 
 from scaleapi.api_client.v2.models.annotation_metadata import AnnotationMetadata
 # TODO: Rewrite to not use raise_errors
-AnnotationCategory.model_rebuild(raise_errors=False)
+AnnotationLabeledText.model_rebuild(raise_errors=False)

@@ -34,7 +34,7 @@ class MessageContent(BaseModel):
     reference_texts: Optional[List[ReferenceText]] = Field(default=None, description="A list of files or attachments associated with the message.")
     attachments: Optional[List[DetailedFile]] = Field(default=None, description="A list of files or attachments associated with the message.")
     chunks: Optional[List[Chunk]] = None
-    reasoning: Optional[List[Reasoning]] = None
+    reasoning: Optional[List[Reasoning]] = Field(default=None, description="List of reasoning blocks for a message.")
     __properties: ClassVar[List[str]] = ["text", "reference_texts", "attachments", "chunks", "reasoning"]
 
     model_config = ConfigDict(

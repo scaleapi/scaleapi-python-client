@@ -32,8 +32,11 @@ ANNOTATION_ONE_OF_SCHEMAS = [
     "AnnotationCategoryMultiple",
     "AnnotationFile",
     "AnnotationInteger",
+    "AnnotationLabeledText",
     "AnnotationRankedChoices",
     "AnnotationRankedGroups",
+    "AnnotationRubricCriteria",
+    "AnnotationRubricRating",
     "AnnotationText",
     "AnnotationWorkspaceContainer",
 ]
@@ -56,12 +59,18 @@ class Annotation(BaseModel):
     oneof_schema_5_validator: Optional[AnnotationCategoryMultiple] = None
     # data type: AnnotationFile
     oneof_schema_6_validator: Optional[AnnotationFile] = None
+    # data type: AnnotationLabeledText
+    oneof_schema_7_validator: Optional[AnnotationLabeledText] = None
     # data type: AnnotationRankedChoices
-    oneof_schema_7_validator: Optional[AnnotationRankedChoices] = None
+    oneof_schema_8_validator: Optional[AnnotationRankedChoices] = None
     # data type: AnnotationRankedGroups
-    oneof_schema_8_validator: Optional[AnnotationRankedGroups] = None
+    oneof_schema_9_validator: Optional[AnnotationRankedGroups] = None
+    # data type: AnnotationRubricCriteria
+    oneof_schema_10_validator: Optional[AnnotationRubricCriteria] = None
+    # data type: AnnotationRubricRating
+    oneof_schema_11_validator: Optional[AnnotationRubricRating] = None
     # data type: AnnotationWorkspaceContainer
-    oneof_schema_9_validator: Optional[AnnotationWorkspaceContainer] = None
+    oneof_schema_12_validator: Optional[AnnotationWorkspaceContainer] = None
     actual_instance: Optional[
         Union[
             AnnotationBoolean,
@@ -69,8 +78,11 @@ class Annotation(BaseModel):
             AnnotationCategoryMultiple,
             AnnotationFile,
             AnnotationInteger,
+            AnnotationLabeledText,
             AnnotationRankedChoices,
             AnnotationRankedGroups,
+            AnnotationRubricCriteria,
+            AnnotationRubricRating,
             AnnotationText,
             AnnotationWorkspaceContainer,
         ]
@@ -81,8 +93,11 @@ class Annotation(BaseModel):
         "AnnotationCategoryMultiple",
         "AnnotationFile",
         "AnnotationInteger",
+        "AnnotationLabeledText",
         "AnnotationRankedChoices",
         "AnnotationRankedGroups",
+        "AnnotationRubricCriteria",
+        "AnnotationRubricRating",
         "AnnotationText",
         "AnnotationWorkspaceContainer",
     }
@@ -155,6 +170,13 @@ class Annotation(BaseModel):
             )
         else:
             match += 1
+        # validate data type: AnnotationLabeledText
+        if not isinstance(v, AnnotationLabeledText):
+            error_messages.append(
+                f"Error! Input type `{type(v)}` is not `AnnotationLabeledText`"
+            )
+        else:
+            match += 1
         # validate data type: AnnotationRankedChoices
         if not isinstance(v, AnnotationRankedChoices):
             error_messages.append(
@@ -166,6 +188,20 @@ class Annotation(BaseModel):
         if not isinstance(v, AnnotationRankedGroups):
             error_messages.append(
                 f"Error! Input type `{type(v)}` is not `AnnotationRankedGroups`"
+            )
+        else:
+            match += 1
+        # validate data type: AnnotationRubricCriteria
+        if not isinstance(v, AnnotationRubricCriteria):
+            error_messages.append(
+                f"Error! Input type `{type(v)}` is not `AnnotationRubricCriteria`"
+            )
+        else:
+            match += 1
+        # validate data type: AnnotationRubricRating
+        if not isinstance(v, AnnotationRubricRating):
+            error_messages.append(
+                f"Error! Input type `{type(v)}` is not `AnnotationRubricRating`"
             )
         else:
             match += 1
@@ -226,11 +262,20 @@ class Annotation(BaseModel):
             elif annotation_type == "file":
                 instance.actual_instance = AnnotationFile.from_json(json_str)
                 return instance
+            elif annotation_type == "labeled_text":
+                instance.actual_instance = AnnotationLabeledText.from_json(json_str)
+                return instance
             elif annotation_type == "ranked_choices":
                 instance.actual_instance = AnnotationRankedChoices.from_json(json_str)
                 return instance
             elif annotation_type == "ranked_groups":
                 instance.actual_instance = AnnotationRankedGroups.from_json(json_str)
+                return instance
+            elif annotation_type == "rubric_criteria":
+                instance.actual_instance = AnnotationRubricCriteria.from_json(json_str)
+                return instance
+            elif annotation_type == "rubric_rating":
+                instance.actual_instance = AnnotationRubricRating.from_json(json_str)
                 return instance
             elif annotation_type == "workspace_container":
                 instance.actual_instance = AnnotationWorkspaceContainer.from_json(
@@ -282,6 +327,12 @@ class Annotation(BaseModel):
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
+        # deserialize data into AnnotationLabeledText
+        try:
+            instance.actual_instance = AnnotationLabeledText.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
         # deserialize data into AnnotationRankedChoices
         try:
             instance.actual_instance = AnnotationRankedChoices.from_json(json_str)
@@ -291,6 +342,18 @@ class Annotation(BaseModel):
         # deserialize data into AnnotationRankedGroups
         try:
             instance.actual_instance = AnnotationRankedGroups.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into AnnotationRubricCriteria
+        try:
+            instance.actual_instance = AnnotationRubricCriteria.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into AnnotationRubricRating
+        try:
+            instance.actual_instance = AnnotationRubricRating.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
@@ -338,8 +401,11 @@ class Annotation(BaseModel):
             AnnotationCategoryMultiple,
             AnnotationFile,
             AnnotationInteger,
+            AnnotationLabeledText,
             AnnotationRankedChoices,
             AnnotationRankedGroups,
+            AnnotationRubricCriteria,
+            AnnotationRubricRating,
             AnnotationText,
             AnnotationWorkspaceContainer,
         ]
@@ -368,12 +434,15 @@ from scaleapi.api_client.v2.models.annotation_category_multiple import (
 )
 from scaleapi.api_client.v2.models.annotation_file import AnnotationFile
 from scaleapi.api_client.v2.models.annotation_integer import AnnotationInteger
+from scaleapi.api_client.v2.models.annotation_labeled_text import AnnotationLabeledText
 from scaleapi.api_client.v2.models.annotation_ranked_choices import (
     AnnotationRankedChoices,
 )
 from scaleapi.api_client.v2.models.annotation_ranked_groups import (
     AnnotationRankedGroups,
 )
+from scaleapi.api_client.v2.models.annotation_rubric_criteria import AnnotationRubricCriteria
+from scaleapi.api_client.v2.models.annotation_rubric_rating import AnnotationRubricRating
 from scaleapi.api_client.v2.models.annotation_text import AnnotationText
 from scaleapi.api_client.v2.models.annotation_workspace_container import (
     AnnotationWorkspaceContainer,

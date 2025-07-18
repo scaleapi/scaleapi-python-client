@@ -17,8 +17,10 @@ import pprint
 import re  # noqa: F401
 import json
 
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
+from scaleapi.api_client.v2.models.gen_ai_project_type import GenAIProjectType
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -28,7 +30,10 @@ class Project(BaseModel):
     """ # noqa: E501
     id: StrictStr = Field(description="A unique identifier for the project.")
     name: StrictStr = Field(description="The name of the project.")
-    __properties: ClassVar[List[str]] = ["id", "name"]
+    created_at: datetime = Field(description="A timestamp formatted as an ISO 8601 date-time string.")
+    types: Optional[List[GenAIProjectType]] = Field(default=None, description="List of project types associated with the project.")
+    models: Optional[List[StrictStr]] = Field(default=None, description="List of models associated with the project.")
+    __properties: ClassVar[List[str]] = ["id", "name", "created_at", "types", "models"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -83,6 +88,9 @@ class Project(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "name": obj.get("name")
+            "name": obj.get("name"),
+            "created_at": obj.get("created_at"),
+            "types": obj.get("types"),
+            "models": obj.get("models")
         })
         return _obj
