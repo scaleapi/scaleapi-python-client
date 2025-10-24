@@ -20,8 +20,8 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from scaleapi.api_client.v2.models.dataset_delivery_dataset import DatasetDeliveryDataset
 from scaleapi.api_client.v2.models.dataset_delivery_metadata import DatasetDeliveryMetadata
-from scaleapi.api_client.v2.models.expandable_dataset import ExpandableDataset
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -32,7 +32,7 @@ class DatasetDelivery(BaseModel):
     id: StrictStr = Field(description="Unique identifier for a delivery")
     name: StrictStr = Field(description="The name of the delivery")
     delivered_at: datetime = Field(description="A timestamp formatted as an ISO 8601 date-time string.")
-    dataset: Optional[ExpandableDataset] = None
+    dataset: Optional[DatasetDeliveryDataset] = None
     metadata: DatasetDeliveryMetadata
     __properties: ClassVar[List[str]] = ["id", "name", "delivered_at", "dataset", "metadata"]
 
@@ -97,7 +97,7 @@ class DatasetDelivery(BaseModel):
             "id": obj.get("id"),
             "name": obj.get("name"),
             "delivered_at": obj.get("delivered_at"),
-            "dataset": ExpandableDataset.from_dict(obj["dataset"]) if obj.get("dataset") is not None else None,
+            "dataset": DatasetDeliveryDataset.from_dict(obj["dataset"]) if obj.get("dataset") is not None else None,
             "metadata": DatasetDeliveryMetadata.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None
         })
         return _obj

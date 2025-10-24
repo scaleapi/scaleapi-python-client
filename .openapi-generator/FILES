@@ -52,6 +52,7 @@ scaleapi/api_client/v2/models/criterion_definition.py
 scaleapi/api_client/v2/models/criterion_evaluation.py
 scaleapi/api_client/v2/models/dataset.py
 scaleapi/api_client/v2/models/dataset_delivery.py
+scaleapi/api_client/v2/models/dataset_delivery_dataset.py
 scaleapi/api_client/v2/models/dataset_delivery_metadata.py
 scaleapi/api_client/v2/models/dataset_task.py
 scaleapi/api_client/v2/models/delivery.py

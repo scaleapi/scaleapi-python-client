@@ -77,6 +77,7 @@ from scaleapi.api_client.v2.models.criterion_definition import CriterionDefiniti
 from scaleapi.api_client.v2.models.criterion_evaluation import CriterionEvaluation
 from scaleapi.api_client.v2.models.dataset import Dataset
 from scaleapi.api_client.v2.models.dataset_delivery import DatasetDelivery
+from scaleapi.api_client.v2.models.dataset_delivery_dataset import DatasetDeliveryDataset
 from scaleapi.api_client.v2.models.dataset_delivery_metadata import DatasetDeliveryMetadata
 from scaleapi.api_client.v2.models.dataset_task import DatasetTask
 from scaleapi.api_client.v2.models.delivery import Delivery

@@ -17,23 +17,23 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from scaleapi.api_client.v2.models.delivery import Delivery
+from scaleapi.api_client.v2.models.dataset import Dataset
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-EXPANDABLEDELIVERY_ONE_OF_SCHEMAS = ["Delivery", "str"]
+DATASETDELIVERYDATASET_ONE_OF_SCHEMAS = ["Dataset", "str"]
 
-class ExpandableDelivery(BaseModel):
+class DatasetDeliveryDataset(BaseModel):
     """
-    Delivery ID or [Delivery](/core-resources/delivery) associated with the task.
+    DatasetDeliveryDataset
     """
-    # data type: Delivery
-    oneof_schema_1_validator: Optional[Delivery] = None
     # data type: str
-    oneof_schema_2_validator: Optional[StrictStr] = Field(default=None, description="A unique identifier for the delivery.")
-    actual_instance: Optional[Union[Delivery, str]] = None
-    one_of_schemas: Set[str] = { "Delivery", "str" }
+    oneof_schema_1_validator: Optional[StrictStr] = Field(default=None, description="Unique identifier for a dataset")
+    # data type: Dataset
+    oneof_schema_2_validator: Optional[Dataset] = None
+    actual_instance: Optional[Union[Dataset, str]] = None
+    one_of_schemas: Set[str] = { "Dataset", "str" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -53,26 +53,26 @@ class ExpandableDelivery(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_oneof(cls, v):
-        instance = ExpandableDelivery.model_construct()
+        instance = DatasetDeliveryDataset.model_construct()
         error_messages = []
         match = 0
-        # validate data type: Delivery
-        if not isinstance(v, Delivery):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `Delivery`")
-        else:
-            match += 1
         # validate data type: str
         try:
-            instance.oneof_schema_2_validator = v
+            instance.oneof_schema_1_validator = v
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
+        # validate data type: Dataset
+        if not isinstance(v, Dataset):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `Dataset`")
+        else:
+            match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in ExpandableDelivery with oneOf schemas: Delivery, str. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in DatasetDeliveryDataset with oneOf schemas: Dataset, str. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in ExpandableDelivery with oneOf schemas: Delivery, str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in DatasetDeliveryDataset with oneOf schemas: Dataset, str. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -87,28 +87,28 @@ class ExpandableDelivery(BaseModel):
         error_messages = []
         match = 0
 
-        # deserialize data into Delivery
-        try:
-            instance.actual_instance = Delivery.from_json(json_str)
-            match += 1
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
         # deserialize data into str
         try:
             # validation
-            instance.oneof_schema_2_validator = json.loads(json_str)
+            instance.oneof_schema_1_validator = json.loads(json_str)
             # assign value to actual_instance
-            instance.actual_instance = instance.oneof_schema_2_validator
+            instance.actual_instance = instance.oneof_schema_1_validator
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into Dataset
+        try:
+            instance.actual_instance = Dataset.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into ExpandableDelivery with oneOf schemas: Delivery, str. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into DatasetDeliveryDataset with oneOf schemas: Dataset, str. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into ExpandableDelivery with oneOf schemas: Delivery, str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into DatasetDeliveryDataset with oneOf schemas: Dataset, str. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -122,7 +122,7 @@ class ExpandableDelivery(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], Delivery, str]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], Dataset, str]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None
