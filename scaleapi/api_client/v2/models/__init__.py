@@ -58,6 +58,10 @@ from scaleapi.api_client.v2.models.create_batch_request import CreateBatchReques
 from scaleapi.api_client.v2.models.create_chat_task_request import CreateChatTaskRequest
 from scaleapi.api_client.v2.models.criterion_definition import CriterionDefinition
 from scaleapi.api_client.v2.models.criterion_evaluation import CriterionEvaluation
+from scaleapi.api_client.v2.models.dataset import Dataset
+from scaleapi.api_client.v2.models.dataset_delivery import DatasetDelivery
+from scaleapi.api_client.v2.models.dataset_delivery_metadata import DatasetDeliveryMetadata
+from scaleapi.api_client.v2.models.dataset_task import DatasetTask
 from scaleapi.api_client.v2.models.delivery import Delivery
 from scaleapi.api_client.v2.models.detailed_file import DetailedFile
 from scaleapi.api_client.v2.models.error_detail import ErrorDetail
@@ -65,8 +69,12 @@ from scaleapi.api_client.v2.models.error_type import ErrorType
 from scaleapi.api_client.v2.models.expandable import Expandable
 from scaleapi.api_client.v2.models.expandable_annotation import ExpandableAnnotation
 from scaleapi.api_client.v2.models.expandable_batch import ExpandableBatch
+from scaleapi.api_client.v2.models.expandable_dataset import ExpandableDataset
+from scaleapi.api_client.v2.models.expandable_dataset_delivery import ExpandableDatasetDelivery
 from scaleapi.api_client.v2.models.expandable_delivery import ExpandableDelivery
 from scaleapi.api_client.v2.models.expandable_enum_batch import ExpandableEnumBatch
+from scaleapi.api_client.v2.models.expandable_enum_dataset_task import ExpandableEnumDatasetTask
+from scaleapi.api_client.v2.models.expandable_enum_datasets_deliveries import ExpandableEnumDatasetsDeliveries
 from scaleapi.api_client.v2.models.expandable_enum_deliveries import ExpandableEnumDeliveries
 from scaleapi.api_client.v2.models.expandable_enum_delivery import ExpandableEnumDelivery
 from scaleapi.api_client.v2.models.expandable_enum_task import ExpandableEnumTask
@@ -74,6 +82,11 @@ from scaleapi.api_client.v2.models.expandable_project import ExpandableProject
 from scaleapi.api_client.v2.models.gen_ai_project_type import GenAIProjectType
 from scaleapi.api_client.v2.models.get_batch500_response import GetBatch500Response
 from scaleapi.api_client.v2.models.get_batches_response import GetBatchesResponse
+from scaleapi.api_client.v2.models.get_dataset_deliveries_response import GetDatasetDeliveriesResponse
+from scaleapi.api_client.v2.models.get_dataset_delivery_response import GetDatasetDeliveryResponse
+from scaleapi.api_client.v2.models.get_dataset_task_response_url404_response import GetDatasetTaskResponseUrl404Response
+from scaleapi.api_client.v2.models.get_dataset_tasks_response import GetDatasetTasksResponse
+from scaleapi.api_client.v2.models.get_datasets_response import GetDatasetsResponse
 from scaleapi.api_client.v2.models.get_delivered_tasks_response import GetDeliveredTasksResponse
 from scaleapi.api_client.v2.models.get_deliveries_response import GetDeliveriesResponse
 from scaleapi.api_client.v2.models.get_projects_response import GetProjectsResponse
