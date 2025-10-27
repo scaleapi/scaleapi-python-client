@@ -27,11 +27,18 @@ from scaleapi.api_client.v2.models.batch_status import BatchStatus
 from scaleapi.api_client.v2.models.cancel_batch200_response import CancelBatch200Response
 from scaleapi.api_client.v2.models.create_batch_request import CreateBatchRequest
 from scaleapi.api_client.v2.models.create_chat_task_request import CreateChatTaskRequest
+from scaleapi.api_client.v2.models.dataset_task import DatasetTask
 from scaleapi.api_client.v2.models.expandable_enum_batch import ExpandableEnumBatch
+from scaleapi.api_client.v2.models.expandable_enum_dataset_task import ExpandableEnumDatasetTask
+from scaleapi.api_client.v2.models.expandable_enum_datasets_deliveries import ExpandableEnumDatasetsDeliveries
 from scaleapi.api_client.v2.models.expandable_enum_deliveries import ExpandableEnumDeliveries
 from scaleapi.api_client.v2.models.expandable_enum_delivery import ExpandableEnumDelivery
 from scaleapi.api_client.v2.models.expandable_enum_task import ExpandableEnumTask
 from scaleapi.api_client.v2.models.get_batches_response import GetBatchesResponse
+from scaleapi.api_client.v2.models.get_dataset_deliveries_response import GetDatasetDeliveriesResponse
+from scaleapi.api_client.v2.models.get_dataset_delivery_response import GetDatasetDeliveryResponse
+from scaleapi.api_client.v2.models.get_dataset_tasks_response import GetDatasetTasksResponse
+from scaleapi.api_client.v2.models.get_datasets_response import GetDatasetsResponse
 from scaleapi.api_client.v2.models.get_delivered_tasks_response import GetDeliveredTasksResponse
 from scaleapi.api_client.v2.models.get_deliveries_response import GetDeliveriesResponse
 from scaleapi.api_client.v2.models.get_projects_response import GetProjectsResponse
@@ -2186,6 +2193,1868 @@ class V2Api:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/v2/batches',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_dataset_deliveries(
+        self,
+        dataset_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the dataset.")] = None,
+        delivered_after: Annotated[Optional[datetime], Field(description="Deliveries with a `delivered_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        delivered_before: Annotated[Optional[datetime], Field(description="Deliveries with a `delivered_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        expand: Annotated[Optional[List[ExpandableEnumDatasetsDeliveries]], Field(description="List of fields to [expand](/api-reference/expanding-entities) in the response.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> GetDatasetDeliveriesResponse:
+        """List All Dataset Deliveries
+
+        Lists of [Deliveries](/core-resources/dataset-delivery) from datasets.
+
+        :param dataset_id: Scale's unique identifier for the dataset.
+        :type dataset_id: str
+        :param delivered_after: Deliveries with a `delivered_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type delivered_after: datetime
+        :param delivered_before: Deliveries with a `delivered_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type delivered_before: datetime
+        :param expand: List of fields to [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumDatasetsDeliveries]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_deliveries_serialize(
+            dataset_id=dataset_id,
+            delivered_after=delivered_after,
+            delivered_before=delivered_before,
+            expand=expand,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDatasetDeliveriesResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_dataset_deliveries_with_http_info(
+        self,
+        dataset_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the dataset.")] = None,
+        delivered_after: Annotated[Optional[datetime], Field(description="Deliveries with a `delivered_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        delivered_before: Annotated[Optional[datetime], Field(description="Deliveries with a `delivered_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        expand: Annotated[Optional[List[ExpandableEnumDatasetsDeliveries]], Field(description="List of fields to [expand](/api-reference/expanding-entities) in the response.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[GetDatasetDeliveriesResponse]:
+        """List All Dataset Deliveries
+
+        Lists of [Deliveries](/core-resources/dataset-delivery) from datasets.
+
+        :param dataset_id: Scale's unique identifier for the dataset.
+        :type dataset_id: str
+        :param delivered_after: Deliveries with a `delivered_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type delivered_after: datetime
+        :param delivered_before: Deliveries with a `delivered_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type delivered_before: datetime
+        :param expand: List of fields to [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumDatasetsDeliveries]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_deliveries_serialize(
+            dataset_id=dataset_id,
+            delivered_after=delivered_after,
+            delivered_before=delivered_before,
+            expand=expand,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDatasetDeliveriesResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_dataset_deliveries_without_preload_content(
+        self,
+        dataset_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the dataset.")] = None,
+        delivered_after: Annotated[Optional[datetime], Field(description="Deliveries with a `delivered_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        delivered_before: Annotated[Optional[datetime], Field(description="Deliveries with a `delivered_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        expand: Annotated[Optional[List[ExpandableEnumDatasetsDeliveries]], Field(description="List of fields to [expand](/api-reference/expanding-entities) in the response.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """List All Dataset Deliveries
+
+        Lists of [Deliveries](/core-resources/dataset-delivery) from datasets.
+
+        :param dataset_id: Scale's unique identifier for the dataset.
+        :type dataset_id: str
+        :param delivered_after: Deliveries with a `delivered_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type delivered_after: datetime
+        :param delivered_before: Deliveries with a `delivered_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type delivered_before: datetime
+        :param expand: List of fields to [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumDatasetsDeliveries]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_deliveries_serialize(
+            dataset_id=dataset_id,
+            delivered_after=delivered_after,
+            delivered_before=delivered_before,
+            expand=expand,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDatasetDeliveriesResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_dataset_deliveries_serialize(
+        self,
+        dataset_id,
+        delivered_after,
+        delivered_before,
+        expand,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+            'expand': 'multi',
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if dataset_id is not None:
+
+            _query_params.append(('dataset_id', dataset_id))
+
+        if delivered_after is not None:
+            if isinstance(delivered_after, datetime):
+                _query_params.append(
+                    (
+                        'delivered_after',
+                        delivered_after.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('delivered_after', delivered_after))
+
+        if delivered_before is not None:
+            if isinstance(delivered_before, datetime):
+                _query_params.append(
+                    (
+                        'delivered_before',
+                        delivered_before.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('delivered_before', delivered_before))
+
+        if expand is not None:
+
+            _query_params.append(('expand', expand))
+
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'basicAuth',
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v2/datasets/deliveries',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_dataset_delivery(
+        self,
+        delivery_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the delivery.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="Limit the number of entities returned.")] = None,
+        next_token: Annotated[Optional[StrictStr], Field(description="A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.")] = None,
+        expand: Annotated[Optional[List[ExpandableEnumDatasetTask]], Field(description="List of fields to [expand](/api-reference/expanding-entities) in the response.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> GetDatasetDeliveryResponse:
+        """Get Dataset Tasks in a Delivery
+
+        Retrieve multiple [Dataset Tasks](/core-resources/dataset-task) from a [Delivery](/core-resources/dataset-delivery).
+
+        :param delivery_id: Scale's unique identifier for the delivery.
+        :type delivery_id: str
+        :param limit: Limit the number of entities returned.
+        :type limit: int
+        :param next_token: A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.
+        :type next_token: str
+        :param expand: List of fields to [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumDatasetTask]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_delivery_serialize(
+            delivery_id=delivery_id,
+            limit=limit,
+            next_token=next_token,
+            expand=expand,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDatasetDeliveryResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_dataset_delivery_with_http_info(
+        self,
+        delivery_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the delivery.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="Limit the number of entities returned.")] = None,
+        next_token: Annotated[Optional[StrictStr], Field(description="A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.")] = None,
+        expand: Annotated[Optional[List[ExpandableEnumDatasetTask]], Field(description="List of fields to [expand](/api-reference/expanding-entities) in the response.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[GetDatasetDeliveryResponse]:
+        """Get Dataset Tasks in a Delivery
+
+        Retrieve multiple [Dataset Tasks](/core-resources/dataset-task) from a [Delivery](/core-resources/dataset-delivery).
+
+        :param delivery_id: Scale's unique identifier for the delivery.
+        :type delivery_id: str
+        :param limit: Limit the number of entities returned.
+        :type limit: int
+        :param next_token: A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.
+        :type next_token: str
+        :param expand: List of fields to [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumDatasetTask]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_delivery_serialize(
+            delivery_id=delivery_id,
+            limit=limit,
+            next_token=next_token,
+            expand=expand,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDatasetDeliveryResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_dataset_delivery_without_preload_content(
+        self,
+        delivery_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the delivery.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="Limit the number of entities returned.")] = None,
+        next_token: Annotated[Optional[StrictStr], Field(description="A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.")] = None,
+        expand: Annotated[Optional[List[ExpandableEnumDatasetTask]], Field(description="List of fields to [expand](/api-reference/expanding-entities) in the response.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Dataset Tasks in a Delivery
+
+        Retrieve multiple [Dataset Tasks](/core-resources/dataset-task) from a [Delivery](/core-resources/dataset-delivery).
+
+        :param delivery_id: Scale's unique identifier for the delivery.
+        :type delivery_id: str
+        :param limit: Limit the number of entities returned.
+        :type limit: int
+        :param next_token: A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.
+        :type next_token: str
+        :param expand: List of fields to [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumDatasetTask]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_delivery_serialize(
+            delivery_id=delivery_id,
+            limit=limit,
+            next_token=next_token,
+            expand=expand,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDatasetDeliveryResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_dataset_delivery_serialize(
+        self,
+        delivery_id,
+        limit,
+        next_token,
+        expand,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+            'expand': 'multi',
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if delivery_id is not None:
+
+            _query_params.append(('delivery_id', delivery_id))
+
+        if limit is not None:
+
+            _query_params.append(('limit', limit))
+
+        if next_token is not None:
+
+            _query_params.append(('next_token', next_token))
+
+        if expand is not None:
+
+            _query_params.append(('expand', expand))
+
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'basicAuth',
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v2/datasets/delivery',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_dataset_task(
+        self,
+        task_id: Annotated[StrictStr, Field(description="Scale's unique identifier for the task.")],
+        expand: Annotated[Optional[List[ExpandableEnumDatasetTask]], Field(description="List of fields to [expand](/api-reference/expanding-entities) in the response.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> DatasetTask:
+        """Get a Dataset Task
+
+        Retrieve a [Dataset Task](/core-resources/dataset-task) from its `task_id`.
+
+        :param task_id: Scale's unique identifier for the task. (required)
+        :type task_id: str
+        :param expand: List of fields to [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumDatasetTask]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_task_serialize(
+            task_id=task_id,
+            expand=expand,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "DatasetTask",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_dataset_task_with_http_info(
+        self,
+        task_id: Annotated[StrictStr, Field(description="Scale's unique identifier for the task.")],
+        expand: Annotated[Optional[List[ExpandableEnumDatasetTask]], Field(description="List of fields to [expand](/api-reference/expanding-entities) in the response.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[DatasetTask]:
+        """Get a Dataset Task
+
+        Retrieve a [Dataset Task](/core-resources/dataset-task) from its `task_id`.
+
+        :param task_id: Scale's unique identifier for the task. (required)
+        :type task_id: str
+        :param expand: List of fields to [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumDatasetTask]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_task_serialize(
+            task_id=task_id,
+            expand=expand,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "DatasetTask",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_dataset_task_without_preload_content(
+        self,
+        task_id: Annotated[StrictStr, Field(description="Scale's unique identifier for the task.")],
+        expand: Annotated[Optional[List[ExpandableEnumDatasetTask]], Field(description="List of fields to [expand](/api-reference/expanding-entities) in the response.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get a Dataset Task
+
+        Retrieve a [Dataset Task](/core-resources/dataset-task) from its `task_id`.
+
+        :param task_id: Scale's unique identifier for the task. (required)
+        :type task_id: str
+        :param expand: List of fields to [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumDatasetTask]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_task_serialize(
+            task_id=task_id,
+            expand=expand,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "DatasetTask",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_dataset_task_serialize(
+        self,
+        task_id,
+        expand,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+            'expand': 'multi',
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if task_id is not None:
+
+            _query_params.append(('task_id', task_id))
+
+        if expand is not None:
+
+            _query_params.append(('expand', expand))
+
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'basicAuth',
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v2/datasets/task',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_dataset_task_response_url(
+        self,
+        task_id: Annotated[StrictStr, Field(description="Scale's unique identifier for the task.")],
+        attachment_id: Annotated[StrictStr, Field(description="Unique identifier for the attachment.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> None:
+        """Get Dataset Task Response Attachment URL
+
+        Retrieve a redirect URL for a specific attachment in a Dataset task response.
+
+        :param task_id: Scale's unique identifier for the task. (required)
+        :type task_id: str
+        :param attachment_id: Unique identifier for the attachment. (required)
+        :type attachment_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_task_response_url_serialize(
+            task_id=task_id,
+            attachment_id=attachment_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '302': None,
+            '404': "GetDatasetTaskResponseUrl404Response",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_dataset_task_response_url_with_http_info(
+        self,
+        task_id: Annotated[StrictStr, Field(description="Scale's unique identifier for the task.")],
+        attachment_id: Annotated[StrictStr, Field(description="Unique identifier for the attachment.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[None]:
+        """Get Dataset Task Response Attachment URL
+
+        Retrieve a redirect URL for a specific attachment in a Dataset task response.
+
+        :param task_id: Scale's unique identifier for the task. (required)
+        :type task_id: str
+        :param attachment_id: Unique identifier for the attachment. (required)
+        :type attachment_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_task_response_url_serialize(
+            task_id=task_id,
+            attachment_id=attachment_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '302': None,
+            '404': "GetDatasetTaskResponseUrl404Response",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_dataset_task_response_url_without_preload_content(
+        self,
+        task_id: Annotated[StrictStr, Field(description="Scale's unique identifier for the task.")],
+        attachment_id: Annotated[StrictStr, Field(description="Unique identifier for the attachment.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Dataset Task Response Attachment URL
+
+        Retrieve a redirect URL for a specific attachment in a Dataset task response.
+
+        :param task_id: Scale's unique identifier for the task. (required)
+        :type task_id: str
+        :param attachment_id: Unique identifier for the attachment. (required)
+        :type attachment_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_task_response_url_serialize(
+            task_id=task_id,
+            attachment_id=attachment_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '302': None,
+            '404': "GetDatasetTaskResponseUrl404Response",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_dataset_task_response_url_serialize(
+        self,
+        task_id,
+        attachment_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if task_id is not None:
+            _path_params['taskId'] = task_id
+        if attachment_id is not None:
+            _path_params['attachmentId'] = attachment_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'basicAuth',
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v2/datasets/task/{taskId}/response_url/{attachmentId}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_dataset_tasks(
+        self,
+        dataset_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the dataset.")] = None,
+        delivery_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the delivery.")] = None,
+        delivered_after: Annotated[Optional[datetime], Field(description="Deliveries with a `delivered_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        delivered_before: Annotated[Optional[datetime], Field(description="Deliveries with a `delivered_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="Limit the number of entities returned.")] = None,
+        next_token: Annotated[Optional[StrictStr], Field(description="A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.")] = None,
+        expand: Annotated[Optional[List[ExpandableEnumDatasetTask]], Field(description="List of fields to [expand](/api-reference/expanding-entities) in the response.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> GetDatasetTasksResponse:
+        """Get Multiple Dataset Tasks
+
+        Retrieve multiple [Dataset Tasks](/core-resources/dataset-task) from a [Dataset](/core-resources/dataset) or [Delivery](/core-resources/dataset-delivery).
+
+        :param dataset_id: Scale's unique identifier for the dataset.
+        :type dataset_id: str
+        :param delivery_id: Scale's unique identifier for the delivery.
+        :type delivery_id: str
+        :param delivered_after: Deliveries with a `delivered_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type delivered_after: datetime
+        :param delivered_before: Deliveries with a `delivered_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type delivered_before: datetime
+        :param limit: Limit the number of entities returned.
+        :type limit: int
+        :param next_token: A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.
+        :type next_token: str
+        :param expand: List of fields to [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumDatasetTask]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_tasks_serialize(
+            dataset_id=dataset_id,
+            delivery_id=delivery_id,
+            delivered_after=delivered_after,
+            delivered_before=delivered_before,
+            limit=limit,
+            next_token=next_token,
+            expand=expand,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDatasetTasksResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_dataset_tasks_with_http_info(
+        self,
+        dataset_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the dataset.")] = None,
+        delivery_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the delivery.")] = None,
+        delivered_after: Annotated[Optional[datetime], Field(description="Deliveries with a `delivered_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        delivered_before: Annotated[Optional[datetime], Field(description="Deliveries with a `delivered_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="Limit the number of entities returned.")] = None,
+        next_token: Annotated[Optional[StrictStr], Field(description="A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.")] = None,
+        expand: Annotated[Optional[List[ExpandableEnumDatasetTask]], Field(description="List of fields to [expand](/api-reference/expanding-entities) in the response.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[GetDatasetTasksResponse]:
+        """Get Multiple Dataset Tasks
+
+        Retrieve multiple [Dataset Tasks](/core-resources/dataset-task) from a [Dataset](/core-resources/dataset) or [Delivery](/core-resources/dataset-delivery).
+
+        :param dataset_id: Scale's unique identifier for the dataset.
+        :type dataset_id: str
+        :param delivery_id: Scale's unique identifier for the delivery.
+        :type delivery_id: str
+        :param delivered_after: Deliveries with a `delivered_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type delivered_after: datetime
+        :param delivered_before: Deliveries with a `delivered_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type delivered_before: datetime
+        :param limit: Limit the number of entities returned.
+        :type limit: int
+        :param next_token: A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.
+        :type next_token: str
+        :param expand: List of fields to [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumDatasetTask]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_tasks_serialize(
+            dataset_id=dataset_id,
+            delivery_id=delivery_id,
+            delivered_after=delivered_after,
+            delivered_before=delivered_before,
+            limit=limit,
+            next_token=next_token,
+            expand=expand,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDatasetTasksResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_dataset_tasks_without_preload_content(
+        self,
+        dataset_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the dataset.")] = None,
+        delivery_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the delivery.")] = None,
+        delivered_after: Annotated[Optional[datetime], Field(description="Deliveries with a `delivered_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        delivered_before: Annotated[Optional[datetime], Field(description="Deliveries with a `delivered_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="Limit the number of entities returned.")] = None,
+        next_token: Annotated[Optional[StrictStr], Field(description="A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.")] = None,
+        expand: Annotated[Optional[List[ExpandableEnumDatasetTask]], Field(description="List of fields to [expand](/api-reference/expanding-entities) in the response.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Multiple Dataset Tasks
+
+        Retrieve multiple [Dataset Tasks](/core-resources/dataset-task) from a [Dataset](/core-resources/dataset) or [Delivery](/core-resources/dataset-delivery).
+
+        :param dataset_id: Scale's unique identifier for the dataset.
+        :type dataset_id: str
+        :param delivery_id: Scale's unique identifier for the delivery.
+        :type delivery_id: str
+        :param delivered_after: Deliveries with a `delivered_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type delivered_after: datetime
+        :param delivered_before: Deliveries with a `delivered_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type delivered_before: datetime
+        :param limit: Limit the number of entities returned.
+        :type limit: int
+        :param next_token: A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.
+        :type next_token: str
+        :param expand: List of fields to [expand](/api-reference/expanding-entities) in the response.
+        :type expand: List[ExpandableEnumDatasetTask]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_tasks_serialize(
+            dataset_id=dataset_id,
+            delivery_id=delivery_id,
+            delivered_after=delivered_after,
+            delivered_before=delivered_before,
+            limit=limit,
+            next_token=next_token,
+            expand=expand,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDatasetTasksResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_dataset_tasks_serialize(
+        self,
+        dataset_id,
+        delivery_id,
+        delivered_after,
+        delivered_before,
+        limit,
+        next_token,
+        expand,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+            'expand': 'multi',
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if dataset_id is not None:
+
+            _query_params.append(('dataset_id', dataset_id))
+
+        if delivery_id is not None:
+
+            _query_params.append(('delivery_id', delivery_id))
+
+        if delivered_after is not None:
+            if isinstance(delivered_after, datetime):
+                _query_params.append(
+                    (
+                        'delivered_after',
+                        delivered_after.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('delivered_after', delivered_after))
+
+        if delivered_before is not None:
+            if isinstance(delivered_before, datetime):
+                _query_params.append(
+                    (
+                        'delivered_before',
+                        delivered_before.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('delivered_before', delivered_before))
+
+        if limit is not None:
+
+            _query_params.append(('limit', limit))
+
+        if next_token is not None:
+
+            _query_params.append(('next_token', next_token))
+
+        if expand is not None:
+
+            _query_params.append(('expand', expand))
+
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'basicAuth',
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v2/datasets/tasks',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_datasets(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> GetDatasetsResponse:
+        """List Datasets
+
+        Retrieve a list of delivered [Datasets](/core-resources/dataset) with their IDs and names.
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_datasets_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDatasetsResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_datasets_with_http_info(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[GetDatasetsResponse]:
+        """List Datasets
+
+        Retrieve a list of delivered [Datasets](/core-resources/dataset) with their IDs and names.
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_datasets_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDatasetsResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_datasets_without_preload_content(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """List Datasets
+
+        Retrieve a list of delivered [Datasets](/core-resources/dataset) with their IDs and names.
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_datasets_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDatasetsResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_datasets_serialize(
+        self,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'basicAuth',
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v2/datasets',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

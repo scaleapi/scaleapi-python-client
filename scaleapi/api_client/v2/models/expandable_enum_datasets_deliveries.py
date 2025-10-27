@@ -18,21 +18,17 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class TaskStatus(str, Enum):
+class ExpandableEnumDatasetsDeliveries(str, Enum):
     """
-    The current status of the task, indicating whether it is pending, completed, error, canceled, or deleted.
+    Entities that can be expanded from an ID to an object.
     """
 
     """
     allowed enum values
     """
-    PENDING = 'pending'
-    COMPLETED = 'completed'
-    CANCELED = 'canceled'
-    ERROR = 'error'
-    DELETED = 'deleted'
+    DATASET = 'dataset'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of TaskStatus from a JSON string"""
+        """Create an instance of ExpandableEnumDatasetsDeliveries from a JSON string"""
         return cls(json.loads(json_str))

@@ -50,6 +50,11 @@ scaleapi/api_client/v2/models/create_batch_request.py
 scaleapi/api_client/v2/models/create_chat_task_request.py
 scaleapi/api_client/v2/models/criterion_definition.py
 scaleapi/api_client/v2/models/criterion_evaluation.py
+scaleapi/api_client/v2/models/dataset.py
+scaleapi/api_client/v2/models/dataset_delivery.py
+scaleapi/api_client/v2/models/dataset_delivery_dataset.py
+scaleapi/api_client/v2/models/dataset_delivery_metadata.py
+scaleapi/api_client/v2/models/dataset_task.py
 scaleapi/api_client/v2/models/delivery.py
 scaleapi/api_client/v2/models/detailed_file.py
 scaleapi/api_client/v2/models/error_detail.py
@@ -57,8 +62,12 @@ scaleapi/api_client/v2/models/error_type.py
 scaleapi/api_client/v2/models/expandable.py
 scaleapi/api_client/v2/models/expandable_annotation.py
 scaleapi/api_client/v2/models/expandable_batch.py
+scaleapi/api_client/v2/models/expandable_dataset.py
+scaleapi/api_client/v2/models/expandable_dataset_delivery.py
 scaleapi/api_client/v2/models/expandable_delivery.py
 scaleapi/api_client/v2/models/expandable_enum_batch.py
+scaleapi/api_client/v2/models/expandable_enum_dataset_task.py
+scaleapi/api_client/v2/models/expandable_enum_datasets_deliveries.py
 scaleapi/api_client/v2/models/expandable_enum_deliveries.py
 scaleapi/api_client/v2/models/expandable_enum_delivery.py
 scaleapi/api_client/v2/models/expandable_enum_task.py
@@ -66,6 +75,11 @@ scaleapi/api_client/v2/models/expandable_project.py
 scaleapi/api_client/v2/models/gen_ai_project_type.py
 scaleapi/api_client/v2/models/get_batch500_response.py
 scaleapi/api_client/v2/models/get_batches_response.py
+scaleapi/api_client/v2/models/get_dataset_deliveries_response.py
+scaleapi/api_client/v2/models/get_dataset_delivery_response.py
+scaleapi/api_client/v2/models/get_dataset_task_response_url404_response.py
+scaleapi/api_client/v2/models/get_dataset_tasks_response.py
+scaleapi/api_client/v2/models/get_datasets_response.py
 scaleapi/api_client/v2/models/get_delivered_tasks_response.py
 scaleapi/api_client/v2/models/get_deliveries_response.py
 scaleapi/api_client/v2/models/get_projects_response.py
