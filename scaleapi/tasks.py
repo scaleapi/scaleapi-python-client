@@ -35,7 +35,7 @@ class TaskType(Enum):
     ChatLite = "chatlite"
     MultiChat = "multichat"
     MultiStage = "multistage"
-    CruiseControl="cruisecontrol"
+    CruiseControl = "cruisecontrol"
 
 
 class TaskReviewStatus(Enum):
