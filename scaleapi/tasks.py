@@ -35,7 +35,7 @@ class TaskType(Enum):
     ChatLite = "chatlite"
     MultiChat = "multichat"
     MultiStage = "multistage"
-    CruiseControl = "federal2dvideoannotation"
+    Federal2dVideoAnnotation = "federal2dvideoannotation"
 
 
 class TaskReviewStatus(Enum):
