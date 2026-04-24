@@ -17,6 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
@@ -27,10 +28,12 @@ class GetDeliveryTasksResponseDocsInner(BaseModel):
     GetDeliveryTasksResponseDocsInner
     """ # noqa: E501
     task_id: StrictStr = Field(description="Scale's unique identifier for the task.")
+    created_at: Optional[datetime] = Field(default=None, description="UTC timestamp when the task was created. ISO 8601 date-time string.")
     delivery_id: Optional[StrictStr] = Field(default=None, description="Scale's unique identifier for the delivery. Null if task has no delivered response.")
     delivered_at: Optional[StrictStr] = Field(default=None, description="UTC timestamp when the task was delivered. Null if task has no delivered response.")
+    response_schema_id: Optional[StrictStr] = Field(default=None, description="Scale's unique identifier for the response schema this task was delivered against.")
     response: Optional[Dict[str, Any]] = Field(default=None, description="The delivered response data. Null if task has no delivered response.")
-    __properties: ClassVar[List[str]] = ["task_id", "delivery_id", "delivered_at", "response"]
+    __properties: ClassVar[List[str]] = ["task_id", "created_at", "delivery_id", "delivered_at", "response_schema_id", "response"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -85,8 +88,10 @@ class GetDeliveryTasksResponseDocsInner(BaseModel):
 
         _obj = cls.model_validate({
             "task_id": obj.get("task_id"),
+            "created_at": obj.get("created_at"),
             "delivery_id": obj.get("delivery_id"),
             "delivered_at": obj.get("delivered_at"),
+            "response_schema_id": obj.get("response_schema_id"),
             "response": obj.get("response")
         })
         return _obj
