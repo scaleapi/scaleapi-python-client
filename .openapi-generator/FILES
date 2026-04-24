@@ -77,6 +77,10 @@ scaleapi/api_client/v2/models/get_deliveries_response.py
 scaleapi/api_client/v2/models/get_delivery_tasks_response.py
 scaleapi/api_client/v2/models/get_delivery_tasks_response_docs_inner.py
 scaleapi/api_client/v2/models/get_projects_response.py
+scaleapi/api_client/v2/models/get_schema400_response.py
+scaleapi/api_client/v2/models/get_schema404_response.py
+scaleapi/api_client/v2/models/get_schema_response.py
+scaleapi/api_client/v2/models/get_schema_response_schema.py
 scaleapi/api_client/v2/models/get_tasks_response.py
 scaleapi/api_client/v2/models/image_file.py
 scaleapi/api_client/v2/models/labeled_text_value.py

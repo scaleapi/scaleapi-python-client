@@ -109,6 +109,10 @@ from scaleapi.api_client.v2.models.get_deliveries_response import GetDeliveriesR
 from scaleapi.api_client.v2.models.get_delivery_tasks_response import GetDeliveryTasksResponse
 from scaleapi.api_client.v2.models.get_delivery_tasks_response_docs_inner import GetDeliveryTasksResponseDocsInner
 from scaleapi.api_client.v2.models.get_projects_response import GetProjectsResponse
+from scaleapi.api_client.v2.models.get_schema400_response import GetSchema400Response
+from scaleapi.api_client.v2.models.get_schema404_response import GetSchema404Response
+from scaleapi.api_client.v2.models.get_schema_response import GetSchemaResponse
+from scaleapi.api_client.v2.models.get_schema_response_schema import GetSchemaResponseSchema
 from scaleapi.api_client.v2.models.get_tasks_response import GetTasksResponse
 from scaleapi.api_client.v2.models.image_file import ImageFile
 from scaleapi.api_client.v2.models.labeled_text_value import LabeledTextValue
