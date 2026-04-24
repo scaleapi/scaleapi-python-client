@@ -17,22 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from scaleapi.api_client.v2.models.get_delivery_tasks_response_docs_inner import GetDeliveryTasksResponseDocsInner
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Project(BaseModel):
+class GetDeliveryTasksResponse(BaseModel):
     """
-    Project
+    GetDeliveryTasksResponse
     """ # noqa: E501
-    id: StrictStr = Field(description="A unique identifier for the project.")
-    name: StrictStr = Field(description="The name of the project.")
-    created_at: datetime = Field(description="A timestamp formatted as an ISO 8601 date-time string.")
-    types: Optional[List[StrictStr]] = Field(default=None, description="List of project types associated with the project.")
-    models: Optional[List[StrictStr]] = Field(default=None, description="List of models associated with the project.")
-    __properties: ClassVar[List[str]] = ["id", "name", "created_at", "types", "models"]
+    docs: List[GetDeliveryTasksResponseDocsInner]
+    total: StrictInt = Field(description="Total number of tasks returned in the current page.")
+    next_token: Optional[StrictStr] = Field(default=None, description="A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request")
+    __properties: ClassVar[List[str]] = ["docs", "total", "next_token"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -53,7 +51,7 @@ class Project(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Project from a JSON string"""
+        """Create an instance of GetDeliveryTasksResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,11 +72,18 @@ class Project(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in docs (list)
+        _items = []
+        if self.docs:
+            for _item_docs in self.docs:
+                if _item_docs:
+                    _items.append(_item_docs.to_dict())
+            _dict['docs'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Project from a dict"""
+        """Create an instance of GetDeliveryTasksResponse from a dict"""
         if obj is None:
             return None
 
@@ -86,10 +91,8 @@ class Project(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "name": obj.get("name"),
-            "created_at": obj.get("created_at"),
-            "types": obj.get("types"),
-            "models": obj.get("models")
+            "docs": [GetDeliveryTasksResponseDocsInner.from_dict(_item) for _item in obj["docs"]] if obj.get("docs") is not None else None,
+            "total": obj.get("total"),
+            "next_token": obj.get("next_token")
         })
         return _obj

@@ -17,22 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict, List
+from scaleapi.api_client.v2.models.get_schema_response_schema import GetSchemaResponseSchema
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Project(BaseModel):
+class GetSchemaResponse(BaseModel):
     """
-    Project
+    GetSchemaResponse
     """ # noqa: E501
-    id: StrictStr = Field(description="A unique identifier for the project.")
-    name: StrictStr = Field(description="The name of the project.")
-    created_at: datetime = Field(description="A timestamp formatted as an ISO 8601 date-time string.")
-    types: Optional[List[StrictStr]] = Field(default=None, description="List of project types associated with the project.")
-    models: Optional[List[StrictStr]] = Field(default=None, description="List of models associated with the project.")
-    __properties: ClassVar[List[str]] = ["id", "name", "created_at", "types", "models"]
+    var_schema: GetSchemaResponseSchema = Field(alias="schema")
+    __properties: ClassVar[List[str]] = ["schema"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -53,7 +49,7 @@ class Project(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Project from a JSON string"""
+        """Create an instance of GetSchemaResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,11 +70,14 @@ class Project(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of var_schema
+        if self.var_schema:
+            _dict['schema'] = self.var_schema.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Project from a dict"""
+        """Create an instance of GetSchemaResponse from a dict"""
         if obj is None:
             return None
 
@@ -86,10 +85,6 @@ class Project(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "name": obj.get("name"),
-            "created_at": obj.get("created_at"),
-            "types": obj.get("types"),
-            "models": obj.get("models")
+            "schema": GetSchemaResponseSchema.from_dict(obj["schema"]) if obj.get("schema") is not None else None
         })
         return _obj

@@ -23,16 +23,17 @@ from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Project(BaseModel):
+class GetDeliveryTasksResponseDocsInner(BaseModel):
     """
-    Project
+    GetDeliveryTasksResponseDocsInner
     """ # noqa: E501
-    id: StrictStr = Field(description="A unique identifier for the project.")
-    name: StrictStr = Field(description="The name of the project.")
-    created_at: datetime = Field(description="A timestamp formatted as an ISO 8601 date-time string.")
-    types: Optional[List[StrictStr]] = Field(default=None, description="List of project types associated with the project.")
-    models: Optional[List[StrictStr]] = Field(default=None, description="List of models associated with the project.")
-    __properties: ClassVar[List[str]] = ["id", "name", "created_at", "types", "models"]
+    task_id: StrictStr = Field(description="Scale's unique identifier for the task.")
+    created_at: Optional[datetime] = Field(default=None, description="UTC timestamp when the task was created. ISO 8601 date-time string.")
+    delivery_id: Optional[StrictStr] = Field(default=None, description="Scale's unique identifier for the delivery. Null if task has no delivered response.")
+    delivered_at: Optional[StrictStr] = Field(default=None, description="UTC timestamp when the task was delivered. Null if task has no delivered response.")
+    response_schema_id: Optional[StrictStr] = Field(default=None, description="Scale's unique identifier for the response schema this task was delivered against.")
+    response: Optional[Dict[str, Any]] = Field(default=None, description="The delivered response data. Null if task has no delivered response.")
+    __properties: ClassVar[List[str]] = ["task_id", "created_at", "delivery_id", "delivered_at", "response_schema_id", "response"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -53,7 +54,7 @@ class Project(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Project from a JSON string"""
+        """Create an instance of GetDeliveryTasksResponseDocsInner from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -78,7 +79,7 @@ class Project(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Project from a dict"""
+        """Create an instance of GetDeliveryTasksResponseDocsInner from a dict"""
         if obj is None:
             return None
 
@@ -86,10 +87,11 @@ class Project(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "name": obj.get("name"),
+            "task_id": obj.get("task_id"),
             "created_at": obj.get("created_at"),
-            "types": obj.get("types"),
-            "models": obj.get("models")
+            "delivery_id": obj.get("delivery_id"),
+            "delivered_at": obj.get("delivered_at"),
+            "response_schema_id": obj.get("response_schema_id"),
+            "response": obj.get("response")
         })
         return _obj
