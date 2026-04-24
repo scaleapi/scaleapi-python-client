@@ -15,7 +15,6 @@ scaleapi/api_client/v2/models/annotation_category_multiple_properties.py
 scaleapi/api_client/v2/models/annotation_category_properties.py
 scaleapi/api_client/v2/models/annotation_file.py
 scaleapi/api_client/v2/models/annotation_file_properties.py
-scaleapi/api_client/v2/models/annotation_file_properties_value.py
 scaleapi/api_client/v2/models/annotation_integer.py
 scaleapi/api_client/v2/models/annotation_integer_properties.py
 scaleapi/api_client/v2/models/annotation_labeled_text.py
@@ -42,7 +41,6 @@ scaleapi/api_client/v2/models/batch.py
 scaleapi/api_client/v2/models/batch_operation_request.py
 scaleapi/api_client/v2/models/batch_status.py
 scaleapi/api_client/v2/models/cancel_batch200_response.py
-scaleapi/api_client/v2/models/chunk.py
 scaleapi/api_client/v2/models/chunk_text.py
 scaleapi/api_client/v2/models/chunk_text_properties.py
 scaleapi/api_client/v2/models/content_and_url.py
@@ -56,22 +54,17 @@ scaleapi/api_client/v2/models/dataset_delivery_dataset.py
 scaleapi/api_client/v2/models/dataset_delivery_metadata.py
 scaleapi/api_client/v2/models/dataset_task.py
 scaleapi/api_client/v2/models/delivery.py
-scaleapi/api_client/v2/models/detailed_file.py
 scaleapi/api_client/v2/models/error_detail.py
 scaleapi/api_client/v2/models/error_type.py
 scaleapi/api_client/v2/models/expandable.py
-scaleapi/api_client/v2/models/expandable_annotation.py
-scaleapi/api_client/v2/models/expandable_batch.py
 scaleapi/api_client/v2/models/expandable_dataset.py
 scaleapi/api_client/v2/models/expandable_dataset_delivery.py
-scaleapi/api_client/v2/models/expandable_delivery.py
 scaleapi/api_client/v2/models/expandable_enum_batch.py
 scaleapi/api_client/v2/models/expandable_enum_dataset_task.py
 scaleapi/api_client/v2/models/expandable_enum_datasets_deliveries.py
 scaleapi/api_client/v2/models/expandable_enum_deliveries.py
 scaleapi/api_client/v2/models/expandable_enum_delivery.py
 scaleapi/api_client/v2/models/expandable_enum_task.py
-scaleapi/api_client/v2/models/expandable_project.py
 scaleapi/api_client/v2/models/gen_ai_project_type.py
 scaleapi/api_client/v2/models/get_batch500_response.py
 scaleapi/api_client/v2/models/get_batches_response.py
@@ -82,6 +75,8 @@ scaleapi/api_client/v2/models/get_dataset_tasks_response.py
 scaleapi/api_client/v2/models/get_datasets_response.py
 scaleapi/api_client/v2/models/get_delivered_tasks_response.py
 scaleapi/api_client/v2/models/get_deliveries_response.py
+scaleapi/api_client/v2/models/get_delivery_tasks_response.py
+scaleapi/api_client/v2/models/get_delivery_tasks_response_docs_inner.py
 scaleapi/api_client/v2/models/get_projects_response.py
 scaleapi/api_client/v2/models/get_tasks_response.py
 scaleapi/api_client/v2/models/image_file.py

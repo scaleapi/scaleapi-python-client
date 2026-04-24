@@ -41,6 +41,7 @@ from scaleapi.api_client.v2.models.get_dataset_tasks_response import GetDatasetT
 from scaleapi.api_client.v2.models.get_datasets_response import GetDatasetsResponse
 from scaleapi.api_client.v2.models.get_delivered_tasks_response import GetDeliveredTasksResponse
 from scaleapi.api_client.v2.models.get_deliveries_response import GetDeliveriesResponse
+from scaleapi.api_client.v2.models.get_delivery_tasks_response import GetDeliveryTasksResponse
 from scaleapi.api_client.v2.models.get_projects_response import GetProjectsResponse
 from scaleapi.api_client.v2.models.get_tasks_response import GetTasksResponse
 from scaleapi.api_client.v2.models.option import Option
@@ -4797,6 +4798,410 @@ class V2Api:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/v2/delivery',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_delivery_tasks(
+        self,
+        delivery_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the delivery.")] = None,
+        project_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the project.")] = None,
+        project_name: Annotated[Optional[StrictStr], Field(description="The name of the project.")] = None,
+        status: Annotated[Optional[TaskStatus], Field(description="The current status of the task, indicating whether it is pending, completed, error, or canceled.")] = None,
+        completed_after: Annotated[Optional[datetime], Field(description="Tasks with a `completed_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        completed_before: Annotated[Optional[datetime], Field(description="Tasks with a `completed_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="Limit the number of entities returned.")] = None,
+        next_token: Annotated[Optional[StrictStr], Field(description="A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> GetDeliveryTasksResponse:
+        """Get Tasks with Delivered Responses
+
+        Retrieve [Tasks](/core-resources/task) along with their delivered response data from a [Delivery](/core-resources/delivery), [Project](/core-resources/project), or [Batch](/core-resources/batch).  This endpoint returns all tasks matching the query filters. For tasks that have been delivered, the response includes the delivered response data, schema information, and delivery timestamp. Tasks without delivered responses will have `null` values for delivery-related fields.  Use this endpoint when you need to access both task metadata and the final delivered responses in a single query.
+
+        :param delivery_id: Scale's unique identifier for the delivery.
+        :type delivery_id: str
+        :param project_id: Scale's unique identifier for the project.
+        :type project_id: str
+        :param project_name: The name of the project.
+        :type project_name: str
+        :param status: The current status of the task, indicating whether it is pending, completed, error, or canceled.
+        :type status: TaskStatus
+        :param completed_after: Tasks with a `completed_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type completed_after: datetime
+        :param completed_before: Tasks with a `completed_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type completed_before: datetime
+        :param limit: Limit the number of entities returned.
+        :type limit: int
+        :param next_token: A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.
+        :type next_token: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_delivery_tasks_serialize(
+            delivery_id=delivery_id,
+            project_id=project_id,
+            project_name=project_name,
+            status=status,
+            completed_after=completed_after,
+            completed_before=completed_before,
+            limit=limit,
+            next_token=next_token,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDeliveryTasksResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_delivery_tasks_with_http_info(
+        self,
+        delivery_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the delivery.")] = None,
+        project_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the project.")] = None,
+        project_name: Annotated[Optional[StrictStr], Field(description="The name of the project.")] = None,
+        status: Annotated[Optional[TaskStatus], Field(description="The current status of the task, indicating whether it is pending, completed, error, or canceled.")] = None,
+        completed_after: Annotated[Optional[datetime], Field(description="Tasks with a `completed_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        completed_before: Annotated[Optional[datetime], Field(description="Tasks with a `completed_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="Limit the number of entities returned.")] = None,
+        next_token: Annotated[Optional[StrictStr], Field(description="A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[GetDeliveryTasksResponse]:
+        """Get Tasks with Delivered Responses
+
+        Retrieve [Tasks](/core-resources/task) along with their delivered response data from a [Delivery](/core-resources/delivery), [Project](/core-resources/project), or [Batch](/core-resources/batch).  This endpoint returns all tasks matching the query filters. For tasks that have been delivered, the response includes the delivered response data, schema information, and delivery timestamp. Tasks without delivered responses will have `null` values for delivery-related fields.  Use this endpoint when you need to access both task metadata and the final delivered responses in a single query.
+
+        :param delivery_id: Scale's unique identifier for the delivery.
+        :type delivery_id: str
+        :param project_id: Scale's unique identifier for the project.
+        :type project_id: str
+        :param project_name: The name of the project.
+        :type project_name: str
+        :param status: The current status of the task, indicating whether it is pending, completed, error, or canceled.
+        :type status: TaskStatus
+        :param completed_after: Tasks with a `completed_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type completed_after: datetime
+        :param completed_before: Tasks with a `completed_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type completed_before: datetime
+        :param limit: Limit the number of entities returned.
+        :type limit: int
+        :param next_token: A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.
+        :type next_token: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_delivery_tasks_serialize(
+            delivery_id=delivery_id,
+            project_id=project_id,
+            project_name=project_name,
+            status=status,
+            completed_after=completed_after,
+            completed_before=completed_before,
+            limit=limit,
+            next_token=next_token,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDeliveryTasksResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_delivery_tasks_without_preload_content(
+        self,
+        delivery_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the delivery.")] = None,
+        project_id: Annotated[Optional[StrictStr], Field(description="Scale's unique identifier for the project.")] = None,
+        project_name: Annotated[Optional[StrictStr], Field(description="The name of the project.")] = None,
+        status: Annotated[Optional[TaskStatus], Field(description="The current status of the task, indicating whether it is pending, completed, error, or canceled.")] = None,
+        completed_after: Annotated[Optional[datetime], Field(description="Tasks with a `completed_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        completed_before: Annotated[Optional[datetime], Field(description="Tasks with a `completed_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="Limit the number of entities returned.")] = None,
+        next_token: Annotated[Optional[StrictStr], Field(description="A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Tasks with Delivered Responses
+
+        Retrieve [Tasks](/core-resources/task) along with their delivered response data from a [Delivery](/core-resources/delivery), [Project](/core-resources/project), or [Batch](/core-resources/batch).  This endpoint returns all tasks matching the query filters. For tasks that have been delivered, the response includes the delivered response data, schema information, and delivery timestamp. Tasks without delivered responses will have `null` values for delivery-related fields.  Use this endpoint when you need to access both task metadata and the final delivered responses in a single query.
+
+        :param delivery_id: Scale's unique identifier for the delivery.
+        :type delivery_id: str
+        :param project_id: Scale's unique identifier for the project.
+        :type project_id: str
+        :param project_name: The name of the project.
+        :type project_name: str
+        :param status: The current status of the task, indicating whether it is pending, completed, error, or canceled.
+        :type status: TaskStatus
+        :param completed_after: Tasks with a `completed_at` after the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type completed_after: datetime
+        :param completed_before: Tasks with a `completed_at` before the given date will be returned. A timestamp formatted as an ISO 8601 date-time string.
+        :type completed_before: datetime
+        :param limit: Limit the number of entities returned.
+        :type limit: int
+        :param next_token: A token used to retrieve the next page of results if there are more. You can find the `next_token` in your last request.
+        :type next_token: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_delivery_tasks_serialize(
+            delivery_id=delivery_id,
+            project_id=project_id,
+            project_name=project_name,
+            status=status,
+            completed_after=completed_after,
+            completed_before=completed_before,
+            limit=limit,
+            next_token=next_token,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GetDeliveryTasksResponse",
+            '500': "GetBatch500Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_delivery_tasks_serialize(
+        self,
+        delivery_id,
+        project_id,
+        project_name,
+        status,
+        completed_after,
+        completed_before,
+        limit,
+        next_token,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if delivery_id is not None:
+
+            _query_params.append(('delivery_id', delivery_id))
+
+        if project_id is not None:
+
+            _query_params.append(('project_id', project_id))
+
+        if project_name is not None:
+
+            _query_params.append(('project_name', project_name))
+
+        if status is not None:
+
+            _query_params.append(('status', status.value))
+
+        if completed_after is not None:
+            if isinstance(completed_after, datetime):
+                _query_params.append(
+                    (
+                        'completed_after',
+                        completed_after.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('completed_after', completed_after))
+
+        if completed_before is not None:
+            if isinstance(completed_before, datetime):
+                _query_params.append(
+                    (
+                        'completed_before',
+                        completed_before.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('completed_before', completed_before))
+
+        if limit is not None:
+
+            _query_params.append(('limit', limit))
+
+        if next_token is not None:
+
+            _query_params.append(('next_token', next_token))
+
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'basicAuth',
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v2/delivery/tasks',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
