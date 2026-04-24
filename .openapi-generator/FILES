@@ -65,7 +65,6 @@ scaleapi/api_client/v2/models/expandable_enum_datasets_deliveries.py
 scaleapi/api_client/v2/models/expandable_enum_deliveries.py
 scaleapi/api_client/v2/models/expandable_enum_delivery.py
 scaleapi/api_client/v2/models/expandable_enum_task.py
-scaleapi/api_client/v2/models/gen_ai_project_type.py
 scaleapi/api_client/v2/models/get_batch500_response.py
 scaleapi/api_client/v2/models/get_batches_response.py
 scaleapi/api_client/v2/models/get_dataset_deliveries_response.py
