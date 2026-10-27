@@ -111,6 +111,32 @@ __ https://scale.com/docs/api-reference
     except ScaleDuplicateResource as err:
         print(err.message)  # If unique_id is already used for a different task
 
+Data collection (``TaskType.DataCollectionV2``) tasks take an ``upload_type`` that sets the rest of
+the payload's shape. Fields that are not part of the upload type's schema are rejected. Tasks are
+deduplicated on ``(project, metadata.id)``, so resending the same ``metadata.id`` returns the
+existing task instead of creating a new one.
+
+.. code-block:: python
+
+    from scaleapi.tasks import TaskType
+
+    payload = dict(
+        project = "test_project",
+        upload_type = "video-annotation",
+        video_attachment = [
+            {"url": "s3://bucket/left.mp4", "sensor_id": "left", "name": "left"},
+        ],
+        hypothesis = "s3://bucket/prelabels.sfs",  # optional
+        metadata = {"id": "recording-0001"},
+    )
+
+    task = client.create_task(TaskType.DataCollectionV2, **payload)
+
+    # If the task's processing pipeline fails to start, the request still succeeds
+    # and the task comes back with an "error" status.
+    if task.status == "error":
+        print(task.as_dict())
+
 
 Retrieve a task
 ^^^^^^^^^^^^^^^

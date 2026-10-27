@@ -10,6 +10,7 @@ class TaskType(Enum):
     Comparison = "comparison"
     CuboidAnnotation = "cuboidannotation"
     DataCollection = "datacollection"
+    DataCollectionV2 = "datacollectionv2"
     DocumentModel = "documentmodel"
     DocumentTranscription = "documenttranscription"
     ImageAnnotation = "imageannotation"
