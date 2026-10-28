@@ -4,12 +4,14 @@ from unittest import mock
 import scaleapi
 from scaleapi.api import Api
 from scaleapi.audits import (
+    Audit,
     ErrorCategory,
     FeedbackItem,
     Scope,
     Severity,
     build_fixless_audit_payload,
 )
+from scaleapi.tasks import Task
 
 RESPONSE_URL = "https://scaleapi-results.s3.amazonaws.com/annotations.json"
 
@@ -104,6 +106,51 @@ def test_client_create_fixless_audit_sends_put():
     )
     assert audit.id == "audit_1"
     assert audit.result == "accepted"
+
+
+def test_client_get_audit():
+    client = scaleapi.ScaleClient("test_dummy", "pytest")
+    with mock.patch.object(
+        client.api, "get_request", return_value={"id": "audit_1", "type": "fixless"}
+    ) as get:
+        audit = client.get_audit("audit_1")
+    get.assert_called_once_with("audit/audit_1")
+    assert isinstance(audit, Audit)
+    assert audit.id == "audit_1"
+    assert audit.type == "fixless"
+
+
+def test_client_get_task_audits():
+    client = scaleapi.ScaleClient("test_dummy", "pytest")
+    with mock.patch.object(
+        client.api, "get_request", return_value=[{"id": "audit_2"}, {"id": "audit_1"}]
+    ) as get:
+        audits = client.get_task_audits("t1")
+    get.assert_called_once_with("audits/task/t1")
+    assert all(isinstance(audit, Audit) for audit in audits)
+    assert [audit.id for audit in audits] == ["audit_2", "audit_1"]
+
+
+def test_client_get_task_audits_empty():
+    client = scaleapi.ScaleClient("test_dummy", "pytest")
+    with mock.patch.object(client.api, "get_request", return_value=[]):
+        assert client.get_task_audits("t1") == []
+
+
+def test_task_methods_forward_to_client():
+    client = mock.Mock()
+    task = Task({"task_id": "t1"}, client)
+    item = FeedbackItem.comment(Scope.scene(frames=0), "dark")
+
+    task.create_fixless_audit(
+        RESPONSE_URL, False, feedback_items=[item], comments="see items"
+    )
+    client.create_fixless_audit.assert_called_once_with(
+        "t1", RESPONSE_URL, False, feedback_items=[item], comments="see items"
+    )
+
+    assert task.audits() is client.get_task_audits.return_value
+    client.get_task_audits.assert_called_once_with("t1")
 
 
 def test_api_treats_201_as_success():
