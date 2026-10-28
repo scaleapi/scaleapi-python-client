@@ -280,6 +280,45 @@ __ https://docs.scale.com/reference/audit-a-task
     task.audit(True)
 
 
+Create a Fixless Audit
+^^^^^^^^^^^^^^^^^^^^^^
+
+Fixless audits record structured feedback on specific parts of a completed task's response (an annotation, a scene attribute, a missing object...) without modifying the response. They must be enabled for your project and require a team Admin or Manager API key.
+
+Pass the response you audited as ``target_response_url``: the completed task's ``response['annotations']['url']``. Each feedback item has a ``Scope`` saying where it applies. ``frames`` is a single frame index or an inclusive ``(start, end)`` range. Errors take an ``ErrorCategory`` and a ``Severity`` (``Severity.Standard`` by default).
+
+.. code-block :: python
+
+    from scaleapi.audits import ErrorCategory, FeedbackItem, Scope, Severity
+
+    task = client.get_task('30553edd0b6a93f8f05f0fee')
+
+    audit = client.create_fixless_audit(
+        task.id,
+        task.response['annotations']['url'],
+        accepted=False,
+        comments='Two issues in the first second',
+        feedback_items=[
+            FeedbackItem.error(
+                Scope.annotation('cuboid_12', frames=(0, 9)),
+                ErrorCategory.Geometry,
+                Severity.Severe,
+                description='Box is too loose',
+            ),
+            FeedbackItem.error(
+                Scope.point([412.0, 230.5], frames=4, sensor_id=0),
+                ErrorCategory.Missing,
+                description='Pedestrian not labeled',
+            ),
+            FeedbackItem.comment(Scope.scene(frames=0), 'Low light scene'),
+        ],
+    )
+
+    # Also available on the Task object, along with its existing audits
+    task.create_fixless_audit(task.response['annotations']['url'], accepted=True)
+    audits = task.audits()  # newest first
+
+
 Update A Task's Unique Id
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
