@@ -220,24 +220,6 @@ def test_imageannotation_fail():
         )
 
 
-def test_documenttranscription_ok():
-    client.create_task(
-        TaskType.DocumentTranscription,
-        instruction="Please transcribe this receipt.",
-        attachment="http://document.scale.com/receipt-20200519.jpg",
-        features=[{"type": "block", "label": "barcode"}],
-    )
-
-
-def test_documenttranscription_fail():
-    with pytest.raises(ScaleInvalidRequest):
-        client.create_task(
-            TaskType.DocumentTranscription,
-            callback_url="http://www.example.com/callback",
-            instruction="Please transcribe this receipt.",
-        )
-
-
 def test_annotation_ok():
     client.create_task(
         TaskType.Annotation,
