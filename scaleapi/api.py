@@ -137,7 +137,8 @@ class Api:
         )
 
         json = None
-        if res.status_code == 200:
+        # some endpoints (e.g. PUT /audits) respond 201 Created
+        if res.status_code in (200, 201):
             try:
                 json = res.json()
             except ValueError:

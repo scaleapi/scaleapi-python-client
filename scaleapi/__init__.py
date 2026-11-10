@@ -16,6 +16,7 @@ from scaleapi.training_tasks import TrainingTask
 
 from ._version import __version__  # noqa: F401
 from .api import Api
+from .audits import Audit, FeedbackItem, build_fixless_audit_payload
 from .studio import StudioBatch, StudioLabelerAssignment, StudioProjectGroup
 from .tasks import Task, TaskReviewStatus, TaskStatus, TaskType
 from .teams import Teammate, TeammateRole
@@ -126,6 +127,81 @@ class ScaleClient:
         payload = {"accepted": accepted, "comments": comments}
         endpoint = f"task/{task_id}/audit"
         self.api.post_request(endpoint, body=payload)
+
+    def create_fixless_audit(
+        self,
+        task_id: str,
+        target_response_url: str,
+        accepted: bool,
+        feedback_items: Optional[List[FeedbackItem]] = None,
+        comments: Optional[str] = None,
+        metadata: Optional[Dict] = None,
+    ) -> Audit:
+        """Creates a fixless audit: structured feedback on a completed
+        task's response, without modifying the response. Fixless audits
+        must be enabled for the task's project, and require a team
+        Admin or Manager API key.
+
+        Args:
+            task_id (str):
+                Task id of a completed task
+            target_response_url (str):
+                The response being audited, i.e. the task's
+                `response["annotations"]["url"]`
+            accepted (bool):
+                Whether the task's response is accepted overall
+            feedback_items (List[FeedbackItem]):
+                Optional, feedback on specific parts of the response,
+                e.g. `FeedbackItem.error(Scope.annotation(...), ...)`
+            comments (str):
+                Optional, overall comments on the audit
+            metadata (Dict):
+                Optional, arbitrary metadata stored on the audit
+
+        Raises:
+            ScaleInvalidRequest: the audit or a feedback item is invalid
+            ScaleDuplicateResource: fixless audits are not enabled for
+                the project, or target_response_url is not the task's
+                latest response (the API returns 409 for both)
+            ScaleException: the task is not completed (code 422)
+
+        Returns:
+            Audit
+        """
+        payload = build_fixless_audit_payload(
+            task_id,
+            target_response_url,
+            accepted,
+            feedback_items=feedback_items,
+            comments=comments,
+            metadata=metadata,
+        )
+        return Audit(self.api.put_request("audits", body=payload), self)
+
+    def get_audit(self, audit_id: str) -> Audit:
+        """Fetches an audit.
+
+        Args:
+            audit_id (str):
+                Audit id
+
+        Returns:
+            Audit
+        """
+        return Audit(self.api.get_request(f"audit/{audit_id}"), self)
+
+    def get_task_audits(self, task_id: str) -> List[Audit]:
+        """Returns all audits of a task, newest first.
+
+        Args:
+            task_id (str):
+                Task id
+
+        Returns:
+            List[Audit]
+        """
+        audits = self.api.get_request(f"audits/task/{task_id}")
+        return [Audit(audit, self) for audit in audits]
 
     def update_task_unique_id(self, task_id: str, unique_id: str) -> Task:
         """Updates a task's unique_id and returns the associated task.
