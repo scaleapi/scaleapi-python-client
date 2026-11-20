@@ -345,6 +345,58 @@ Pass the response you audited as ``target_response_url``: the completed task's `
     audits = task.audits()  # newest first
 
 
+Retrieve Task Audits and Quality Scores
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Retrieve the audits of a task, newest first, or a single audit by its id. Once an audit has been graded, its ``task_score`` holds the task's quality scores, the same ones the Quality Hub shows. These methods require a team Admin or Manager API key.
+
+.. code-block :: python
+
+    # All audits of a task, newest first
+    audits = client.get_task_audits('30553edd0b6a93f8f05f0fee')
+
+    # A single audit by id
+    audit = client.get_audit('64b7f0c2e4b0a1a2b3c4d5e6')
+
+    task_score = audit.as_dict().get('task_score')  # absent until the audit is graded
+    if task_score:
+        for score in task_score['result']:
+            print(score['name'], score['score'])
+
+For a standard audit, ``task_score`` has ``version`` 1 and ``result`` lists up to three scores: ``standard-annotation-precision``, ``standard-detection-recall`` and ``standard-detection-precision``. Each score is ``1 - numerator / denominator`` (1 when the denominator is 0), where the numerator counts errors and the denominator counts possible errors. ``formula`` names the grader fields the two counts come from. Weighted error counts can exceed the possible-error count, so a score can fall below 0.
+
+.. code-block :: json
+
+    {
+        "version": 1,
+        "result": [
+            {
+                "name": "standard-annotation-precision",
+                "score": 0.95,
+                "numerator": 2,
+                "denominator": 40,
+                "formula": "1 - ( weightedPrecisionErrors / weightedPossiblePrecisionErrors )"
+            },
+            {
+                "name": "standard-detection-recall",
+                "score": 0.9,
+                "numerator": 3,
+                "denominator": 30,
+                "formula": "1 - ( falseNegativeAnnotations / totalCorrectAnnotations )"
+            },
+            {
+                "name": "standard-detection-precision",
+                "score": 0.9677,
+                "numerator": 1,
+                "denominator": 31,
+                "formula": "1 - ( falsePositiveAnnotations / totalScaleAnnotations )"
+            }
+        ]
+    }
+
+Fixless audits report their ``task_score`` in a different shape. Use the audit's ``type`` to tell the two apart.
+
+
 Update A Task's Unique Id
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -514,6 +566,45 @@ __ https://scale.com/docs/api-reference/batches#batch-retrieval
     batch = client.get_batch(batch_name = "batch_name_01_07_2021")
 
 The older ``param_dict`` attribute is now replaced with a method ``batch.as_dict()`` to return a batch's all attributes as a dictionary (JSON).
+
+Retrieve Batch Quality Scores
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Retrieve a batch's quality scores. The numbers match the Quality Hub's batches table. Scores are only available for live batches, not test batches, and require a team Admin or Manager API key.
+
+.. code-block:: python
+
+    scores = client.get_batch_scores(batch_name = "batch_name_01_07_2021")
+
+    # Alternative via Batch.get_scores()
+    batch = client.get_batch("batch_name_01_07_2021")
+    scores = batch.get_scores()
+
+    for score in scores["scores"]:
+        print(score["name"], score["score"])
+
+The response contains:
+
+- ``tasks``: ``total`` is the number of non-canceled tasks in the batch, and ``audited`` is how many of them have at least one audit. Only the latest audit of each task is scored.
+- ``scores``: whole-batch scores, sorted by name. ``name`` is the score type, such as ``AnnotationPrecision``, ``DetectionPrecision`` or ``DetectionRecall``; only types that the batch's audits report are included. For each score type, ``score`` is ``1 - numerator / denominator`` (1 when the denominator is 0), where ``numerator`` is the total errors and ``denominator`` the total possible errors over the latest audit of every audited task.
+- ``scores_by_stage``: only for multistage projects that audit by stage. For each stage name, the average ``detection_recall``, ``annotation_precision`` and ``detection_precision`` over the stage's audits. A score that no audit in the stage has is left out.
+
+.. code-block :: json
+
+    {
+        "batch_id": "5f127f6c3a6b1000172320ad",
+        "batch_name": "batch_name_01_07_2021",
+        "project_id": "5f127f6c3a6b1000172320ac",
+        "tasks": { "total": 120, "audited": 40 },
+        "scores": [
+            { "name": "AnnotationPrecision", "score": 0.96, "numerator": 12, "denominator": 300 },
+            { "name": "DetectionPrecision", "score": 0.98, "numerator": 4, "denominator": 200 },
+            { "name": "DetectionRecall", "score": 0.93, "numerator": 14, "denominator": 200 }
+        ],
+        "scores_by_stage": {
+            "Stage 1": { "detection_recall": 0.91, "annotation_precision": 0.95, "detection_precision": 0.97 }
+        }
+    }
 
 List Batches
 ^^^^^^^^^^^^
