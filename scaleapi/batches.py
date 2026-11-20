@@ -55,3 +55,9 @@ class Batch:
         for stat in ["pending", "completed", "error", "canceled"]:
             setattr(self, "tasks_" + stat, res.get(stat, 0))
         return res
+
+    def get_scores(self):
+        """Returns the quality scores of the batch,
+        as shown in the Quality Hub
+        """
+        return self._client.get_batch_scores(self.name)

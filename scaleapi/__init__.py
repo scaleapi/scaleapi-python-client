@@ -896,6 +896,33 @@ class ScaleClient:
         batchdata = self.api.get_request(endpoint)
         return Batch(batchdata, self)
 
+    def get_batch_scores(self, batch_name: str) -> Dict:
+        """Returns the quality scores of a batch, as shown in the
+        Quality Hub. Only available for live (non-test) batches and
+        to team managers; use your team's API key.
+
+        Args:
+            batch_name (str):
+                Batch name or id
+
+        Returns:
+            Dict {
+                batch_id: Batch id
+                batch_name: Batch name
+                project_id: Project id
+                tasks: {
+                    total: # of non-canceled tasks in the batch
+                    audited: # of those tasks with at least one audit
+                }
+                scores: List of {name, score, numerator, denominator},
+                    pooled over the latest audit of each audited task
+                scores_by_stage (optional): Per-stage average scores,
+                    only for multistage projects that audit by stage
+            }
+        """
+        endpoint = f"batches/{Api.quote_string(batch_name)}/scores"
+        return self.api.get_request(endpoint)
+
     def batches(self, **kwargs) -> Batchlist:
         """This is a paged endpoint for all of your batches.
         Pagination is based off limit and offset parameters,
